@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import MenuBar from "./components/MenuBar";
+import SideBar from "./components/SideBar/SideBar";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // Components
@@ -12,7 +12,7 @@ function App() {
         <div className="App">
             <Router>
                 <div style={{ display: "flex" }}>
-                    <MenuBar />
+                    <SideBar />
                     <Switch>
                         <Route exact path="/">
                             <Landing />

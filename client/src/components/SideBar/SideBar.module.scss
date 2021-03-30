@@ -1,3 +1,4 @@
+// Styling for Side Bar Component
 .sidebar {
     display: flex;
     align-items: center;
@@ -17,9 +18,11 @@
     svg {
         cursor: pointer;
     }
+    // Each link li
     li {
         margin-top: 1rem;
     }
+    // When SideBar is Open
     &.open {
         svg {
             align-self: flex-end;

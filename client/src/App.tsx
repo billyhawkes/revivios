@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // Components
 import Landing from "./components/Landing";
-import HabitTracker from "./components/HabitTracker";
+import HabitTracker from "./components/HabitTracker/HabitTracker";
 
 function App() {
     return (

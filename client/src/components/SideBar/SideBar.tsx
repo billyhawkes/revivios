@@ -20,7 +20,7 @@ const SideBar = () => {
             {open ? <h2>Revive</h2> : <hr />}
             <ul>
                 {SideBarData.map((item, index) => (
-                    <li key="index">
+                    <li key={index}>
                         <Link to={item.path}>
                             {item.icon}
                             {open && item.title}

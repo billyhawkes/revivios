@@ -1,3 +1,4 @@
+import type { NextPage } from "next";
 import {
 	AuthProvider,
 	createUserWithEmailAndPassword,
@@ -16,13 +17,12 @@ interface AuthInput {
 	password: string;
 }
 
-const authPage = () => {
+const Auth: NextPage = () => {
 	const { register, handleSubmit } = useForm<AuthInput>();
 	const router = useRouter();
 	const { type } = router.query;
-	console.log(type);
 
-	const useAuth: SubmitHandler<AuthInput> = async ({ email, password }) => {
+	const setAuth: SubmitHandler<AuthInput> = async ({ email, password }) => {
 		try {
 			switch (type) {
 				case "register":
@@ -37,14 +37,14 @@ const authPage = () => {
 		}
 	};
 
-	const useProviderAuth = async (provider: AuthProvider) => {
+	const setProviderAuth = async (provider: AuthProvider) => {
 		await signInWithPopup(auth, provider);
 		await router.push("/app");
 	};
 
 	return (
 		<div>
-			<form onSubmit={handleSubmit(useAuth)}>
+			<form onSubmit={handleSubmit(setAuth)}>
 				<input
 					placeholder="email"
 					{...register("email", { required: true })}
@@ -58,14 +58,14 @@ const authPage = () => {
 				/>
 				<input type="submit" />
 			</form>
-			<button onClick={() => useProviderAuth(new GoogleAuthProvider())}>
+			<button onClick={() => setProviderAuth(new GoogleAuthProvider())}>
 				Google
 			</button>
-			<button onClick={() => useProviderAuth(new GithubAuthProvider())}>
+			<button onClick={() => setProviderAuth(new GithubAuthProvider())}>
 				Github
 			</button>
 		</div>
 	);
 };
 
-export default authPage;
+export default Auth;

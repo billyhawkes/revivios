@@ -3,11 +3,11 @@ import { useRouter } from "next/router";
 import React from "react";
 import { auth } from "../../service/firebase";
 
-const useLogout = async () => {
+const logout = async () => {
 	await signOut(auth);
 };
 
-const app = () => {
+const App = () => {
 	const user = auth.currentUser;
 	const router = useRouter();
 
@@ -16,7 +16,7 @@ const app = () => {
 			email: {user?.email}
 			<button
 				onClick={() => {
-					useLogout();
+					logout();
 					router.push("/");
 				}}
 			>
@@ -26,4 +26,4 @@ const app = () => {
 	);
 };
 
-export default app;
+export default App;

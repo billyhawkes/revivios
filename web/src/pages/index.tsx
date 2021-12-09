@@ -1,8 +1,15 @@
 import type { NextPage } from "next";
-import { firebase, auth } from "../service/firebase";
+import Link from "next/link";
 
 const Home: NextPage = () => {
-	return <div>Hello</div>;
+	return (
+		<div>
+			<nav>
+				<Link href="/auth/signin">Sign In</Link>
+				<Link href="/auth/register">Register</Link>
+			</nav>
+		</div>
+	);
 };
 
 export default Home;

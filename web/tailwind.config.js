@@ -9,6 +9,7 @@ module.exports = {
 			primary: "#075F5C",
 			background: "#202C2C",
 			lightbackground: "#2A3636",
+			error: "#903535",
 			white: "#FFFFFF",
 		},
 		fontFamily: {

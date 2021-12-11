@@ -9,11 +9,13 @@ import {
 	signInWithEmailAndPassword,
 	signInWithPopup,
 } from "@firebase/auth";
-import React from "react";
+import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { auth } from "../../service/firebase";
 import Link from "next/link";
+import Error from "../../components/Error";
+import { FirebaseError } from "@firebase/util";
 
 interface AuthInput {
 	email: string;
@@ -21,7 +23,12 @@ interface AuthInput {
 }
 
 const Auth: NextPage = () => {
-	const { register, handleSubmit } = useForm<AuthInput>();
+	const {
+		setError,
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<AuthInput>();
 	const router = useRouter();
 	const { type } = router.query;
 
@@ -35,8 +42,25 @@ const Auth: NextPage = () => {
 				default:
 					await router.push("/app");
 			}
-		} catch (err) {
-			console.log(err);
+		} catch (err: any) {
+			switch (err.code) {
+				case "auth/wrong-password":
+					setError("password", {
+						type: "server",
+						message: "Incorrect password.",
+					});
+				case "auth/invalid-email":
+					setError("email", {
+						type: "server",
+						message: "Incorrect email address.",
+					});
+				case "auth/too-many-requests":
+					setError("email", {
+						type: "server",
+						message: "Too many sign in attempts.",
+					});
+			}
+			console.dir(err);
 		}
 	};
 
@@ -107,7 +131,12 @@ const Auth: NextPage = () => {
 				</label>
 				<input
 					className="bg-background mb-8 h-10 p-2 rounded"
-					{...register("email", { required: true })}
+					{...register("email", {
+						required: {
+							value: true,
+							message: "Email address is required",
+						},
+					})}
 				/>
 				<label className="mb-2" htmlFor="password">
 					Password
@@ -115,14 +144,27 @@ const Auth: NextPage = () => {
 				<input
 					className="bg-background mb-8 h-10 p-2 rounded"
 					{...register("password", {
-						required: true,
-						minLength: 8,
+						required: {
+							value: true,
+							message: "Password is required",
+						},
+						minLength: {
+							value: 8,
+							message: "Password must be 8 or more characters",
+						},
 					})}
 				/>
 				<input
 					className="bg-primary h-10 rounded cursor-pointer font-bold"
 					type="submit"
 				/>
+				{errors.email ? (
+					<Error msg={`${errors.email.message}`} />
+				) : (
+					errors.password && (
+						<Error msg={`${errors.password.message}`} />
+					)
+				)}
 			</form>
 		</div>
 	);

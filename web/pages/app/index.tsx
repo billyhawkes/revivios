@@ -1,7 +1,7 @@
 import { signOut } from "@firebase/auth";
 import { useRouter } from "next/router";
 import React from "react";
-import { auth } from "../../service/firebase";
+import { auth } from "../../services/firebase";
 
 const logout = async () => {
 	await signOut(auth);

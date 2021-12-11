@@ -1,0 +1,21 @@
+module.exports = {
+	mode: "jit",
+	content: [
+		"./src/pages/**/*.{js,ts,jsx,tsx}",
+		"./src/components/**/*.{js,ts,jsx,tsx}",
+	],
+	theme: {
+		colors: {
+			primary: "#075F5C",
+			background: "#202C2C",
+			lightbackground: "#2A3636",
+			white: "#FFFFFF",
+		},
+		fontFamily: {
+			display: ['"Josefin Sans"', "sans-serif"],
+			body: ['"Open Sans"', "sans-serif"],
+		},
+		extend: {},
+	},
+	plugins: [],
+};

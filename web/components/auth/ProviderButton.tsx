@@ -36,7 +36,7 @@ const ProviderButton = ({ provider }: Props) => {
 
 	return (
 		<button
-			className="py-2 px-8 h-10 bg-background rounded"
+			className="py-2 px-8 h-10 bg-background rounded hover:opacity-80"
 			onClick={() => setAuthProvider(provider)}
 		>
 			{(() => {

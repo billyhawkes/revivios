@@ -19,7 +19,7 @@ const Auth: NextPage = () => {
 	});
 
 	return (
-		<div className="m-auto p-8 mt-24 bg-lightbackground w-96 rounded-lg shadow-md">
+		<div className="m-auto p-8 mt-[20vh] bg-lightbackground w-96 rounded-lg shadow-md">
 			<div
 				className={`flex mb-8 justify-between bg-background -m-8 font-semibold text-xl text-center`}
 			>
@@ -42,29 +42,17 @@ const Auth: NextPage = () => {
 					</a>
 				</Link>
 			</div>
-			<AuthProviders />
-			<AuthTypeDivider />
+			<div className="flex justify-between">
+				<ProviderButton provider={ProviderType.Google} />
+				<ProviderButton provider={ProviderType.Twitter} />
+				<ProviderButton provider={ProviderType.Github} />
+			</div>
+			<div className="my-8 flex justify-between content-center">
+				<hr className="w-20 h-px bg-white my-auto" />
+				Or continue with
+				<hr className="w-20 h-px bg-white my-auto" />
+			</div>
 			<AuthForm type={authType} />
-		</div>
-	);
-};
-
-const AuthTypeDivider = () => {
-	return (
-		<div className="my-8 flex justify-between content-center">
-			<hr className="w-20 h-px bg-white my-auto" />
-			Or continue with
-			<hr className="w-20 h-px bg-white my-auto" />
-		</div>
-	);
-};
-
-const AuthProviders = () => {
-	return (
-		<div className="flex justify-between">
-			<ProviderButton provider={ProviderType.Google} />
-			<ProviderButton provider={ProviderType.Twitter} />
-			<ProviderButton provider={ProviderType.Github} />
 		</div>
 	);
 };

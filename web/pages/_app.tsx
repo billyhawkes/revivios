@@ -6,7 +6,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<>
 			<Head>
-				<title>Revivios</title>
+				<title>Gamified Life OS | REVIVIOS</title>
 				<link
 					href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&family=Open+Sans&display=swap"
 					rel="stylesheet"

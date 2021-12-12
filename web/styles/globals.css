@@ -8,3 +8,17 @@
 		@apply bg-background text-white font-display p-0 m-0;
 	}
 }
+
+.btn-filled {
+	@apply bg-primary py-2 px-4 rounded;
+}
+.btn-filled:hover {
+	@apply bg-opacity-90;
+}
+
+.btn-ghost {
+	@apply py-2 px-4 border-primary border-2 rounded;
+}
+.btn-ghost:hover {
+	@apply bg-primary bg-opacity-5;
+}

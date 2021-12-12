@@ -1,12 +1,12 @@
 import type { NextPage } from "next";
 import Link from "next/link";
-import Layout from "../components/common/Layout";
+import Layout from "../components/common/Layout/Layout";
 
 const Home: NextPage = () => {
 	return (
 		<Layout>
 			<>
-				<section className="max-w-[50%] mt-24">
+				<section className="max-w-[50%] mt-24 p-4">
 					<h1 className="text-7xl font-bold leading-normal">
 						Your Life{" "}
 						<span className="text-primary">Gamified.</span>

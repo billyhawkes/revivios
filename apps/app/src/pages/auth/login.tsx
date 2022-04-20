@@ -23,7 +23,7 @@ const login = () => {
 
 	const router = useRouter();
 	onAuthStateChanged(auth, (user) => {
-		if (user) router.push("/app");
+		if (user) router.push("/");
 	});
 
 	const setAuth: SubmitHandler<AuthInput> = async ({ email, password }) => {

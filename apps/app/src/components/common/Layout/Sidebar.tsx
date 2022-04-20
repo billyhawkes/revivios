@@ -1,15 +1,11 @@
 import Link from "next/link";
-import { IconType } from "react-icons";
 import { FaCog, FaUserCircle } from "react-icons/fa";
 
 const Sidebar = () => {
 	return (
 		<nav className="w-10 bg-lightbackground fixed left-0 h-screen flex flex-col justify-end items-center">
-			<SidebarIcon
-				href="/app/account"
-				icon={<FaUserCircle size="24" />}
-			/>
-			<SidebarIcon href="/app/settings" icon={<FaCog size="24" />} />
+			<SidebarIcon href="/account" icon={<FaUserCircle size="24" />} />
+			<SidebarIcon href="/settings" icon={<FaCog size="24" />} />
 		</nav>
 	);
 };

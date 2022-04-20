@@ -1,0 +1,28 @@
+{
+	"name": "revivios",
+	"version": "0.0.1",
+	"description": "Gamified productivity app",
+	"main": "index.js",
+	"workspaces": [
+		"packages/*",
+		"apps/*"
+	],
+	"scripts": {
+		"build": "turbo run build",
+		"dev": "turbo run dev --parallel",
+		"lint": "turbo run lint"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/billyhawkes/revive.git"
+	},
+	"author": "Billy Hawkes",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/billyhawkes/revive/issues"
+	},
+	"homepage": "https://github.com/billyhawkes/revive#readme",
+	"devDependencies": {
+		"turbo": "^1.2.4"
+	}
+}

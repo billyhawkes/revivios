@@ -11,14 +11,12 @@ import ProviderButton, {
 import Alert, { AlertType } from "src/components/common/Alert";
 import { auth } from "../../services/firebase";
 
-type Props = {};
-
 interface AuthInput {
 	email: string;
 	password: string;
 }
 
-const register = ({}: Props) => {
+const register = () => {
 	const {
 		setError,
 		register,
@@ -28,7 +26,7 @@ const register = ({}: Props) => {
 
 	const router = useRouter();
 	onAuthStateChanged(auth, (user) => {
-		if (user) router.push("/app");
+		if (user) router.push("/");
 	});
 
 	const setAuth: SubmitHandler<AuthInput> = async ({ email, password }) => {

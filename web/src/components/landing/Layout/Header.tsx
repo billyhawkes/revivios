@@ -10,8 +10,8 @@ const Header = () => {
 				<h3 className="ml-4 mt-1">REVIVIOS</h3>
 			</div>
 			<nav>
-				<Link href="/auth/signin">
-					<a className="hover:opacity-90">Sign In</a>
+				<Link href="/auth/login">
+					<a className="hover:opacity-90">Log in</a>
 				</Link>
 				<Link href="/auth/register">
 					<a className="btn-filled ml-8">Register</a>

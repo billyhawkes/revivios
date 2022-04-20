@@ -2,7 +2,7 @@ import { signOut } from "@firebase/auth";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React from "react";
-import Layout from "src/components/common/app/Layout";
+import Layout from "src/components/app/Layout";
 import { auth } from "../../services/firebase";
 
 const logout = async () => {

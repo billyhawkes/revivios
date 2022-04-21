@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Link from "next/link";
-import Layout from "src/components/landing/Layout";
+import Layout from "../components/landing/Layout";
 
 const Home: NextPage = () => {
 	return (

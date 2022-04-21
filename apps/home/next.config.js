@@ -1,7 +1,7 @@
-/** @type {import('next').NextConfig} */
 const { APP_URL } = process.env;
+const withTM = require("next-transpile-modules")(["ui"]);
 
-module.exports = {
+module.exports = withTM({
 	reactStrictMode: true,
 	async rewrites() {
 		return [
@@ -19,4 +19,4 @@ module.exports = {
 			},
 		];
 	},
-};
+});

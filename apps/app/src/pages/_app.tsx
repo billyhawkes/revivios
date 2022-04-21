@@ -1,10 +1,10 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import Layout from "src/components/common/Layout";
+import Layout from "../components/common/Layout";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/router";
-import { auth } from "src/services/firebase";
+import { auth } from "../services/firebase";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const router = useRouter();

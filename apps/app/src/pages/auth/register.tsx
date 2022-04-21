@@ -7,8 +7,8 @@ import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import ProviderButton, {
 	ProviderType,
-} from "src/components/auth/ProviderButton";
-import Alert, { AlertType } from "src/components/common/Alert";
+} from "../../components/auth/ProviderButton";
+import Alert, { AlertType } from "../../components/common/Alert";
 import { auth } from "../../services/firebase";
 
 interface AuthInput {

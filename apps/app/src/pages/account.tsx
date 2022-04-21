@@ -2,7 +2,7 @@ import { signOut } from "firebase/auth";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React from "react";
-import { auth } from "src/services/firebase";
+import { auth } from "../services/firebase";
 
 const account: NextPage = () => {
 	const router = useRouter();

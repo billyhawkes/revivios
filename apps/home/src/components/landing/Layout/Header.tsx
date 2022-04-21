@@ -10,11 +10,8 @@ const Header = () => {
 				<h3 className="ml-4 mt-1">REVIVIOS</h3>
 			</div>
 			<nav>
-				<Link href="/app/auth/login">
-					<a className="hover:opacity-90">Log in</a>
-				</Link>
-				<Link href="/app/auth/register">
-					<a className="btn-filled ml-8">Register</a>
+				<Link href="/app/auth">
+					<a className="btn-filled ml-8">Get Started</a>
 				</Link>
 			</nav>
 		</header>

@@ -10,7 +10,7 @@ const account: NextPage = () => {
 
 	const logout = async () => {
 		await signOut(auth);
-		await router.push("/auth/login");
+		await router.push("/auth");
 	};
 
 	return (

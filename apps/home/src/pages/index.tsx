@@ -16,7 +16,7 @@ const Home: NextPage = () => {
 						management tool that brings common video game tropes to
 						life!
 					</p>
-					<Link href="/auth/register">
+					<Link href="/auth">
 						<a className="btn-filled">Get Started</a>
 					</Link>
 					<Link href="https://github.com/billyhawkes/revivios">

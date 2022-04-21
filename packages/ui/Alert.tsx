@@ -1,12 +1,8 @@
 import React from "react";
 import { FaExclamationCircle } from "react-icons/fa";
 
-export enum AlertType {
-	Error,
-}
-
 interface Props {
-	type: AlertType;
+	type: "error" | "warning";
 	msg: string;
 }
 
@@ -14,9 +10,9 @@ const Alert = ({ msg, type }: Props) => {
 	return (
 		<span
 			role="alert"
-			className="bg-background p-2 rounded border-t-4 border-error mt-8 flex"
+			className="bg-background p-2 rounded border-t-4 border-error my-4 flex"
 		>
-			{type === AlertType.Error && (
+			{type === "error" && (
 				<FaExclamationCircle className="mr-2 mt-0.5 text-error" />
 			)}
 			{msg}

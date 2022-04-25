@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { auth } from "../services/firebase";
 
-const account: NextPage = () => {
+const Account: NextPage = () => {
 	const router = useRouter();
 	const user = auth.currentUser;
 
@@ -27,4 +27,4 @@ const account: NextPage = () => {
 	);
 };
 
-export default account;
+export default Account;

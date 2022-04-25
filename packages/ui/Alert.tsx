@@ -1,10 +1,10 @@
 import React from "react";
 import { FaExclamationCircle } from "react-icons/fa";
 
-interface Props {
+type Props = {
 	type: "error" | "warning";
 	msg: string;
-}
+};
 
 const Alert = ({ msg, type }: Props) => {
 	return (

@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import React from "react";
 
-const settings: NextPage = () => {
+const Settings: NextPage = () => {
 	return (
 		<div>
 			<h2>TODO</h2>
@@ -9,4 +9,4 @@ const settings: NextPage = () => {
 	);
 };
 
-export default settings;
+export default Settings;

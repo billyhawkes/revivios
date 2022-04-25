@@ -1,19 +1,9 @@
-import { addDoc, collection } from "firebase/firestore";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { auth, db } from "../../services/firebase";
-import { Task } from "./TaskItem";
 import { useMutation, useQueryClient } from "react-query";
+import { addTask } from "../../services/api";
 
 type FormInput = {
 	name: string;
-};
-
-const addTask = async ({ name }: FormInput) => {
-	await addDoc(collection(db, "tasks"), {
-		uid: auth?.currentUser?.uid,
-		name,
-		completed: false,
-	});
 };
 
 const TaskBar = () => {
@@ -32,7 +22,7 @@ const TaskBar = () => {
 	});
 
 	const handleTask: SubmitHandler<FormInput> = async ({ name }) => {
-		await mutation.mutate({ name });
+		await mutation.mutate(name);
 		await reset();
 	};
 

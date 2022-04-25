@@ -1,17 +1,9 @@
-import { deleteDoc, doc } from "firebase/firestore";
+import { FaCheckSquare, FaRegSquare, FaTrashAlt } from "react-icons/fa";
 import { useMutation, useQueryClient } from "react-query";
-import { db } from "../../services/firebase";
+import { completeTask, removeTask } from "../../services/api";
+import { Task } from "../../types/task";
 
-const removeTask = async (id: string) => {
-	await deleteDoc(doc(db, "tasks", id));
-};
-
-export type Task = {
-	id: string;
-	name: string;
-};
-
-const TaskItem = ({ id, name }: Task) => {
+const TaskItem = ({ id, name, completed }: Task) => {
 	const queryClient = useQueryClient();
 
 	const deleteMutation = useMutation(removeTask, {
@@ -21,11 +13,27 @@ const TaskItem = ({ id, name }: Task) => {
 		},
 	});
 
+	const completeMutation = useMutation(completeTask, {
+		onSuccess: () => {
+			// Invalidate and refetch
+			queryClient.invalidateQueries("tasks");
+		},
+	});
+
 	return (
-		<div className="p-2 pt-[10px] bg-lightbackground my-3 h-10 rounded">
-			{name}
-			<button onClick={() => deleteMutation.mutate(id)} className="">
-				X
+		<div className="flex items-center justify-start bg-lightbackground my-3 h-10 rounded bg-opacity-70 hover:bg-opacity-90 cursor-pointer">
+			<button
+				className="mx-3"
+				onClick={() => completeMutation.mutate({ id, completed })}
+			>
+				{completed ? <FaCheckSquare /> : <FaRegSquare />}
+			</button>
+			<p className="py-2 pt-[12px]">{name}</p>
+			<button
+				className="px-3 ml-auto"
+				onClick={() => deleteMutation.mutate(id)}
+			>
+				<FaTrashAlt />
 			</button>
 		</div>
 	);

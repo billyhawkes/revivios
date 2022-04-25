@@ -21,7 +21,11 @@ const TaskItem = ({ id, name, completed }: Task) => {
 	});
 
 	return (
-		<div className="flex items-center justify-start bg-lightbackground my-3 h-10 rounded bg-opacity-70 hover:bg-opacity-90 cursor-pointer">
+		<div
+			className={`flex items-center justify-start bg-lightbackground my-3 h-10 rounded bg-opacity-70 hover:bg-opacity-90 cursor-pointer ${
+				completed ? "opacity-70" : ""
+			}`}
+		>
 			<button
 				className="mx-3"
 				onClick={() => completeMutation.mutate({ id, completed })}

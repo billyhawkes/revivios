@@ -2,11 +2,10 @@ import "ui/styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Layout from "../components/common/Layout";
-import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/router";
 import { auth } from "../services/firebase";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const router = useRouter();
@@ -14,9 +13,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 	const [queryClient] = useState(() => new QueryClient());
 
 	// Prevent use of app without user authentication
-	onAuthStateChanged(auth, (user) => {
-		if (!user && !router.pathname.includes("auth")) router.push("/auth");
-	});
+	useEffect(() => {
+		if (!auth.currentUser && !router.pathname.includes("auth"))
+			router.push("/auth");
+	}, [router.isReady, router.pathname]);
 
 	return (
 		<QueryClientProvider client={queryClient}>

@@ -19,7 +19,7 @@
 			"outputs": [".next/**"]
 		},
 		"website#build": {
-			"dependsOn": ["^build", "APP_URL"],
+			"dependsOn": ["^build", "$NEXT_PUBLIC_APP_URL"],
 			"outputs": [".next/**"]
 		},
 		"test": {

@@ -34,7 +34,7 @@ const TaskItem = ({ id, name, completed }: Task) => {
 			</button>
 			<p className="py-2 pt-[12px]">{name}</p>
 			<button
-				className="px-3 ml-auto"
+				className="p-3 ml-auto"
 				onClick={() => deleteMutation.mutate(id)}
 			>
 				<FaTrashAlt />

@@ -1,6 +1,9 @@
+import dayjs, { Dayjs } from "dayjs";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import { addTask } from "../../services/api";
+import DatePicker from "../date/DatePicker";
 
 type FormInput = {
 	name: string;
@@ -13,6 +16,7 @@ const TaskBar = () => {
 		formState: { errors },
 		reset,
 	} = useForm<FormInput>();
+	const [date, setDate] = useState<Dayjs>(dayjs());
 
 	const queryClient = useQueryClient();
 	const mutation = useMutation(addTask, {
@@ -27,12 +31,13 @@ const TaskBar = () => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit(handleTask)}>
+		<form onSubmit={handleSubmit(handleTask)} className="flex bg-lightbackground">
 			<input
 				{...register("name", { required: true })}
 				placeholder="Add Task to 'Today'"
 				className="bg-lightbackground w-[100%] p-2 pt-[12px] rounded"
 			/>
+			<DatePicker date={date} onChange={(date: Dayjs) => console.log(date.date())} />
 		</form>
 	);
 };

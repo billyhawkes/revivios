@@ -10,7 +10,7 @@ const Header = () => {
 				<h3 className="ml-4 mt-1">REVIVIOS</h3>
 			</div>
 			<nav>
-				<Link href="/app/auth">
+				<Link href="https://app.revivios.com/auth">
 					<a className="btn-filled ml-8">Get Started</a>
 				</Link>
 			</nav>

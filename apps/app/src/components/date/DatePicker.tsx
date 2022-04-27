@@ -5,8 +5,8 @@ import { DAYS, getMonthArray, MONTHS } from "../../services/date";
 import DateItem from "./DateItem";
 
 type Props = {
-	date: Dayjs;
-	onChange: (date: Dayjs) => void;
+	date: Date;
+	onChange: (date: Date) => void;
 };
 
 const DatePicker = ({ date, onChange }: Props) => {
@@ -59,7 +59,7 @@ const DatePicker = ({ date, onChange }: Props) => {
 									key={index}
 									date={dateItem.date()}
 									current={dateItem.isSame(date, "day")}
-									onClick={() => onChange(dateItem)}
+									onClick={() => onChange(dateItem.toDate())}
 								/>
 							) : (
 								<div className="w-8 h-8"></div>

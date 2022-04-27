@@ -1,9 +1,10 @@
+import dayjs from "dayjs";
 import { FaCheckSquare, FaRegSquare, FaTrashAlt } from "react-icons/fa";
 import { useMutation, useQueryClient } from "react-query";
 import { completeTask, removeTask } from "../../services/api";
 import { Task } from "../../types/task";
 
-const TaskItem = ({ id, name, completed }: Task) => {
+const TaskItem = ({ id, name, completed, date }: Task) => {
 	const queryClient = useQueryClient();
 
 	const deleteMutation = useMutation(removeTask, {
@@ -26,17 +27,12 @@ const TaskItem = ({ id, name, completed }: Task) => {
 				completed ? "opacity-70" : ""
 			}`}
 		>
-			<button
-				className="mx-3"
-				onClick={() => completeMutation.mutate({ id, completed })}
-			>
+			<button className="mx-3" onClick={() => completeMutation.mutate({ id, completed })}>
 				{completed ? <FaCheckSquare /> : <FaRegSquare />}
 			</button>
 			<p className="py-2 pt-[12px]">{name}</p>
-			<button
-				className="p-3 ml-auto"
-				onClick={() => deleteMutation.mutate(id)}
-			>
+			{date && <div>{dayjs(date).date()}</div>}
+			<button className="p-3 ml-auto" onClick={() => deleteMutation.mutate(id)}>
 				<FaTrashAlt />
 			</button>
 		</div>

@@ -5,6 +5,7 @@ import { getTasks } from "../services/api";
 
 const Today = () => {
 	const { data } = useQuery("tasks", getTasks);
+	console.log(data);
 
 	return (
 		<div>

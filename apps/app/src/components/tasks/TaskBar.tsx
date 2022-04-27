@@ -16,7 +16,7 @@ const TaskBar = () => {
 		formState: { errors },
 		reset,
 	} = useForm<FormInput>();
-	const [date, setDate] = useState<Dayjs>(dayjs());
+	const [date, setDate] = useState<Date>(new Date());
 
 	const queryClient = useQueryClient();
 	const mutation = useMutation(addTask, {
@@ -26,7 +26,7 @@ const TaskBar = () => {
 	});
 
 	const handleTask: SubmitHandler<FormInput> = async ({ name }) => {
-		await mutation.mutate(name);
+		await mutation.mutate({ name, date });
 		await reset();
 	};
 
@@ -37,7 +37,7 @@ const TaskBar = () => {
 				placeholder="Add Task to 'Today'"
 				className="bg-lightbackground w-[100%] p-2 pt-[12px] rounded"
 			/>
-			<DatePicker date={date} onChange={(date: Dayjs) => console.log(date.date())} />
+			<DatePicker date={date} onChange={(date: Date) => setDate(date)} />
 		</form>
 	);
 };

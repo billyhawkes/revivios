@@ -14,8 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 	// Prevent use of app without user authentication
 	useEffect(() => {
-		if (!auth.currentUser && !router.pathname.includes("auth"))
-			router.push("/auth");
+		if (!auth.currentUser && !router.pathname.includes("auth")) router.push("/auth");
 	}, [router.isReady, router.pathname]);
 
 	return (

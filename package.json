@@ -3,31 +3,19 @@
 	"version": "0.0.1",
 	"description": "Gamified productivity app",
 	"main": "index.js",
-	"workspaces": [
-		"packages/*",
-		"apps/*"
-	],
 	"scripts": {
 		"build": "turbo run build",
 		"dev": "turbo run dev --parallel",
 		"lint": "turbo run lint"
 	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/billyhawkes/revive.git"
-	},
 	"author": "Billy Hawkes",
 	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/billyhawkes/revive/issues"
-	},
-	"homepage": "https://github.com/billyhawkes/revive#readme",
 	"devDependencies": {
-		"turbo": "^1.2.4"
+		"prettier": "^2.5.1",
+		"turbo": "^1.2.5"
 	},
 	"engines": {
-		"npm": ">=7.0.0",
-		"node": ">=14.0.0"
-	},
-	"packageManager": "npm@8.1.2"
+		"node": ">=10",
+		"pnpm": ">=3"
+	}
 }

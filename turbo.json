@@ -2,6 +2,9 @@
 	"$schema": "https://turborepo.org/schema.json",
 	"baseBranch": "origin/master",
 	"pipeline": {
+		"dev": {
+			"cache": false
+		},
 		"build": {
 			"dependsOn": ["^build"],
 			"outputs": [".next/**"]
@@ -29,8 +32,9 @@
 		"lint": {
 			"outputs": []
 		},
-		"dev": {
-			"cache": false
+		"deploy": {
+			"dependsOn": ["build", "test", "lint"],
+			"outputs": []
 		}
 	}
 }

@@ -6,7 +6,9 @@
 	"scripts": {
 		"build": "turbo run build",
 		"dev": "turbo run dev --parallel",
-		"lint": "turbo run lint"
+		"lint": "turbo run lint",
+		"deploy": "turbo run deploy --filter=server --include-dependencies --no-deps",
+		"docker": "sudo docker compose up --build"
 	},
 	"author": "Billy Hawkes",
 	"license": "MIT",

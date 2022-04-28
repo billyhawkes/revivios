@@ -10,7 +10,7 @@ const Header = () => {
 				<h3 className="ml-4 mt-1">REVIVIOS</h3>
 			</div>
 			<nav>
-				<Link href="https://app.revivios.com/auth">
+				<Link href={`${process.env.NEXT_PUBLIC_APP_URL}/auth`}>
 					<a className="btn-filled ml-8">Get Started</a>
 				</Link>
 			</nav>

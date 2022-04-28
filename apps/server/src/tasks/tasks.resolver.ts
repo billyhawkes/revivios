@@ -13,7 +13,7 @@ export class TasksResolver {
   }
 
   @Query(() => [Task], { name: 'tasks' })
-  async findAll() {
+  findAll() {
     return this.taskService.findAll();
   }
 }

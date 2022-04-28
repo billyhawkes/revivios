@@ -2,20 +2,22 @@ version: "3.9"
 services:
     db:
         image: postgres
+        container_name: db
         environment:
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: postgres
-            POSTGRES_DB: revivios-db
+            POSTGRES_DB: revivios
         volumes:
             - ./pgdata:/var/lib/postgresql/data
         ports:
-            - 5432:5432
+            - "5432:5432"
 
     turbo:
+        container_name: turbo
         build:
             context: .
             dockerfile: Dockerfile
         depends_on:
             - db
         ports:
-            - 8000:8000
+            - "8000:8000"

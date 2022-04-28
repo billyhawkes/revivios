@@ -1,5 +1,6 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateTaskInput } from './dto/create-task.input';
+import { FindTaskInput } from './dto/find-task.input';
 import { Task } from './models/task.model';
 import { TaskService } from './tasks.service';
 
@@ -13,7 +14,11 @@ export class TasksResolver {
   }
 
   @Query(() => [Task], { name: 'tasks' })
-  findAll() {
+  tasks() {
     return this.taskService.findAll();
+  }
+  @Query(() => Task, { name: 'task' })
+  task(@Args('taskInput') { id }: FindTaskInput) {
+    return this.taskService.findOne(id);
   }
 }

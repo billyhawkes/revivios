@@ -12,10 +12,20 @@ export class TaskService {
   ) {}
 
   create(createTaskInput: CreateTaskInput) {
-    return 'This action adds a new task';
+    const newTask = this.taskRepository.create(createTaskInput);
+    return this.taskRepository.save(newTask);
   }
 
   findAll() {
     return this.taskRepository.find();
+  }
+
+  findOne(id: number) {
+    try {
+      const task = this.taskRepository.findOneOrFail(id);
+      return task;
+    } catch (err) {
+      // TODO: handle error
+    }
   }
 }

@@ -3,6 +3,7 @@
 # ------------------------------------------------------
 
 type Task {
+  id: String!
   name: String!
   completed: Boolean!
   date: DateTime
@@ -15,6 +16,11 @@ scalar DateTime
 
 type Query {
   tasks: [Task!]!
+  task(taskInput: FindTaskInput!): Task!
+}
+
+input FindTaskInput {
+  id: Int!
 }
 
 type Mutation {

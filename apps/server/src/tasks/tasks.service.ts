@@ -11,21 +11,30 @@ export class TaskService {
     private taskRepository: Repository<Task>,
   ) {}
 
-  create(createTaskInput: CreateTaskInput) {
-    const newTask = this.taskRepository.create(createTaskInput);
+  async create({ name, date }: CreateTaskInput) {
+    const newTask = await this.taskRepository.create({
+      name,
+      date: date.toISOString(),
+    });
     return this.taskRepository.save(newTask);
   }
 
-  findAll() {
+  async findAll() {
     return this.taskRepository.find();
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     try {
-      const task = this.taskRepository.findOneOrFail(id);
+      const task = await this.taskRepository.findOneOrFail(id);
       return task;
     } catch (err) {
       // TODO: handle error
     }
+  }
+
+  async delete(id: number) {
+    const task = await this.findOne(id);
+    await this.taskRepository.remove(task);
+    return task;
   }
 }

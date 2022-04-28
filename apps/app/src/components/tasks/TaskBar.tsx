@@ -1,8 +1,7 @@
-import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
-import { addTask } from "../../services/api";
+import { addTask } from "../../services/tasks.api";
 import DatePicker from "../date/DatePicker";
 
 type FormInput = {

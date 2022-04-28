@@ -1,11 +1,10 @@
 import TaskBar from "../components/tasks/TaskBar";
 import { useQuery } from "react-query";
 import TaskItem from "../components/tasks/TaskItem";
-import { getTasks } from "../services/api";
+import { findAll } from "../services/tasks.api";
 
 const Today = () => {
-	const { data } = useQuery("tasks", getTasks);
-	console.log(data);
+	const { data } = useQuery("tasks", findAll);
 
 	return (
 		<div>

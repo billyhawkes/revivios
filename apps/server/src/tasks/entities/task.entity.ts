@@ -11,6 +11,6 @@ export class Task {
   @Column({ default: false })
   completed: boolean;
 
-  @Column({ type: 'timestamptz', nullable: true })
+  @Column({ type: 'timestamptz', default: null, nullable: true })
   date?: Date;
 }

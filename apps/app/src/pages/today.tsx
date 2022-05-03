@@ -4,7 +4,7 @@ import TaskItem from "../components/tasks/TaskItem";
 import { findAll } from "../services/tasks.api";
 
 const Today = () => {
-	const { data } = useQuery("tasks", findAll);
+	const { data } = useQuery("tasks", findAll, { refetchOnWindowFocus: false });
 
 	return (
 		<div>

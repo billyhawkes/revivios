@@ -29,5 +29,6 @@ export const getMonthArray = (date: Dayjs) => {
 	for (let i = 1; i <= date.daysInMonth(); i++) {
 		dates.push(dayjs(`${year}-${month + 1}-${i}`));
 	}
+
 	return dates;
 };

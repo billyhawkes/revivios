@@ -1,51 +1,73 @@
 import dayjs, { Dayjs } from "dayjs";
+import isToday from "dayjs/plugin/isToday";
 import { useEffect, useState } from "react";
 import { FaCalendarAlt } from "react-icons/fa";
 import { DAYS, getMonthArray, MONTHS } from "../../services/date";
 import DateItem from "./DateItem";
 
+dayjs.extend(isToday);
+
 type Props = {
-	date: Date;
+	date: Date | null;
 	onChange: (date: Date) => void;
+};
+
+type CurrentMonthYear = {
+	month: number;
+	year: number;
+	dates: (Dayjs | null)[];
 };
 
 const DatePicker = ({ date, onChange }: Props) => {
 	const [open, setOpen] = useState(false);
-	const [month, setMonth] = useState<number>(dayjs(date).month());
-	const [year, setYear] = useState<number>(dayjs(date).year());
-	const [monthDates, setMonthDates] = useState<(Dayjs | null)[]>([]);
+	const [currentMonthYear, setCurrentMonthYear] = useState<CurrentMonthYear>({
+		month: dayjs(date).month(),
+		year: dayjs(date).year(),
+		dates: [],
+	});
 
 	useEffect(() => {
-		setMonthDates(getMonthArray(dayjs(`${year}-${month + 1}-1`)));
-	}, [date, month, year]);
+		setCurrentMonthYear({
+			...currentMonthYear,
+			dates: getMonthArray(dayjs(`${currentMonthYear.year}-${currentMonthYear.month + 1}-1`)),
+		});
+	}, [currentMonthYear]);
 
 	const nextMonth = () => {
-		if (month >= 11) {
-			setMonth(0);
-			setYear(year + 1);
+		if (currentMonthYear.month >= 11) {
+			setCurrentMonthYear({ ...currentMonthYear, month: 0, year: currentMonthYear.year + 1 });
 		} else {
-			setMonth(month + 1);
+			setCurrentMonthYear({ ...currentMonthYear, month: currentMonthYear.month + 1 });
 		}
 	};
 	const prevMonth = () => {
-		if (month <= 0) {
-			setMonth(11);
-			setYear(year - 1);
+		if (currentMonthYear.month <= 0) {
+			setCurrentMonthYear({
+				...currentMonthYear,
+				month: 11,
+				year: currentMonthYear.year - 1,
+			});
 		} else {
-			setMonth(month - 1);
+			setCurrentMonthYear({ ...currentMonthYear, month: currentMonthYear.month - 1 });
 		}
 	};
 
 	return (
-		<div className="p-3 flex items-center relative z-10">
-			<FaCalendarAlt className="cursor-pointer" onClick={() => setOpen(!open)} />
+		<div className="relative z-10">
+			<div
+				onClick={() => setOpen(!open)}
+				className="p-3 flex items-center cursor-pointer h-12"
+			>
+				<FaCalendarAlt />
+				{dayjs(date).isToday() && <p className="ml-2 pt-1">Today</p>}
+			</div>
 			{open && (
 				<div className="absolute right-0 top-14 bg-background p-6 rounded shadow-lg">
 					<div className="flex justify-between">
 						<div className="cursor-pointer" onClick={prevMonth}>
 							Prev
 						</div>
-						{MONTHS[month]} {year}
+						{MONTHS[currentMonthYear.month]} {currentMonthYear.year}
 						<div className="cursor-pointer" onClick={nextMonth}>
 							Next
 						</div>
@@ -53,7 +75,7 @@ const DatePicker = ({ date, onChange }: Props) => {
 					<hr className="my-4" />
 					<WeekdayRow />
 					<div className="flex flex-wrap">
-						{monthDates.map((dateItem, index) =>
+						{currentMonthYear.dates.map((dateItem, index) =>
 							dateItem ? (
 								<DateItem
 									key={index}
@@ -62,7 +84,7 @@ const DatePicker = ({ date, onChange }: Props) => {
 									onClick={() => onChange(dateItem.toDate())}
 								/>
 							) : (
-								<div className="w-8 h-8"></div>
+								<div key={index} className="w-8 h-8"></div>
 							)
 						)}
 					</div>

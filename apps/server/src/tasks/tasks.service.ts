@@ -34,7 +34,19 @@ export class TaskService {
 
   async delete(id: number) {
     const task = await this.findOne(id);
-    await this.taskRepository.remove(task);
+    await this.taskRepository.delete(id);
     return task;
+  }
+
+  async toggleComplete(id: number) {
+    const task = await this.findOne(id);
+    task.completed = !task.completed;
+    return this.taskRepository.save(task);
+  }
+
+  async changeDate({ id, date }: { id: number; date: Date }) {
+    const task = await this.findOne(id);
+    task.date = date;
+    return this.taskRepository.save(task);
   }
 }

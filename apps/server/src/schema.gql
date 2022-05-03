@@ -16,12 +16,14 @@ scalar DateTime
 
 type Query {
   tasks: [Task!]!
-  task(taskId: Float!): Task!
+  task(id: Int!): Task!
 }
 
 type Mutation {
   createTask(createTaskInput: CreateTaskInput!): Task!
   remove(id: Int!): Task!
+  toggleComplete(id: Int!): Task!
+  changeDate(date: DateTime!): Task!
 }
 
 input CreateTaskInput {

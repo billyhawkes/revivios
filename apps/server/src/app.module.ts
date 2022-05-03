@@ -6,7 +6,6 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TasksModule } from './tasks/tasks.module';
-import { DogsModule } from './dogs/dogs.module';
 import config from '../ormconfig';
 
 @Module({

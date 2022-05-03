@@ -30,7 +30,7 @@ const TaskBar = () => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit(handleTask)} className="flex bg-lightbackground">
+		<form onSubmit={handleSubmit(handleTask)} className="flex bg-lightbackground h-12">
 			<input
 				{...register("name", { required: true })}
 				placeholder="Add Task to 'Today'"

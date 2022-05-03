@@ -31,7 +31,7 @@ const DatePicker = ({ date, onChange }: Props) => {
 			...currentMonthYear,
 			dates: getMonthArray(dayjs(`${currentMonthYear.year}-${currentMonthYear.month + 1}-1`)),
 		});
-	}, [currentMonthYear]);
+	}, [currentMonthYear.month, currentMonthYear.year]);
 
 	const nextMonth = () => {
 		if (currentMonthYear.month >= 11) {

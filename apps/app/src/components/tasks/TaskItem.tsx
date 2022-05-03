@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { FaCheckSquare, FaRegSquare, FaTrashAlt } from "react-icons/fa";
 import { useMutation, useQueryClient } from "react-query";
-import { changeDate, completeTask, removeTask } from "../../services/tasks.api";
+import { changeDate, completeTask, removeTask } from "../../services/api/tasks";
 import { Task } from "../../types/task";
 import DatePicker from "../date/DatePicker";
 

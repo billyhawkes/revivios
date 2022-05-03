@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
-import { addTask } from "../../services/tasks.api";
+import { addTask } from "../../services/api/tasks";
 import DatePicker from "../date/DatePicker";
 
 type FormInput = {

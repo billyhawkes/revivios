@@ -1,7 +1,7 @@
 import TaskBar from "../components/tasks/TaskBar";
 import { useQuery } from "react-query";
 import TaskItem from "../components/tasks/TaskItem";
-import { findAll } from "../services/tasks.api";
+import { findAll } from "../services/api/tasks";
 
 const Today = () => {
 	const { data } = useQuery("tasks", findAll, { refetchOnWindowFocus: false });

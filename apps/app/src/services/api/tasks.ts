@@ -1,4 +1,4 @@
-import { Task } from "../types/task";
+import { Task } from "../../types/task";
 import { request, gql, GraphQLClient } from "graphql-request";
 
 const client = new GraphQLClient(`${process.env.NEXT_PUBLIC_SERVER_URL}/graphql`, { headers: {} });

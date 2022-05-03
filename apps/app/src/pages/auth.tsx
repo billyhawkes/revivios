@@ -1,17 +1,17 @@
-import { useRouter } from "next/router";
-import Providers from "../components/auth/Providers";
+import { signIn } from "next-auth/react";
+import { FaGithub } from "react-icons/fa";
 
 const Auth = () => {
-	const router = useRouter();
-
-	// Handle redirect on authentication
-	// onAuthStateChanged(auth, (user) => {
-	// 	if (user) router.push("/");
-	// });
-
 	return (
-		<div className="m-auto mt-32 p-8 bg-lightbackground w-96 rounded-lg shadow-md">
-			<Providers />
+		<div className="flex justify-between">
+			<div className="mx-auto mt-32 p-8 bg-lightbackground rounded-lg shadow-md">
+				<button
+					className="py-2 px-8 h-10 bg-background rounded hover:opacity-80"
+					onClick={() => signIn("github", { callbackUrl: "/" })}
+				>
+					{<FaGithub />}
+				</button>
+			</div>
 		</div>
 	);
 };

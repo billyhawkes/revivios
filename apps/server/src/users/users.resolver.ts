@@ -15,6 +15,11 @@ export class UsersResolver {
     return this.userService.findOne(id);
   }
 
+  @Query(() => [User])
+  users() {
+    return this.userService.findAll();
+  }
+
   @Mutation(() => User)
   createUser(@Args('registerInput') registerInput: RegisterInput) {
     return this.userService.create(registerInput);

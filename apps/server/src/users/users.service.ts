@@ -11,11 +11,10 @@ export class UsersService {
     private userRepository: Repository<User>,
   ) {}
 
-  async create({ name, email, password }: RegisterInput) {
+  async create({ name, email }: RegisterInput) {
     const newUser = await this.userRepository.create({
       name,
       email,
-      password,
       xp: 0,
     });
     await this.userRepository.save(newUser);
@@ -29,6 +28,21 @@ export class UsersService {
       return user;
     } catch (err) {
       // TODO: handle error
+    }
+  }
+
+  async findAll() {
+    return this.userRepository.find();
+  }
+
+  async findOneByEmail(email: string): Promise<User | undefined> {
+    try {
+      const user = await this.userRepository.findOneOrFail({
+        where: { email },
+      });
+      return user;
+    } catch (err) {
+      return undefined;
     }
   }
 }

@@ -1,4 +1,5 @@
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
+import { Task } from 'src/tasks/models/task.model';
 
 @ObjectType()
 export class User {
@@ -11,9 +12,9 @@ export class User {
   @Field(() => String)
   email: string;
 
-  @Field(() => String)
-  password: string;
-
   @Field(() => Int)
   xp: number;
+
+  @Field(() => [Task])
+  tasks: Task[];
 }

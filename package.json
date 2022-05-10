@@ -7,14 +7,17 @@
 		"build": "turbo run build",
 		"dev": "turbo run dev --parallel",
 		"lint": "turbo run lint",
-		"deploy": "turbo run deploy --filter=server",
+		"test": "turbo run test",
+		"deploy:server": "turbo run deploy --filter=server",
 		"docker": "sudo docker-compose up --build"
 	},
 	"author": "Billy Hawkes",
 	"license": "MIT",
-	"devDependencies": {
-		"prettier": "^2.5.1",
+	"dependencies": {
 		"turbo": "^1.2.5"
+	},
+	"devDependencies": {
+		"prettier": "^2.5.1"
 	},
 	"engines": {
 		"node": ">=10",

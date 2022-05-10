@@ -33,7 +33,7 @@
 			"outputs": []
 		},
 		"deploy": {
-			"dependsOn": ["build", "test", "lint"],
+			"dependsOn": ["^build"],
 			"outputs": []
 		}
 	}

@@ -1,21 +1,19 @@
 FROM node:16-alpine
 
-#add pnpm
 RUN npm install -g pnpm
-#add turbo
-RUN pnpm install -g turbo
 
-# Set working directory
 WORKDIR /app
 
-# Install app dependencies
-COPY  ["pnpm-lock.yaml", "package.json", "./"] 
-# Install app dependencies
-RUN pnpm install --production --quiet
+COPY pnpm-lock.yaml ./
 
-# Copy source files
-COPY . .
+RUN pnpm fetch --prod
+
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh
+
+ADD . ./
+RUN pnpm install -r --offline --prod
 
 EXPOSE 8000
 
-CMD ["pnpm", "deploy"]
+CMD ["pnpm", "deploy:server"]

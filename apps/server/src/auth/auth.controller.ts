@@ -10,7 +10,6 @@ export class AuthController {
   @UseGuards(AuthGuard('github'))
   @Get('auth/github/callback')
   githubAuthRedirect(@Req() req) {
-    Logger.log(req.user);
     return this.authService.login(req.user);
   }
 }

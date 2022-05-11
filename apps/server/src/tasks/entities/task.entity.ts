@@ -1,5 +1,12 @@
 import { User } from 'src/users/entities/user.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinTable,
+  JoinColumn,
+} from 'typeorm';
 
 @Entity()
 export class Task {
@@ -15,6 +22,9 @@ export class Task {
   @Column({ type: 'timestamptz', default: null, nullable: true })
   date?: Date;
 
-  @ManyToOne(() => User, (user) => user.tasks)
+  @Column()
+  userId: number;
+  @ManyToOne(() => User, (user) => user.tasks, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'userId' })
   user: User;
 }

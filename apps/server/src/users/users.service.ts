@@ -32,7 +32,7 @@ export class UsersService {
   }
 
   async findAll() {
-    return this.userRepository.find();
+    return this.userRepository.find({ relations: ['tasks'] });
   }
 
   async findOneByEmail(email: string): Promise<User | undefined> {

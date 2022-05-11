@@ -1,51 +1,58 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
-import { CreateTaskInput } from './dto/create-task.input';
 import { Task } from './entities/task.entity';
+import {
+  ChangeDate,
+  Create,
+  Delete,
+  FindAll,
+  FindOne,
+  ToggleComplete,
+} from './tasks.service.d';
 
+// SERVICES
 @Injectable()
 export class TaskService {
   constructor(
     @InjectRepository(Task)
     private taskRepository: Repository<Task>,
+    private usersService: UsersService,
   ) {}
 
-  async create({ name, date }: CreateTaskInput) {
+  async create({ name, date = null, userId }: Create) {
     const newTask = await this.taskRepository.create({
       name,
-      date: date.toISOString(),
+      date: date ? date.toISOString() : date,
+      userId,
     });
     return this.taskRepository.save(newTask);
   }
 
-  async findAll() {
-    return this.taskRepository.find();
+  async findAll({ userId }: FindAll) {
+    return this.taskRepository.find({ where: { userId } });
   }
 
-  async findOne(id: number) {
-    try {
-      const task = await this.taskRepository.findOneOrFail(id);
-      return task;
-    } catch (err) {
-      // TODO: handle error
-    }
-  }
-
-  async delete(id: number) {
-    const task = await this.findOne(id);
-    await this.taskRepository.delete(id);
+  async findOne({ id, userId }: FindOne) {
+    const task = await this.taskRepository.findOne(id, { where: { userId } });
     return task;
   }
 
-  async toggleComplete(id: number) {
-    const task = await this.findOne(id);
+  async delete({ id, userId }: Delete) {
+    const task = await this.findOne({ id, userId });
+    await this.taskRepository.delete([id, userId]);
+    return task;
+  }
+
+  async toggleComplete({ id, userId }: ToggleComplete) {
+    const task = await this.findOne({ id, userId });
     task.completed = !task.completed;
     return this.taskRepository.save(task);
   }
 
-  async changeDate({ id, date }: { id: number; date: Date }) {
-    const task = await this.findOne(id);
+  async changeDate({ id, date, userId }: ChangeDate) {
+    const task = await this.findOne({ id, userId });
     task.date = date;
     return this.taskRepository.save(task);
   }

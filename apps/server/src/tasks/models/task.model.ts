@@ -15,6 +15,6 @@ export class Task {
   @Field(() => Date, { nullable: true })
   date?: Date;
 
-  @Field(() => User)
-  user: User;
+  @Field(() => Float)
+  userId: number;
 }

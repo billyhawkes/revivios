@@ -9,11 +9,11 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
+		"axios": "^0.27.2",
 		"dayjs": "^1.11.1",
 		"graphql": "^16.4.0",
 		"graphql-request": "^4.2.0",
 		"next": "^12.1.5",
-		"next-auth": "^4.3.4",
 		"react": "^18.0.0",
 		"react-dom": "^18.0.0",
 		"react-hook-form": "^7.21.0",

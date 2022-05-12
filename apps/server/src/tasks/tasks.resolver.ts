@@ -12,7 +12,7 @@ export class TasksResolver {
   @Query(() => [Task], { name: 'tasks' })
   @UseGuards(GqlAuthGuard)
   tasks(@Context() { req: { user } }) {
-    return this.taskService.findAll(user.id);
+    return this.taskService.findAll({ userId: user.id });
   }
 
   //   @Query(() => [Task], { name: 'tasksAdmin' })

@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
-import { addTask } from "../../services/api/tasks";
+import { createTask } from "../../services/api/tasks";
+import { UserContext } from "../../services/user/UserContext";
 import DatePicker from "../date/DatePicker";
 
 type FormInput = {
@@ -16,16 +17,17 @@ const TaskBar = () => {
 		reset,
 	} = useForm<FormInput>();
 	const [date, setDate] = useState<Date>(new Date());
+	const { user } = useContext(UserContext);
 
 	const queryClient = useQueryClient();
-	const mutation = useMutation(addTask, {
+	const mutation = useMutation(createTask, {
 		onSuccess: () => {
 			queryClient.invalidateQueries("tasks");
 		},
 	});
 
 	const handleTask: SubmitHandler<FormInput> = async ({ name }) => {
-		await mutation.mutate({ name, date });
+		await mutation.mutate({ name, date, user });
 		await reset();
 	};
 

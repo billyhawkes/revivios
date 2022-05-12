@@ -1,12 +1,22 @@
 import { Task } from "../../types/task";
 import { request, gql, GraphQLClient } from "graphql-request";
+import { User } from "../../types/user";
 
 const client = new GraphQLClient(`${process.env.NEXT_PUBLIC_SERVER_URL}/graphql`, { headers: {} });
 
+const buildHeader = (token: string) => {
+	return { Authorization: `Bearer ${token}` };
+};
+
 /* CREATE TASK */
-const addTaskMutation = gql`
+type Create = {
+	name: string;
+	date: Date;
+	user: User;
+};
+const createTaskMutation = gql`
 	mutation Task($name: String!, $date: DateTime) {
-		createTask(createTaskInput: { name: $name, date: $date }) {
+		create(createTaskInput: { name: $name, date: $date }) {
 			id
 			name
 			completed
@@ -14,8 +24,8 @@ const addTaskMutation = gql`
 		}
 	}
 `;
-export const addTask = async ({ name, date }: { name: string; date: Date }): Promise<Task> => {
-	const data = await client.request(addTaskMutation, { name, date });
+export const createTask = async ({ name, date, user }: Create): Promise<Task> => {
+	const data = await client.request(createTaskMutation, { name, date }, buildHeader(user.token));
 	const task: Task = await data.createTask;
 	return task;
 };
@@ -55,6 +65,9 @@ export const completeTask = async (id: number) => {
 };
 
 /* FIND ALL */
+type FindAll = {
+	user: User;
+};
 const findAllQuery = gql`
 	{
 		tasks {
@@ -65,8 +78,8 @@ const findAllQuery = gql`
 		}
 	}
 `;
-export const findAll = async () => {
-	const data = await client.request(findAllQuery);
+export const findAll = async ({ user }: FindAll) => {
+	const data = await client.request(findAllQuery, undefined, buildHeader(user.token));
 	const tasks: Task[] = await data.tasks;
 	return tasks;
 };

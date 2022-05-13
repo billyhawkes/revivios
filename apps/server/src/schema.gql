@@ -31,13 +31,20 @@ type Query {
 
 type Mutation {
   create(createTaskInput: CreateTaskInput!): Task!
-  remove(id: Int!): Task!
-  toggleComplete(id: Int!): Task!
+  delete(id: Int!): Task!
+  update(updateTaskInput: UpdateTaskInput!): Task!
   createUser(registerInput: RegisterInput!): User!
 }
 
 input CreateTaskInput {
   name: String!
+  date: DateTime
+}
+
+input UpdateTaskInput {
+  id: Float!
+  name: String!
+  completed: Boolean!
   date: DateTime
 }
 

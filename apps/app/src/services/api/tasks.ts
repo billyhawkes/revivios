@@ -9,7 +9,7 @@ const buildHeader = (token: string) => {
 };
 
 /* CREATE TASK */
-type Create = {
+type CreateTask = {
 	name: string;
 	date: Date;
 	user: User;
@@ -24,16 +24,20 @@ const createTaskMutation = gql`
 		}
 	}
 `;
-export const createTask = async ({ name, date, user }: Create): Promise<Task> => {
+export const createTask = async ({ name, date, user }: CreateTask): Promise<Task> => {
 	const data = await client.request(createTaskMutation, { name, date }, buildHeader(user.token));
 	const task: Task = await data.createTask;
 	return task;
 };
 
 /* REMOVE TASK */
-const removeTaskMutation = gql`
+type DeleteTask = {
+	id: number;
+	user: User;
+};
+const deleteTaskMutation = gql`
 	mutation Task($id: Int!) {
-		remove(id: $id) {
+		delete(id: $id) {
 			id
 			name
 			completed
@@ -41,16 +45,20 @@ const removeTaskMutation = gql`
 		}
 	}
 `;
-export const removeTask = async (id: number) => {
-	const data = await client.request(removeTaskMutation, { id });
-	const task: Task = await data.remove;
+export const deleteTask = async ({ id, user }: DeleteTask): Promise<Task> => {
+	const data = await client.request(deleteTaskMutation, { id }, buildHeader(user.token));
+	const task: Task = await data.delete;
 	return task;
 };
 
-/* TOGGLE COMPLETE */
-const toggleCompleteMutation = gql`
-	mutation Task($id: Int!) {
-		toggleComplete(id: $id) {
+/* UPDATE TASK */
+type UpdateTask = {
+	newTask: Task;
+	user: User;
+};
+const updateTaskMutation = gql`
+	mutation Task($id: Float!, $name: String!, $completed: Boolean!, $date: DateTime) {
+		update(updateTaskInput: { id: $id, name: $name, completed: $completed, date: $date }) {
 			id
 			name
 			completed
@@ -58,9 +66,9 @@ const toggleCompleteMutation = gql`
 		}
 	}
 `;
-export const completeTask = async (id: number) => {
-	const data = await client.request(toggleCompleteMutation, { id });
-	const task: Task = await data.toggleComplete;
+export const updateTask = async ({ newTask, user }: UpdateTask): Promise<Task> => {
+	const data = await client.request(updateTaskMutation, newTask, buildHeader(user.token));
+	const task: Task = await data.update;
 	return task;
 };
 
@@ -78,25 +86,8 @@ const findAllQuery = gql`
 		}
 	}
 `;
-export const findAll = async ({ user }: FindAll) => {
+export const findAll = async ({ user }: FindAll): Promise<Task[]> => {
 	const data = await client.request(findAllQuery, undefined, buildHeader(user.token));
 	const tasks: Task[] = await data.tasks;
 	return tasks;
-};
-
-/* CHANGE DATE */
-const changeDateMutation = gql`
-	mutation Task($date: Date!) {
-		changeDate(date: $date) {
-			id
-			name
-			completed
-			date
-		}
-	}
-`;
-export const changeDate = async (date: Date) => {
-	const data = await client.request(changeDateMutation, { date });
-	const task: Task = await data.changeDate;
-	return task;
 };

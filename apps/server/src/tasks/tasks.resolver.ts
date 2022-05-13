@@ -4,6 +4,7 @@ import { CreateTaskInput } from './dto/create-task.input';
 import { Task } from './models/task.model';
 import { TaskService } from './tasks.service';
 import { GqlAuthGuard } from 'src/auth/gql.guard';
+import { UpdateTaskInput } from './dto/update-task.input';
 
 @Resolver()
 export class TasksResolver {
@@ -15,11 +16,6 @@ export class TasksResolver {
     return this.taskService.findAll({ userId: user.id });
   }
 
-  //   @Query(() => [Task], { name: 'tasksAdmin' })
-  //   tasksAdmin() {
-  //     return this.taskService.findAllAdmin();
-  //   }
-
   @Mutation(() => Task)
   @UseGuards(GqlAuthGuard)
   create(
@@ -29,26 +25,27 @@ export class TasksResolver {
     return this.taskService.create({ name, date, userId: user.id });
   }
 
-  @Mutation(() => Task, { name: 'remove' })
+  @Mutation(() => Task, { name: 'delete' })
   @UseGuards(GqlAuthGuard)
-  deleteTask(
+  delete(
     @Args('id', { type: () => Int }) id: number,
     @Context() { req: { user } },
   ) {
     return this.taskService.delete({ id, userId: user.id });
   }
 
-  @Mutation(() => Task, { name: 'toggleComplete' })
+  @Mutation(() => Task, { name: 'update' })
   @UseGuards(GqlAuthGuard)
-  toggleComplete(
-    @Args('id', { type: () => Int }) id: number,
+  update(
+    @Args('updateTaskInput') { id, name, completed, date }: UpdateTaskInput,
     @Context() { req: { user } },
   ) {
-    return this.taskService.toggleComplete({ id, userId: user.id });
+    return this.taskService.update({
+      id,
+      name,
+      completed,
+      date,
+      userId: user.id,
+    });
   }
-
-  // @Mutation(() => Task, { name: 'changeDate' })
-  // changeDate(@Args('date', { type: () => Date }) date: Date) {
-  //   // return this.taskService.toggleComplete({ id, date });
-  // }
 }

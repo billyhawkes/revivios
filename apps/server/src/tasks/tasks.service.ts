@@ -3,14 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
 import { Task } from './entities/task.entity';
-import {
-  ChangeDate,
-  Create,
-  Delete,
-  FindAll,
-  FindOne,
-  ToggleComplete,
-} from './tasks.service.d';
+import { Create, Delete, FindAll, FindOne, Update } from './tasks.service.d';
 
 // SERVICES
 @Injectable()
@@ -45,15 +38,11 @@ export class TaskService {
     return task;
   }
 
-  async toggleComplete({ id, userId }: ToggleComplete) {
+  async update({ id, name, completed, date, userId }: Update) {
     const task = await this.findOne({ id, userId });
-    task.completed = !task.completed;
-    return this.taskRepository.save(task);
-  }
-
-  async changeDate({ id, date, userId }: ChangeDate) {
-    const task = await this.findOne({ id, userId });
+    task.completed = completed;
     task.date = date;
+    task.name = name;
     return this.taskRepository.save(task);
   }
 }

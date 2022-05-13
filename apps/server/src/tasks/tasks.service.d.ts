@@ -19,13 +19,10 @@ export type Delete = {
   userId: number;
 };
 
-export type ToggleComplete = {
+export type Update = {
   id: number;
-  userId: number;
-};
-
-export type ChangeDate = {
-  id: number;
-  date: Date;
+  name: string;
+  completed: boolean;
+  date: Date | null;
   userId: number;
 };

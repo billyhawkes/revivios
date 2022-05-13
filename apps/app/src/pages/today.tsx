@@ -8,8 +8,8 @@ import { UserContext } from "../services/user/UserContext";
 const Today = () => {
 	const { user } = useContext(UserContext);
 
-	const { data } = useQuery("tasks", () => findAll({ user }), {
-		refetchOnWindowFocus: true,
+	const { data } = useQuery(["tasks", "today"], () => findAll({ user }), {
+		refetchOnWindowFocus: false,
 		enabled: !!user,
 	});
 

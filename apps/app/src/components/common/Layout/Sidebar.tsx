@@ -7,7 +7,9 @@ const Sidebar = () => {
 			<div className="flex flex-col">
 				<SidebarIcon name="Today" href="/today" icon={<FaSun size="26" />} />
 			</div>
-
+			<div className="flex flex-col">
+				<SidebarIcon name="Inbox" href="/inbox" icon={<FaCog size="24" />} />
+			</div>
 			<div className="flex flex-col">
 				<SidebarIcon name="Settings" href="/settings" icon={<FaCog size="24" />} />
 			</div>

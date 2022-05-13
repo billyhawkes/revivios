@@ -9,6 +9,11 @@ export type FindAll = {
   userId: number;
 };
 
+export type FindAllOnDate = {
+  date: Date | null;
+  userId: number;
+};
+
 export type FindOne = {
   id: number;
   userId: number;

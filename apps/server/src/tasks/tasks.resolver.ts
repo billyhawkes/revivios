@@ -5,6 +5,7 @@ import { Task } from './models/task.model';
 import { TaskService } from './tasks.service';
 import { GqlAuthGuard } from 'src/auth/gql.guard';
 import { UpdateTaskInput } from './dto/update-task.input';
+import { TasksInput } from './dto/tasks.input';
 
 @Resolver()
 export class TasksResolver {
@@ -12,8 +13,11 @@ export class TasksResolver {
 
   @Query(() => [Task], { name: 'tasks' })
   @UseGuards(GqlAuthGuard)
-  tasks(@Context() { req: { user } }) {
-    return this.taskService.findAll({ userId: user.id });
+  tasks(
+    @Context() { req: { user } },
+    @Args('tasksInput') { date }: TasksInput,
+  ) {
+    return this.taskService.findAllOnDate({ date, userId: user.id });
   }
 
   @Mutation(() => Task)

@@ -73,12 +73,13 @@ export const updateTask = async ({ newTask, user }: UpdateTask): Promise<Task> =
 };
 
 /* FIND ALL */
-type FindAll = {
+type FindAllOnDate = {
+	date: Date | null;
 	user: User;
 };
-const findAllQuery = gql`
-	{
-		tasks {
+const findAllOnDateQuery = gql`
+	query Task($date: DateTime) {
+		tasks(tasksInput: { date: $date }) {
 			id
 			name
 			completed
@@ -86,8 +87,8 @@ const findAllQuery = gql`
 		}
 	}
 `;
-export const findAll = async ({ user }: FindAll): Promise<Task[]> => {
-	const data = await client.request(findAllQuery, undefined, buildHeader(user.token));
+export const findAllOnDate = async ({ date, user }: FindAllOnDate): Promise<Task[]> => {
+	const data = await client.request(findAllOnDateQuery, { date }, buildHeader(user.token));
 	const tasks: Task[] = await data.tasks;
 	return tasks;
 };

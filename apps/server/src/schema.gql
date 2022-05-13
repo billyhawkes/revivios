@@ -24,9 +24,13 @@ type User {
 }
 
 type Query {
-  tasks: [Task!]!
+  tasks(tasksInput: TasksInput!): [Task!]!
   user(id: Int!): User!
   users: [User!]!
+}
+
+input TasksInput {
+  date: DateTime
 }
 
 type Mutation {

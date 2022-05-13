@@ -7,9 +7,7 @@ import { UserContext } from "../services/user/UserContext";
 
 const Today = () => {
 	const { user } = useContext(UserContext);
-	const date = new Date();
-
-	const { data } = useQuery(["tasks", "today"], () => findAllOnDate({ date, user }), {
+	const { data } = useQuery(["tasks", "inbox"], () => findAllOnDate({ date: null, user }), {
 		refetchOnWindowFocus: false,
 		enabled: !!user,
 	});

@@ -1,9 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersService } from 'src/users/users.service';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { Task } from './entities/task.entity';
-import { Create, Delete, FindAll, FindOne, Update } from './tasks.service.d';
+import {
+  Create,
+  Delete,
+  FindAll,
+  FindAllOnDate,
+  FindOne,
+  Update,
+} from './tasks.service.d';
+import dayjs from 'dayjs';
 
 // SERVICES
 @Injectable()
@@ -25,6 +33,22 @@ export class TaskService {
 
   async findAll({ userId }: FindAll) {
     return this.taskRepository.find({ where: { userId } });
+  }
+
+  async findAllOnDate({ date = null, userId }: FindAllOnDate) {
+    let formatedDate: any = date;
+    if (formatedDate !== null) {
+      formatedDate = Between(
+        dayjs(date).startOf('day').toDate(),
+        dayjs(date).endOf('day').toDate(),
+      );
+    }
+    return this.taskRepository.find({
+      where: {
+        date: formatedDate,
+        userId,
+      },
+    });
   }
 
   async findOne({ id, userId }: FindOne) {

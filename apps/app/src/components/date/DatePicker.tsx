@@ -53,16 +53,16 @@ const DatePicker = ({ date, onChange }: Props) => {
 	};
 
 	return (
-		<div className="relative z-10">
+		<div className="relative">
 			<div
 				onClick={() => setOpen(!open)}
-				className="p-3 flex items-center cursor-pointer h-12"
+				className="p-3 flex z-10 items-center cursor-pointer h-12"
 			>
 				<FaCalendarAlt />
 				{dayjs(date).isToday() && <p className="ml-2 pt-1">Today</p>}
 			</div>
 			{open && (
-				<div className="absolute right-0 top-14 bg-background p-6 rounded shadow-lg">
+				<div className="absolute z-20 right-0 top-14 bg-background p-6 rounded shadow-lg">
 					<div className="flex justify-between">
 						<div className="cursor-pointer" onClick={prevMonth}>
 							Prev

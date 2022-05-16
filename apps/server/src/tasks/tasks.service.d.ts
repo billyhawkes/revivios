@@ -9,6 +9,10 @@ export type FindAll = {
   userId: number;
 };
 
+export type FindOverdue = {
+  userId: number;
+};
+
 export type FindAllOnDate = {
   date: Date | null;
   userId: number;

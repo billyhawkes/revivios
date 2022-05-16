@@ -20,6 +20,12 @@ export class TasksResolver {
     return this.taskService.findAllOnDate({ date, userId: user.id });
   }
 
+  @Query(() => [Task], { name: 'overdue' })
+  @UseGuards(GqlAuthGuard)
+  overdue(@Context() { req: { user } }) {
+    return this.taskService.findOverdue({ userId: user.id });
+  }
+
   @Mutation(() => Task)
   @UseGuards(GqlAuthGuard)
   create(

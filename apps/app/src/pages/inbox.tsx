@@ -5,7 +5,7 @@ import { findAllOnDate } from "../services/api/tasks";
 import { useContext } from "react";
 import { UserContext } from "../services/user/UserContext";
 
-const Today = () => {
+const Inbox = () => {
 	const { user } = useContext(UserContext);
 	const { data } = useQuery(["tasks", "inbox"], () => findAllOnDate({ date: null, user }), {
 		refetchOnWindowFocus: false,
@@ -28,4 +28,4 @@ const Today = () => {
 	);
 };
 
-export default Today;
+export default Inbox;

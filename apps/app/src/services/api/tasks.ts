@@ -88,7 +88,39 @@ const findAllOnDateQuery = gql`
 	}
 `;
 export const findAllOnDate = async ({ date, user }: FindAllOnDate): Promise<Task[]> => {
-	const data = await client.request(findAllOnDateQuery, { date }, buildHeader(user.token));
-	const tasks: Task[] = await data.tasks;
+	const data = await client.request(findAllOnDateQuery, date, buildHeader(user.token));
+	const tasks = await data.tasks;
 	return tasks;
+};
+
+type FindToday = {
+	user: User;
+};
+type FindTodayResponse = {
+	tasks: Task[];
+	overdue: Task[];
+};
+const findTodayQuery = gql`
+	query Task($date: DateTime) {
+		tasks(tasksInput: { date: $date }) {
+			id
+			name
+			completed
+			date
+		}
+		overdue {
+			id
+			name
+			completed
+			date
+		}
+	}
+`;
+export const findToday = async ({ user }: FindToday): Promise<FindTodayResponse> => {
+	const data = await client.request(
+		findTodayQuery,
+		{ date: new Date() },
+		buildHeader(user.token)
+	);
+	return await data;
 };

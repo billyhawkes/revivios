@@ -1,14 +1,16 @@
 import Link from "next/link";
-import { FaCog, FaUserCircle, FaSun } from "react-icons/fa";
+import { FaCog, FaSun, FaBriefcase } from "react-icons/fa";
 
 const Sidebar = () => {
 	return (
 		<nav className="w-10 py-6 bg-lightbackground fixed left-0 h-screen flex flex-col justify-between items-center">
-			<div className="flex flex-col">
-				<SidebarIcon name="Today" href="/today" icon={<FaSun size="26" />} />
-			</div>
-			<div className="flex flex-col">
-				<SidebarIcon name="Inbox" href="/inbox" icon={<FaCog size="24" />} />
+			<div>
+				<div className="flex flex-col">
+					<SidebarIcon name="Today" href="/today" icon={<FaSun size="26" />} />
+				</div>
+				<div className="flex flex-col">
+					<SidebarIcon name="Inbox" href="/inbox" icon={<FaBriefcase size="24" />} />
+				</div>
 			</div>
 			<div className="flex flex-col">
 				<SidebarIcon name="Settings" href="/settings" icon={<FaCog size="24" />} />

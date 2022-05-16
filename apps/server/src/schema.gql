@@ -25,6 +25,7 @@ type User {
 
 type Query {
   tasks(tasksInput: TasksInput!): [Task!]!
+  overdue: [Task!]!
   user(id: Int!): User!
   users: [User!]!
 }

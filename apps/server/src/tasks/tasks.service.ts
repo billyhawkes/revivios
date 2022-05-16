@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersService } from 'src/users/users.service';
-import { Between, Repository } from 'typeorm';
+import { Between, LessThanOrEqual, Repository } from 'typeorm';
 import { Task } from './entities/task.entity';
 import {
   Create,
@@ -9,6 +9,7 @@ import {
   FindAll,
   FindAllOnDate,
   FindOne,
+  FindOverdue,
   Update,
 } from './tasks.service.d';
 import dayjs from 'dayjs';
@@ -33,6 +34,16 @@ export class TaskService {
 
   async findAll({ userId }: FindAll) {
     return this.taskRepository.find({ where: { userId } });
+  }
+
+  async findOverdue({ userId }: FindOverdue) {
+    return this.taskRepository.find({
+      where: {
+        date: LessThanOrEqual(dayjs().startOf('day').toDate()),
+        userId,
+        completed: false,
+      },
+    });
   }
 
   async findAllOnDate({ date = null, userId }: FindAllOnDate) {

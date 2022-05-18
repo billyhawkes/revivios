@@ -9,17 +9,11 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
-		"@react-three/drei": "^9.11.0",
-		"@react-three/fiber": "^7.0.29",
-		"@types/three": "^0.140.0",
-		"file-loader": "^6.2.0",
-		"firebase": "^9.6.0",
 		"next": "^12.1.5",
 		"react": "^18.0.0",
 		"react-dom": "^18.0.0",
 		"react-hook-form": "^7.21.0",
 		"react-icons": "^4.3.1",
-		"three": "^0.140.2",
 		"ui": "workspace:*",
 		"webpack": "^5.72.1"
 	},

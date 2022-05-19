@@ -12,6 +12,8 @@ const Inbox = () => {
 
 	return (
 		<div>
+			<h1 className="text-3xl">Inbox</h1>
+			<hr className="my-4 opacity-70" />
 			<TaskBar startDate={null} />
 			{tasks
 				.filter((task) => task.date === null && !task.completed)

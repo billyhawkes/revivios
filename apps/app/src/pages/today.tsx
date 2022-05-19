@@ -23,6 +23,8 @@ const Today = () => {
 
 	return (
 		<div>
+			<h1 className="text-3xl">Today</h1>
+			<hr className="my-4 opacity-70" />
 			<TaskBar startDate={new Date()} />
 			{overdue.length !== 0 && <TaskList name="Overdue" tasks={overdue} />}
 			{today.length !== 0 && <TaskList name="Today" tasks={today} />}

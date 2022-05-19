@@ -15,15 +15,15 @@ const TaskItem = (task: Task) => {
 		>
 			<button
 				className="mx-3"
-				onClick={() => update.mutate({ id, name, completed: !completed, date })}
+				onClick={() => update.mutate({ ...task, completed: !completed })}
 			>
 				{completed ? <FaCheckSquare /> : <FaRegSquare />}
 			</button>
 			<p className="py-2 pt-[12px]">{name}</p>
 			<div className="ml-auto flex">
 				<DatePicker
-					date={date}
-					onChange={(date) => update.mutate({ id, name, completed, date })}
+					startDate={date}
+					onChange={(date) => update.mutate({ ...task, date })}
 				/>
 				<button className="p-3 ml-auto" onClick={() => remove.mutate(id)}>
 					<FaTrashAlt />

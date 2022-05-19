@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaAngleDown, FaAngleRight } from "react-icons/fa";
 import { Task } from "../../types/task";
 import TaskItem from "./TaskItem";
 
@@ -12,10 +13,14 @@ const TaskList = ({ name, tasks }: Props) => {
 
 	return (
 		<div>
-			<h3 className="my-3 hover:bg-lightbackground">{name}</h3>
-			{tasks.map((task) => (
-				<TaskItem key={task.id} {...task} />
-			))}
+			<div
+				className="cursor-pointer flex items-center my-2 p-1 transition"
+				onClick={() => setOpen(!open)}
+			>
+				{open ? <FaAngleDown /> : <FaAngleRight />}
+				<h3 className="ml-2 mt-1">{name}</h3>
+			</div>
+			{open && tasks.map((task) => <TaskItem key={task.id} {...task} />)}
 		</div>
 	);
 };

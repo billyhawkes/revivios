@@ -1,5 +1,6 @@
 import { NextPage } from "next";
 import React from "react";
+import Title from "../components/common/Layout/Title";
 import { useAuth } from "../services/hooks/useAuth";
 
 const Settings: NextPage = () => {
@@ -7,8 +8,7 @@ const Settings: NextPage = () => {
 
 	return (
 		<div>
-			<h1 className="text-3xl">Settings</h1>
-			<hr className="my-4 opacity-70" />
+			<Title name="Settings" />
 			<h2 className="text-lg mb-3">Account</h2>
 			{user && <p>Email: {user.email}</p>}
 			<button onClick={() => logout()}>Logout</button>

@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import Sidebar from "./Sidebar";
 
 interface Props {
@@ -6,12 +5,10 @@ interface Props {
 }
 
 const Layout = ({ children }: Props) => {
-	const router = useRouter();
-
 	return (
 		<>
 			<Sidebar />
-			<main className="w-screen p-10 pl-20">{children}</main>
+			<main className="w-screen h-screen pl-20 overflow-x-hidden">{children}</main>
 		</>
 	);
 };

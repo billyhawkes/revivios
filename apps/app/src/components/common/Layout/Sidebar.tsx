@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FaCog, FaSun, FaBriefcase } from "react-icons/fa";
+import { FaCog, FaSun, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
 
 const Sidebar = () => {
 	return (
@@ -10,6 +10,13 @@ const Sidebar = () => {
 				</div>
 				<div className="flex flex-col">
 					<SidebarIcon name="Inbox" href="/inbox" icon={<FaBriefcase size="24" />} />
+				</div>
+				<div className="flex flex-col">
+					<SidebarIcon
+						name="Calendar"
+						href="/calendar"
+						icon={<FaCalendarAlt size="24" />}
+					/>
 				</div>
 			</div>
 			<div className="flex flex-col">

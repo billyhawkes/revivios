@@ -13,17 +13,14 @@ export class TasksResolver {
 
   @Query(() => [Task], { name: 'tasks' })
   @UseGuards(GqlAuthGuard)
-  tasks(
-    @Context() { req: { user } },
-    @Args('tasksInput') { date }: TasksInput,
-  ) {
-    return this.taskService.findAllOnDate({ date, userId: user.id });
+  tasks(@Context() { req: { user } }) {
+    return this.taskService.findAll({ userId: user.id });
   }
 
-  @Query(() => [Task], { name: 'overdue' })
+  @Query(() => Task, { name: 'task' })
   @UseGuards(GqlAuthGuard)
-  overdue(@Context() { req: { user } }) {
-    return this.taskService.findOverdue({ userId: user.id });
+  task(@Context() { req: { user } }, @Args('id') id: number) {
+    return this.taskService.findOne({ id, userId: user.id });
   }
 
   @Mutation(() => Task)

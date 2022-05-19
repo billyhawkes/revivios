@@ -1,29 +1,23 @@
 import TaskBar from "../components/tasks/TaskBar";
-import { useQuery } from "react-query";
 import TaskItem from "../components/tasks/TaskItem";
-import { findAllOnDate } from "../services/api/tasks";
-import { useContext } from "react";
-import { UserContext } from "../services/user/UserContext";
+import useTasks from "../services/tasks/useTasks";
 
 const Inbox = () => {
-	const { user } = useContext(UserContext);
-	const { data } = useQuery(["tasks", "inbox"], () => findAllOnDate({ date: null, user }), {
-		refetchOnWindowFocus: false,
-		enabled: !!user,
-	});
+	const { find } = useTasks();
+	const { data: tasks } = find();
+
+	if (!tasks) {
+		return <p>no Tasks</p>;
+	}
 
 	return (
 		<div>
-			<TaskBar />
-			{data &&
-				data
-					.filter((task) => !task.completed)
-					.map((task) => <TaskItem key={task.id} {...task} />)}
-			<h3 className="my-3">Completed</h3>
-			{data &&
-				data
-					.filter((task) => task.completed)
-					.map((task) => <TaskItem key={task.id} {...task} />)}
+			<TaskBar startDate={null} />
+			{tasks
+				.filter((task) => task.date === null && !task.completed)
+				.map((task) => (
+					<TaskItem key={task.id} {...task} />
+				))}
 		</div>
 	);
 };

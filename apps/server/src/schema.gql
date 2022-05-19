@@ -24,14 +24,10 @@ type User {
 }
 
 type Query {
-  tasks(tasksInput: TasksInput!): [Task!]!
-  overdue: [Task!]!
+  tasks: [Task!]!
+  task(id: Float!): Task!
   user(id: Int!): User!
   users: [User!]!
-}
-
-input TasksInput {
-  date: DateTime
 }
 
 type Mutation {

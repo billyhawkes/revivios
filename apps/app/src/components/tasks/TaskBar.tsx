@@ -1,44 +1,38 @@
-import { useContext, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "react-query";
-import { createTask } from "../../services/api/tasks";
-import { UserContext } from "../../services/user/UserContext";
-import DatePicker from "../date/DatePicker";
+import { useEffect, useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import useTasks from "../../services/tasks/useTasks";
+import DatePicker from "../DatePicker";
 
 type FormInput = {
 	name: string;
+	date: Date | null;
 };
 
-const TaskBar = () => {
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-		reset,
-	} = useForm<FormInput>();
-	const [date, setDate] = useState<Date>(new Date());
-	const { user } = useContext(UserContext);
+type Props = {
+	startDate: Date | null;
+};
 
-	const queryClient = useQueryClient();
-	const mutation = useMutation(createTask, {
-		onSuccess: () => {
-			queryClient.invalidateQueries("tasks");
-		},
-	});
+const TaskBar = ({ startDate }: Props) => {
+	const { register, watch, setValue, handleSubmit, resetField } = useForm<FormInput>();
+	const { create } = useTasks();
 
-	const handleTask: SubmitHandler<FormInput> = async ({ name }) => {
-		await mutation.mutate({ name, date, user });
-		await reset();
+	useEffect(() => {
+		setValue("date", startDate);
+	}, []);
+
+	const handleTask: SubmitHandler<FormInput> = async ({ name, date }) => {
+		await create.mutate({ name, date });
+		await resetField("name");
 	};
 
 	return (
 		<form onSubmit={handleSubmit(handleTask)} className="flex bg-lightbackground h-12">
 			<input
 				{...register("name", { required: true })}
-				placeholder="Add Task to 'Today'"
+				placeholder="Add Task"
 				className="bg-lightbackground w-[100%] p-2 pt-[12px] rounded"
 			/>
-			<DatePicker date={date} onChange={(date: Date) => setDate(date)} />
+			<DatePicker startDate={startDate} onChange={(date: Date) => setValue("date", date)} />
 		</form>
 	);
 };

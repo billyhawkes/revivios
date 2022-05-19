@@ -1,14 +1,9 @@
 import { NextPage } from "next";
-import Image from "next/image";
-import React, { useContext } from "react";
-import { UserContext } from "../services/user/UserContext";
+import React from "react";
+import { useAuth } from "../services/auth/use-auth";
 
 const Settings: NextPage = () => {
-	const { user, setUser } = useContext(UserContext);
-
-	const logout = () => {
-		setUser(null);
-	};
+	const { user, logout } = useAuth();
 
 	return (
 		<div>

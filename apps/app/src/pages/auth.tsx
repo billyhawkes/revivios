@@ -1,21 +1,20 @@
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 import { FaGithub } from "react-icons/fa";
-import { UserContext } from "../services/user/UserContext";
+import { useAuth } from "../services/auth/use-auth";
 
 const Auth = () => {
 	const router = useRouter();
+	const { login } = useAuth();
+
 	const getAuth = async () => {
 		await router.push(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/github/callback`);
 	};
-
 	const { token, id, email } = router.query;
-	const { setUser } = useContext(UserContext);
 
 	useEffect(() => {
 		if (token && id && email) {
-			setUser({ token, id, email });
-			router.push("/today");
+			login({ token, id, email });
 		}
 	}, [router.isReady]);
 

@@ -8,7 +8,7 @@ import DateItem from "./DateItem";
 dayjs.extend(isToday);
 
 type Props = {
-	date: Date | null;
+	startDate: Date | null;
 	onChange: (date: Date) => void;
 };
 
@@ -18,8 +18,9 @@ type CurrentMonthYear = {
 	dates: (Dayjs | null)[];
 };
 
-const DatePicker = ({ date, onChange }: Props) => {
+const DatePicker = ({ startDate, onChange }: Props) => {
 	const [open, setOpen] = useState(false);
+	const [date, setDate] = useState(startDate);
 	const [currentMonthYear, setCurrentMonthYear] = useState<CurrentMonthYear>({
 		month: dayjs(date).month(),
 		year: dayjs(date).year(),
@@ -81,7 +82,10 @@ const DatePicker = ({ date, onChange }: Props) => {
 									key={index}
 									date={dateItem.date()}
 									current={dateItem.isSame(date, "day")}
-									onClick={() => onChange(dateItem.toDate())}
+									onClick={() => {
+										setDate(dateItem.toDate());
+										onChange(dateItem.toDate());
+									}}
 								/>
 							) : (
 								<div key={index} className="w-8 h-8"></div>

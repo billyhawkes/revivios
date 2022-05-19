@@ -4,9 +4,9 @@ import Head from "next/head";
 import Layout from "../components/common/Layout";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import React, { useEffect, useState } from "react";
-import { UserContext } from "../services/user/UserContext";
 import { User } from "../types/user";
 import { useRouter } from "next/router";
+import { ProvideAuth } from "../services/auth/use-auth";
 
 function MyApp({ Component, pageProps: { session, ...pageProps }, ...appProps }: AppProps) {
 	const router = useRouter();
@@ -23,7 +23,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps }, ...appProps }:
 	}, []);
 
 	return (
-		<UserContext.Provider value={{ user, setUser }}>
+		<ProvideAuth>
 			<QueryClientProvider client={queryClient}>
 				<Hydrate state={pageProps.dehydratedState}>
 					<LayoutComponent>
@@ -36,7 +36,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps }, ...appProps }:
 					</LayoutComponent>
 				</Hydrate>
 			</QueryClientProvider>
-		</UserContext.Provider>
+		</ProvideAuth>
 	);
 }
 

@@ -6,7 +6,7 @@ import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import React, { useEffect, useState } from "react";
 import { User } from "../types/user";
 import { useRouter } from "next/router";
-import { ProvideAuth } from "../services/auth/use-auth";
+import { ProvideAuth } from "../services/hooks/useAuth";
 
 function MyApp({ Component, pageProps: { session, ...pageProps }, ...appProps }: AppProps) {
 	const router = useRouter();

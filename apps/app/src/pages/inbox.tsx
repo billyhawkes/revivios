@@ -1,6 +1,6 @@
 import TaskBar from "../components/tasks/TaskBar";
-import TaskItem from "../components/tasks/TaskItem";
-import useTasks from "../services/tasks/useTasks";
+import TaskList from "../components/tasks/TaskList";
+import useTasks from "../services/hooks/useTasks";
 
 const Inbox = () => {
 	const { find } = useTasks();
@@ -10,16 +10,14 @@ const Inbox = () => {
 		return <p>no Tasks</p>;
 	}
 
+	const inbox = tasks.filter((task) => task.date === null && !task.completed);
+
 	return (
 		<div>
 			<h1 className="text-3xl">Inbox</h1>
 			<hr className="my-4 opacity-70" />
 			<TaskBar startDate={null} />
-			{tasks
-				.filter((task) => task.date === null && !task.completed)
-				.map((task) => (
-					<TaskItem key={task.id} {...task} />
-				))}
+			<TaskList name="" tasks={inbox} />
 		</div>
 	);
 };

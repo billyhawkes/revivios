@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import useTasks from "../../services/tasks/useTasks";
+import useTasks from "../../services/hooks/useTasks";
 import DatePicker from "../DatePicker";
 
 type FormInput = {
@@ -13,7 +13,7 @@ type Props = {
 };
 
 const TaskBar = ({ startDate }: Props) => {
-	const { register, watch, setValue, handleSubmit, resetField } = useForm<FormInput>();
+	const { register, setValue, watch, handleSubmit, resetField } = useForm<FormInput>();
 	const { create } = useTasks();
 
 	useEffect(() => {
@@ -26,13 +26,16 @@ const TaskBar = ({ startDate }: Props) => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit(handleTask)} className="flex bg-lightbackground h-12">
+		<form onSubmit={handleSubmit(handleTask)} className="flex bg-lightbackground h-12 rounded">
 			<input
 				{...register("name", { required: true })}
 				placeholder="Add Task"
-				className="bg-lightbackground w-[100%] p-2 pt-[12px] rounded"
+				className="bg-lightbackground flex-1 p-2 pt-[12px] rounded"
 			/>
-			<DatePicker startDate={startDate} onChange={(date: Date) => setValue("date", date)} />
+			<DatePicker
+				selected={watch("date")}
+				onChange={(date: Date) => setValue("date", date)}
+			/>
 		</form>
 	);
 };

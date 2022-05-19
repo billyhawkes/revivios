@@ -123,7 +123,7 @@ const useTasks = () => {
 	});
 
 	const find = () =>
-		useQuery(["tasks"], findTasks, {
+		useQuery("tasks", findTasks, {
 			refetchOnWindowFocus: false,
 		});
 

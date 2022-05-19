@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 import { FaGithub } from "react-icons/fa";
-import { useAuth } from "../services/auth/use-auth";
+import { useAuth } from "../services/hooks/useAuth";
 
 const Auth = () => {
 	const router = useRouter();

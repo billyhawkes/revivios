@@ -13,14 +13,16 @@ const TaskList = ({ name, tasks }: Props) => {
 
 	return (
 		<div>
-			<div
-				className="cursor-pointer flex items-center my-2 p-1 transition"
-				onClick={() => setOpen(!open)}
-			>
-				{open ? <FaAngleDown /> : <FaAngleRight />}
-				<h3 className="ml-2 mt-1">{name}</h3>
-			</div>
-			{open && tasks.map((task) => <TaskItem key={task.id} {...task} />)}
+			{name !== "" && (
+				<div
+					className="cursor-pointer flex items-center my-2 p-1 transition"
+					onClick={() => setOpen(!open)}
+				>
+					{open ? <FaAngleDown /> : <FaAngleRight />}
+					<h3 className="ml-2 mt-1">{name}</h3>
+				</div>
+			)}
+			{open && tasks.map((task) => <TaskItem key={task.id} task={task} />)}
 		</div>
 	);
 };

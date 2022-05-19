@@ -1,9 +1,13 @@
 import { FaCheckSquare, FaRegSquare, FaTrashAlt } from "react-icons/fa";
-import useTasks from "../../services/tasks/useTasks";
+import useTasks from "../../services/hooks/useTasks";
 import { Task } from "../../types/task";
 import DatePicker from "../DatePicker";
 
-const TaskItem = (task: Task) => {
+type Props = {
+	task: Task;
+};
+
+const TaskItem = ({ task }: Props) => {
 	const { id, name, completed, date } = task;
 	const { update, remove } = useTasks();
 
@@ -21,10 +25,7 @@ const TaskItem = (task: Task) => {
 			</button>
 			<p className="py-2 pt-[12px]">{name}</p>
 			<div className="ml-auto flex">
-				<DatePicker
-					startDate={date}
-					onChange={(date) => update.mutate({ ...task, date })}
-				/>
+				<DatePicker selected={date} onChange={(date) => update.mutate({ ...task, date })} />
 				<button className="p-3 ml-auto" onClick={() => remove.mutate(id)}>
 					<FaTrashAlt />
 				</button>

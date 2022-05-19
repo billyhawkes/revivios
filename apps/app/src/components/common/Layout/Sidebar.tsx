@@ -3,7 +3,7 @@ import { FaCog, FaSun, FaBriefcase } from "react-icons/fa";
 
 const Sidebar = () => {
 	return (
-		<nav className="w-10 py-6 bg-lightbackground fixed left-0 h-screen flex flex-col justify-between items-center">
+		<nav className="w-10 py-6 bg-lightbackground fixed left-0 h-screen flex flex-col justify-between items-center z-50">
 			<div>
 				<div className="flex flex-col">
 					<SidebarIcon name="Today" href="/today" icon={<FaSun size="26" />} />
@@ -31,7 +31,7 @@ const SidebarIcon = ({ name, icon, href }: Props) => {
 			<Link href={href}>
 				<a className="peer opacity-50 hover:opacity-70 transition-opacity">{icon}</a>
 			</Link>
-			<span className="px-2 py-1 pt-[6px] rounded opacity-0 peer-hover:opacity-100 absolute left-12 bg-lightbackground transition-opacity">
+			<span className="px-2 py-1 pt-[6px] rounded opacity-0 peer-hover:opacity-100 absolute left-12 bg-lightbackground transition-opacity z-50">
 				{name}
 			</span>
 		</div>

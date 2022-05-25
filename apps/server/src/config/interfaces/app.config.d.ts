@@ -1,6 +1,6 @@
 export interface AppConfig {
+  NODE_ENV: string;
   port: number;
-
   auth: {
     jwt: {
       secret: string;
@@ -9,24 +9,26 @@ export interface AppConfig {
     github: {
       clientId: string;
       clientSecret: string;
-      callbackURL: string;
+      redirectURL: string;
     };
   };
   database: {
+    type: string;
     host: string;
     port: string;
-    user: string;
-    pass: string;
-    name: string;
+    username: string;
+    password: string;
+    database: string;
   };
   'auth.jwt.secret'?: string;
   'auth.jwt.expiresInSeconds'?: number;
   'auth.github.clientId'?: string;
   'auth.github.clientSecret'?: string;
-  'auth.github.callbackURL'?: string;
+  'auth.github.redirectURL'?: string;
+  'database.type'?: string;
   'database.host'?: string;
   'database.port'?: number;
-  'database.user'?: string;
-  'database.pass'?: string;
-  'database.name'?: string;
+  'database.username'?: string;
+  'database.password'?: string;
+  'database.database'?: string;
 }

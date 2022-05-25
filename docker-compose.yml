@@ -1,6 +1,7 @@
-version: "3.9"
+version: "3.8"
 services:
     db:
+        container_name: db
         image: postgres
         environment:
             POSTGRES_USER: postgres
@@ -12,6 +13,7 @@ services:
             - "5432:5432"
 
     turbo:
+        container_name: turbo
         build:
             context: .
             dockerfile: Dockerfile

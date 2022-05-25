@@ -1,8 +1,8 @@
 import { AppConfig } from './interfaces/app.config';
 
 export default (): AppConfig => ({
+  NODE_ENV: process.env.NODE_ENV,
   port: parseInt(process.env.PORT) || 8000,
-
   auth: {
     jwt: {
       secret: process.env.JWT_SECRET,
@@ -12,14 +12,15 @@ export default (): AppConfig => ({
     github: {
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
-      callbackURL: process.env.GITHUB_CALLBACK_URL,
+      redirectURL: process.env.OAUTH_REDIRECT_URL,
     },
   },
   database: {
+    type: 'postgres',
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
-    user: process.env.DB_USER,
-    pass: process.env.DB_PASS,
-    name: process.env.DB_NAME,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
   },
 });

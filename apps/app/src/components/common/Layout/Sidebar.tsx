@@ -38,7 +38,7 @@ const SidebarIcon = ({ name, icon, href }: Props) => {
 			<Link href={href}>
 				<a className="peer opacity-50 hover:opacity-70 transition-opacity">{icon}</a>
 			</Link>
-			<span className="px-2 py-1 pt-[6px] rounded opacity-0 peer-hover:opacity-100 absolute left-12 bg-lightbackground transition-opacity z-50">
+			<span className="px-2 py-1 pt-[6px] rounded invisible opacity-0 peer-hover:visible peer-hover:opacity-100 absolute left-12 bg-lightbackground transition z-50">
 				{name}
 			</span>
 		</div>

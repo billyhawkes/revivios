@@ -3,9 +3,8 @@ import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateTaskInput } from './dto/create-task.input';
 import { Task } from './models/task.model';
 import { TaskService } from './tasks.service';
-import { GqlAuthGuard } from 'src/auth/gql.guard';
 import { UpdateTaskInput } from './dto/update-task.input';
-import { TasksInput } from './dto/tasks.input';
+import { GqlAuthGuard } from 'src/auth/jwt/gql.guard';
 
 @Resolver()
 export class TasksResolver {

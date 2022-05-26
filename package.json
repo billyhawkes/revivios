@@ -9,6 +9,7 @@
 		"lint": "turbo run lint",
 		"test": "turbo run test",
 		"deploy:server": "turbo run deploy --filter=server",
+		"build:app": "turbo run build --filter=app --include-dependencies --no-deps",
 		"docker": "sudo docker-compose up --build"
 	},
 	"author": "Billy Hawkes",

@@ -5,10 +5,6 @@
 		"dev": {
 			"cache": false
 		},
-		"build": {
-			"dependsOn": ["^build"],
-			"outputs": [".next/**"]
-		},
 		"app#build": {
 			"dependsOn": ["^build", "$NEXT_PUBLIC_SERVER_URL"],
 			"outputs": [".next/**"]
@@ -32,7 +28,7 @@
 				"$DB_PASS",
 				"$DB_NAME"
 			],
-			"outputs": [".next/**"]
+			"outputs": ["dist/**"]
 		},
 		"test": {
 			"dependsOn": ["^build"],

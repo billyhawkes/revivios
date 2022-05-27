@@ -8,7 +8,7 @@
 		"dev": "turbo run dev --parallel",
 		"lint": "turbo run lint",
 		"test": "turbo run test",
-		"deploy:server": "turbo run deploy --filter=server",
+		"deploy:server": "turbo run build --filter=server && turbo run deploy --filter=server",
 		"deploy:app": "turbo run build --filter=app --include-dependencies --no-deps",
 		"deploy:website": "turbo run build --filter=website --include-dependencies --no-deps",
 		"docker": "sudo docker-compose up --build"

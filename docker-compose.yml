@@ -12,8 +12,8 @@ services:
         ports:
             - "5432:5432"
 
-    turbo:
-        container_name: turbo
+    server:
+        image: billyhawkes/revivios-server
         build:
             context: .
             dockerfile: Dockerfile

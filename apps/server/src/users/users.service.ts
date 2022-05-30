@@ -23,12 +23,8 @@ export class UsersService {
   }
 
   async findOne(id: number) {
-    try {
-      const user = await this.userRepository.findOneOrFail(id);
-      return user;
-    } catch (err) {
-      // TODO: handle error
-    }
+    const user = await this.userRepository.findOneOrFail(id);
+    return user;
   }
 
   async findAll() {

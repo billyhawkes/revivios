@@ -1,7 +1,18 @@
 version: "3.8"
 services:
+    nginx:
+        image: nginx:1.21.6
+        container_name: revivios-reverse-proxy
+        depends_on:
+            - db
+            - server
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf
+        ports:
+            - "80:80"
+
     db:
-        container_name: db
+        container_name: revivios-db
         image: postgres
         environment:
             POSTGRES_USER: postgres
@@ -14,10 +25,11 @@ services:
 
     server:
         image: billyhawkes/revivios-server
+        container_name: revivios-server
         build:
             context: .
-            dockerfile: Dockerfile
+            dockerfile: ./apps/server/Dockerfile
         depends_on:
             - db
         ports:
-            - "8000:8000"
+            - "8000:80"

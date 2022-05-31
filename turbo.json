@@ -5,6 +5,10 @@
 		"dev": {
 			"cache": false
 		},
+		"build": {
+			"dependsOn": ["^build"],
+			"outputs": [".next/**", "dist/**"]
+		},
 		"app#build": {
 			"dependsOn": ["^build", "$NEXT_PUBLIC_SERVER_URL"],
 			"outputs": [".next/**"]

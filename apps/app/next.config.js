@@ -5,7 +5,9 @@ module.exports = withTM(
 	withPWA({
 		reactStrictMode: true,
 		pwa: {
-			dest: "public/pwa",
+			dest: "public",
+			register: true,
+			skipWaiting: true,
 		},
 	})
 );

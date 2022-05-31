@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { User } from "../../types/user";
 
 const authContext = createContext<any>(null);
@@ -21,6 +21,14 @@ type Login = {
 export const useProvideAuth = () => {
 	const router = useRouter();
 	const [user, setUser] = useState<User | null>(null);
+
+	const isAuthPage = router.pathname.includes(`auth`);
+
+	useEffect(() => {
+		if (!isAuthPage && user === null) {
+			router.push("/auth");
+		}
+	}, [user, router]);
 
 	const login = ({ token, id, email }: Login) => {
 		setUser({ id, email });

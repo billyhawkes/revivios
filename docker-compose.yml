@@ -9,6 +9,7 @@ services:
             - "8080:8080"
         networks:
             - server
+        restart: always
         command:
             # UI Dashboard
             - --api.insecure=true
@@ -21,9 +22,11 @@ services:
             - --entrypoints.server.address=:80
             - --entrypoints.server-secured.address=:443
             # Certificate
+            - --certificatesresolvers.myresolver.acme.httpchallenge=true
+            - --certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=server
+            - --certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
             - --certificatesresolvers.myresolver.acme.email=billyhawkes02@gmail.com
             - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
-            - --certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=server
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
             - ./letsencrypt:/letsencrypt
@@ -38,6 +41,7 @@ services:
         image: postgres
         networks:
             - data
+        restart: always
         environment:
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: postgres
@@ -50,6 +54,7 @@ services:
     server:
         image: billyhawkes/revivios-server
         container_name: revivios-server
+        restart: always
         networks:
             - server
             - data
@@ -58,8 +63,6 @@ services:
             dockerfile: ./apps/server/Dockerfile
         depends_on:
             - db
-        ports:
-            - "8000:80"
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.server.entrypoints=server"
@@ -68,6 +71,7 @@ services:
             - "traefik.http.routers.server-secured.entrypoints=server-secured"
             - "traefik.http.routers.server-secured.rule=Host(`server.revivios.com`)"
             - "traefik.http.routers.server-secured.tls.certresolver=myresolver"
+            - "traefik.http.routers.server-secured.tls=true"
 
 networks:
     server:

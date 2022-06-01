@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { MONTHS } from "../../services/date";
+import { MONTHS } from "../../../services/date";
 
 type Props = {
 	date: Date;

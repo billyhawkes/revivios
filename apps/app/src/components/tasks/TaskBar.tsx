@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import useTasks from "../../services/hooks/useTasks";
-import DatePicker from "../DatePicker";
+import DatePicker from "../common/DatePicker";
 
 type FormInput = {
 	name: string;

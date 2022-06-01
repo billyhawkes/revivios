@@ -88,7 +88,7 @@ const findOneQuery = gql`
 `;
 const findOneTask = async (id: number): Promise<Task> => {
 	const data = await client.request(findOneQuery, id);
-	const task = await data.task;
+	const task: Task = await data.task;
 	return task;
 };
 
@@ -111,9 +111,12 @@ const useTasks = () => {
 
 	const update = useMutation(updateTask, {
 		onSuccess: (updatedTask) => {
-			queryClient.setQueryData("tasks", (currentTasks: any) =>
-				currentTasks.map((task: any) => (task.id === updatedTask.id ? updatedTask : task))
+			queryClient.setQueryData("tasks", (current: any) =>
+				current.map((tasksItem: any) =>
+					tasksItem.id === updatedTask.id ? updatedTask : tasksItem
+				)
 			);
+			queryClient.invalidateQueries("user");
 		},
 	});
 

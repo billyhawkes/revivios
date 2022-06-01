@@ -52,7 +52,7 @@ services:
             - "5432:5432"
 
     server:
-        image: billyhawkes/revivios-server
+        image: billyhawkes/revivios-server:latest
         container_name: revivios-server
         restart: always
         networks:

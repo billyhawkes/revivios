@@ -4,6 +4,11 @@ export type CreateUser = {
 };
 
 export type UpdateUser = {
-  id: number;
+  userId: number;
   name: string;
+};
+
+export type AlterXP = {
+  userId: number;
+  amount: number;
 };

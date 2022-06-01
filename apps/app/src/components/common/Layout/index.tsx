@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useAuth } from "../../../services/hooks/useAuth";
+import XPBar from "../xp/XPBar";
 import Sidebar from "./Sidebar";
 
 interface Props {
@@ -25,6 +26,7 @@ const Layout = ({ children }: Props) => {
 		<>
 			<Sidebar />
 			<main className="w-screen h-screen pl-20 overflow-x-hidden pr-10">{children}</main>
+			<XPBar />
 		</>
 	);
 };

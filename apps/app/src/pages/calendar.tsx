@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import CalendarItem from "../components/Calendar/CalendarItem";
+import CalendarItem from "../components/calendar/CalendarItem";
 import Title from "../components/common/Layout/Title";
 import { DAYS, MONTHS } from "../services/date";
 import useCalendar from "../services/hooks/useCalendar";

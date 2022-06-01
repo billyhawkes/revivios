@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, LessThanOrEqual, Repository } from 'typeorm';
 import { Task } from './entities/task.entity';
@@ -10,6 +10,7 @@ import {
   UpdateTask,
 } from './tasks.service.d';
 import dayjs from 'dayjs';
+import { UsersService } from 'src/users/users.service';
 
 // SERVICES
 @Injectable()
@@ -17,6 +18,7 @@ export class TaskService {
   constructor(
     @InjectRepository(Task)
     private taskRepository: Repository<Task>,
+    private userService: UsersService,
   ) {}
 
   async create({ name, date = null, userId }: CreateTask) {
@@ -59,7 +61,9 @@ export class TaskService {
   }
 
   async findOne({ id, userId }: FindOneTask) {
-    const task = await this.taskRepository.findOne(id, { where: { userId } });
+    const task = await this.taskRepository.findOne(id, {
+      where: { userId },
+    });
     return task;
   }
 
@@ -71,9 +75,18 @@ export class TaskService {
 
   async update({ id, name, completed, date, userId }: UpdateTask) {
     const task = await this.findOne({ id, userId });
+
+    // Alter xp
+    if (!task.completed && completed)
+      await this.userService.alterXP({ userId, amount: 1 });
+    else if (task.completed && !completed)
+      await this.userService.alterXP({ userId, amount: -1 });
+
+    // Update task
     task.completed = completed;
     task.date = date;
     task.name = name;
+
     return this.taskRepository.save(task);
   }
 }

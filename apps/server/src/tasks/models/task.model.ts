@@ -1,4 +1,5 @@
 import { Field, Float, ObjectType } from '@nestjs/graphql';
+import { User } from 'src/users/models/users.model';
 
 @ObjectType()
 export class Task {
@@ -16,4 +17,6 @@ export class Task {
 
   @Field(() => Float)
   userId: number;
+  @Field(() => User)
+  user: User;
 }

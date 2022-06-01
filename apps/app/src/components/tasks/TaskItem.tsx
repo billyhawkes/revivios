@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { FaCheckSquare, FaRegSquare, FaTrashAlt } from "react-icons/fa";
 import useTasks from "../../services/hooks/useTasks";
 import { Task } from "../../types/task";
-import DatePicker from "../DatePicker";
+import DatePicker from "../common/DatePicker";
 
 type Props = {
 	task: Task;

@@ -8,6 +8,7 @@ type Task {
   completed: Boolean!
   date: DateTime
   userId: Float!
+  user: User!
 }
 
 """

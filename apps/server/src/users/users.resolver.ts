@@ -21,6 +21,6 @@ export class UsersResolver {
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
     @Context() { req: { user } },
   ) {
-    return this.userService.update({ ...updateUserInput, id: user.id });
+    return this.userService.update({ ...updateUserInput, userId: user.id });
   }
 }

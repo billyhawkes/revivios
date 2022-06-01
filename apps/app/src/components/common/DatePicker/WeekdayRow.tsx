@@ -1,4 +1,4 @@
-import { DAYS } from "../../services/date";
+import { DAYS } from "../../../services/date";
 
 const WeekdayRow = () => {
 	return (

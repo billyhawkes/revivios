@@ -59,7 +59,6 @@ export const useProvideAuth = () => {
 		refetchOnWindowFocus: false,
 		onSuccess: (data) => {
 			setUser(data);
-			router.push("/today");
 		},
 	});
 

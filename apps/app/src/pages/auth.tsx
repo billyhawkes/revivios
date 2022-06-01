@@ -5,7 +5,7 @@ import { useAuth } from "../services/hooks/useAuth";
 
 const Auth = () => {
 	const router = useRouter();
-	const { login } = useAuth();
+	const { user, login } = useAuth();
 
 	const getAuth = async () => {
 		await router.push(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/github/callback`);
@@ -17,6 +17,12 @@ const Auth = () => {
 			login(token);
 		}
 	}, [router.isReady]);
+
+	useEffect(() => {
+		if (user) {
+			router.push("/today");
+		}
+	}, [user]);
 
 	return (
 		<div className="flex justify-between">

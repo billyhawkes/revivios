@@ -22,7 +22,12 @@ const TaskList = ({ name, tasks }: Props) => {
 					<h3 className="ml-2 mt-1">{name}</h3>
 				</div>
 			)}
-			{open && tasks.map((task) => <TaskItem key={task.id} task={task} />)}
+			{open &&
+				tasks.map((task, index) => (
+					<div className="my-2" key={index}>
+						<TaskItem key={task.id} task={task} />
+					</div>
+				))}
 		</div>
 	);
 };

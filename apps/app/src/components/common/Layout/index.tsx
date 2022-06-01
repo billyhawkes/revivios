@@ -25,7 +25,9 @@ const Layout = ({ children }: Props) => {
 	return (
 		<>
 			<Sidebar />
-			<main className="w-screen h-screen pl-20 overflow-x-hidden pr-10">{children}</main>
+			<main className="w-screen h-screen pl-20 overflow-x-hidden pr-10 pb-10">
+				{children}
+			</main>
 			<XPBar />
 		</>
 	);

@@ -41,6 +41,8 @@ const Settings: NextPage = () => {
 							defaultValue={user.name}
 							{...register("name", { required: true })}
 						/>
+						<label className="mt-3 mb-2 font-bold">Experience Points</label>
+						<p>{user.xp}</p>
 						{isDirty && (
 							<div className="flex justify-end fixed left-0 bottom-0 right-0 bg-background py-3 border-t-2 border-t-lightbackground">
 								<button className="btn-ghost mr-4" onClick={cancelChanges}>

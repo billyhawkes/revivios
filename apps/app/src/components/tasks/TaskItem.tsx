@@ -1,4 +1,6 @@
 import { useRouter } from "next/router";
+import { useRef, useState } from "react";
+import Draggable, { DraggableEventHandler } from "react-draggable";
 import { FaCheckSquare, FaRegSquare, FaTrashAlt } from "react-icons/fa";
 import useTasks from "../../services/hooks/useTasks";
 import { Task } from "../../types/task";
@@ -10,22 +12,20 @@ type Props = {
 
 const TaskItem = ({ task }: Props) => {
 	const router = useRouter();
-	const { pathname } = router;
 	const { id, name, completed, date } = task;
 	const { update, remove } = useTasks();
 
 	const calendar = router.pathname.includes(`calendar`);
 
-	const handleClick = () => {
-		router.push(pathname + `?id=${id}`, undefined, { shallow: true });
-	};
+	// const handleClick = () => {
+	// 	router.push(pathname + `?id=${id}`, undefined, { shallow: true });
+	// };
 
 	return (
 		<div
-			className={`flex items-center justify-start bg-lightbackground my-3 h-10 rounded bg-opacity-70 hover:bg-opacity-90 cursor-pointer ${
+			className={`flex items-center justify-start bg-lightbackground h-10 rounded bg-opacity-70 hover:bg-opacity-90 cursor-pointer ${
 				completed ? "opacity-70" : ""
 			}`}
-			onClick={handleClick}
 		>
 			<button
 				className="mx-3"

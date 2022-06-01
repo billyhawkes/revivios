@@ -10,11 +10,11 @@ const Auth = () => {
 	const getAuth = async () => {
 		await router.push(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/github/callback`);
 	};
-	const { token, id, email } = router.query;
+	const { token } = router.query;
 
 	useEffect(() => {
-		if (token && id && email) {
-			login({ token, id, email });
+		if (token) {
+			login(token);
 		}
 	}, [router.isReady]);
 

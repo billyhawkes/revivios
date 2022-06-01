@@ -26,15 +26,14 @@ type User {
 type Query {
   tasks: [Task!]!
   task(id: Float!): Task!
-  user(id: Int!): User!
-  users: [User!]!
+  user: User!
 }
 
 type Mutation {
-  create(createTaskInput: CreateTaskInput!): Task!
-  delete(id: Int!): Task!
-  update(updateTaskInput: UpdateTaskInput!): Task!
-  createUser(registerInput: RegisterInput!): User!
+  createTask(createTaskInput: CreateTaskInput!): Task!
+  deleteTask(id: Int!): Task!
+  updateTask(updateTaskInput: UpdateTaskInput!): Task!
+  updateUser(updateUserInput: UpdateUserInput!): User!
 }
 
 input CreateTaskInput {
@@ -49,7 +48,6 @@ input UpdateTaskInput {
   date: DateTime
 }
 
-input RegisterInput {
+input UpdateUserInput {
   name: String!
-  email: String!
 }

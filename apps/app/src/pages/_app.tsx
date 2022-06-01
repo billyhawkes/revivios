@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import Layout from "../components/common/Layout";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ProvideAuth } from "../services/hooks/useAuth";
 
 function MyApp({ Component, pageProps: { session, ...pageProps }, ...appProps }: AppProps) {
@@ -13,8 +13,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps }, ...appProps }:
 	const LayoutComponent = !isAuthPage ? Layout : React.Fragment;
 
 	return (
-		<ProvideAuth>
-			<QueryClientProvider client={queryClient}>
+		<QueryClientProvider client={queryClient}>
+			<ProvideAuth>
 				<Hydrate state={pageProps.dehydratedState}>
 					<LayoutComponent>
 						<>
@@ -25,8 +25,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps }, ...appProps }:
 						</>
 					</LayoutComponent>
 				</Hydrate>
-			</QueryClientProvider>
-		</ProvideAuth>
+			</ProvideAuth>
+		</QueryClientProvider>
 	);
 }
 

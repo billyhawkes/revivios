@@ -13,7 +13,7 @@ export class TasksResolver {
   @Query(() => [Task], { name: 'tasks' })
   @UseGuards(GqlAuthGuard)
   tasks(@Context() { req: { user } }) {
-    return this.taskService.findAll({ userId: user.id });
+    return this.taskService.findAll(user.id);
   }
 
   @Query(() => Task, { name: 'task' })
@@ -22,7 +22,7 @@ export class TasksResolver {
     return this.taskService.findOne({ id, userId: user.id });
   }
 
-  @Mutation(() => Task)
+  @Mutation(() => Task, { name: 'createTask' })
   @UseGuards(GqlAuthGuard)
   create(
     @Args('createTaskInput') { name, date }: CreateTaskInput,
@@ -31,7 +31,7 @@ export class TasksResolver {
     return this.taskService.create({ name, date, userId: user.id });
   }
 
-  @Mutation(() => Task, { name: 'delete' })
+  @Mutation(() => Task, { name: 'deleteTask' })
   @UseGuards(GqlAuthGuard)
   delete(
     @Args('id', { type: () => Int }) id: number,
@@ -40,7 +40,7 @@ export class TasksResolver {
     return this.taskService.delete({ id, userId: user.id });
   }
 
-  @Mutation(() => Task, { name: 'update' })
+  @Mutation(() => Task, { name: 'updateTask' })
   @UseGuards(GqlAuthGuard)
   update(
     @Args('updateTaskInput') { id, name, completed, date }: UpdateTaskInput,

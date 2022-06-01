@@ -1,5 +1,5 @@
-import dayjs, { Dayjs } from "dayjs";
-import { DAYS, getMonthArray } from "../../services/date";
+import dayjs from "dayjs";
+import { getMonthArray } from "../date";
 import { useEffect, useReducer, useState } from "react";
 
 type MonthYear = {
@@ -34,7 +34,7 @@ const reducer = (state: MonthYear, action: Action) => {
 	}
 };
 
-const useDatePicker = (date: Date | null) => {
+const useCalendar = (date: Date | null) => {
 	date = date ?? new Date();
 	const [monthYear, dispatch] = useReducer(reducer, {
 		month: dayjs(date).month(),
@@ -57,4 +57,4 @@ const useDatePicker = (date: Date | null) => {
 	return { dates, monthYear, nextMonth, prevMonth };
 };
 
-export default useDatePicker;
+export default useCalendar;

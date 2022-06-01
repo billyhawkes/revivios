@@ -1,34 +1,26 @@
 // TYPES //
-export type Create = {
+export type CreateTask = {
   name: string;
   date: Date | null;
   userId: number;
 };
 
-export type FindAll = {
-  userId: number;
-};
-
-export type FindOverdue = {
-  userId: number;
-};
-
-export type FindAllOnDate = {
+export type FindAllOnDateTask = {
   date: Date | null;
   userId: number;
 };
 
-export type FindOne = {
+export type FindOneTask = {
   id: number;
   userId: number;
 };
 
-export type Delete = {
+export type DeleteTask = {
   id: number;
   userId: number;
 };
 
-export type Update = {
+export type UpdateTask = {
   id: number;
   name: string;
   completed: boolean;

@@ -15,7 +15,6 @@ const findTasksQuery = gql`
 	}
 `;
 const findTasks = async (): Promise<Task[]> => {
-	client.setHeader("authorization", `Bearer ${localStorage.getItem("access_token")}`);
 	const data = await client.request(findTasksQuery);
 	const tasks = await data.tasks;
 	return tasks;
@@ -24,7 +23,7 @@ const findTasks = async (): Promise<Task[]> => {
 /* DELETE TASK */
 const deleteTaskMutation = gql`
 	mutation Task($id: Int!) {
-		delete(id: $id) {
+		deleteTask(id: $id) {
 			id
 			name
 			completed
@@ -33,9 +32,8 @@ const deleteTaskMutation = gql`
 	}
 `;
 const deleteTask = async (id: number): Promise<Task> => {
-	client.setHeader("authorization", `Bearer ${localStorage.getItem("access_token")}`);
 	const data = await client.request(deleteTaskMutation, { id });
-	const task: Task = await data.delete;
+	const task: Task = await data.deleteTask;
 	return task;
 };
 
@@ -46,7 +44,7 @@ type CreateTask = {
 };
 const createTaskMutation = gql`
 	mutation Task($name: String!, $date: DateTime) {
-		create(createTaskInput: { name: $name, date: $date }) {
+		createTask(createTaskInput: { name: $name, date: $date }) {
 			id
 			name
 			completed
@@ -55,16 +53,15 @@ const createTaskMutation = gql`
 	}
 `;
 const createTask = async ({ name, date }: CreateTask): Promise<Task> => {
-	client.setHeader("authorization", `Bearer ${localStorage.getItem("access_token")}`);
 	const data = await client.request(createTaskMutation, { name, date });
-	const task: Task = await data.create;
+	const task: Task = await data.createTask;
 	return task;
 };
 
 /* UPDATE TASK */
 const updateTaskMutation = gql`
 	mutation Task($id: Float!, $name: String!, $completed: Boolean!, $date: DateTime) {
-		update(updateTaskInput: { id: $id, name: $name, completed: $completed, date: $date }) {
+		updateTask(updateTaskInput: { id: $id, name: $name, completed: $completed, date: $date }) {
 			id
 			name
 			completed
@@ -73,9 +70,8 @@ const updateTaskMutation = gql`
 	}
 `;
 const updateTask = async (newTask: Task): Promise<Task> => {
-	client.setHeader("authorization", `Bearer ${localStorage.getItem("access_token")}`);
 	const data = await client.request(updateTaskMutation, newTask);
-	const task: Task = await data.update;
+	const task: Task = await data.updateTask;
 	return task;
 };
 
@@ -91,7 +87,6 @@ const findOneQuery = gql`
 	}
 `;
 const findOneTask = async (id: number): Promise<Task> => {
-	client.setHeader("authorization", `Bearer ${localStorage.getItem("access_token")}`);
 	const data = await client.request(findOneQuery, id);
 	const task = await data.task;
 	return task;

@@ -1,16 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UsersService } from 'src/users/users.service';
 import { Between, LessThanOrEqual, Repository } from 'typeorm';
 import { Task } from './entities/task.entity';
 import {
-  Create,
-  Delete,
-  FindAll,
-  FindAllOnDate,
-  FindOne,
-  FindOverdue,
-  Update,
+  CreateTask,
+  DeleteTask,
+  FindAllOnDateTask,
+  FindOneTask,
+  UpdateTask,
 } from './tasks.service.d';
 import dayjs from 'dayjs';
 
@@ -20,10 +17,9 @@ export class TaskService {
   constructor(
     @InjectRepository(Task)
     private taskRepository: Repository<Task>,
-    private usersService: UsersService,
   ) {}
 
-  async create({ name, date = null, userId }: Create) {
+  async create({ name, date = null, userId }: CreateTask) {
     const newTask = await this.taskRepository.create({
       name,
       date: date ? date.toISOString() : date,
@@ -32,11 +28,11 @@ export class TaskService {
     return this.taskRepository.save(newTask);
   }
 
-  async findAll({ userId }: FindAll) {
+  async findAll(userId: number) {
     return this.taskRepository.find({ where: { userId } });
   }
 
-  async findOverdue({ userId }: FindOverdue) {
+  async findOverdue(userId: number) {
     return this.taskRepository.find({
       where: {
         date: LessThanOrEqual(dayjs().startOf('day').toDate()),
@@ -46,7 +42,7 @@ export class TaskService {
     });
   }
 
-  async findAllOnDate({ date = null, userId }: FindAllOnDate) {
+  async findAllOnDate({ date = null, userId }: FindAllOnDateTask) {
     let formatedDate: any = date;
     if (formatedDate !== null) {
       formatedDate = Between(
@@ -62,18 +58,18 @@ export class TaskService {
     });
   }
 
-  async findOne({ id, userId }: FindOne) {
+  async findOne({ id, userId }: FindOneTask) {
     const task = await this.taskRepository.findOne(id, { where: { userId } });
     return task;
   }
 
-  async delete({ id, userId }: Delete) {
+  async delete({ id, userId }: DeleteTask) {
     const task = await this.findOne({ id, userId });
     await this.taskRepository.delete([id, userId]);
     return task;
   }
 
-  async update({ id, name, completed, date, userId }: Update) {
+  async update({ id, name, completed, date, userId }: UpdateTask) {
     const task = await this.findOne({ id, userId });
     task.completed = completed;
     task.date = date;

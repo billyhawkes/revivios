@@ -27,7 +27,7 @@ export class GithubController {
     return {
       url: `${this.configService.get<string>(
         'auth.github.redirectURL',
-      )}?token=${access_token}&email=${user.email}&id=${user.id}`,
+      )}?token=${access_token}`,
     };
   }
 }

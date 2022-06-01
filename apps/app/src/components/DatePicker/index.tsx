@@ -3,7 +3,7 @@ import isToday from "dayjs/plugin/isToday";
 import { useRef, useState } from "react";
 import { FaCalendarAlt } from "react-icons/fa";
 import { MONTHS } from "../../services/date";
-import useDatePicker from "../../services/hooks/useDatePicker";
+import useCalendar from "../../services/hooks/useCalendar";
 import useOnClickOutside from "../../services/hooks/useOnClickOutside";
 import DateItem from "./DateItem";
 import ReadableDate from "./ReadableDate";
@@ -23,7 +23,7 @@ const DatePicker = ({ selected, onChange }: Props) => {
 	useOnClickOutside(ref, () => setOpen(false));
 
 	// Functionality
-	const { dates, monthYear, nextMonth, prevMonth } = useDatePicker(selected);
+	const { dates, monthYear, nextMonth, prevMonth } = useCalendar(selected);
 
 	return (
 		<div className="relative" ref={ref}>

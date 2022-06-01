@@ -21,13 +21,13 @@ const Today = () => {
 	);
 
 	return (
-		<div>
+		<>
 			<Title name="Today" />
 			<TaskBar startDate={new Date()} />
 			{overdue.length !== 0 && <TaskList name="Overdue" tasks={overdue} />}
 			{today.length !== 0 && <TaskList name="Today" tasks={today} />}
 			{completed.length !== 0 && <TaskList name="Completed" tasks={completed} />}
-		</div>
+		</>
 	);
 };
 

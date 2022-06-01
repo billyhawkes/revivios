@@ -2,11 +2,11 @@ import dayjs from "dayjs";
 import CalendarItem from "../components/Calendar/CalendarItem";
 import Title from "../components/common/Layout/Title";
 import { DAYS, MONTHS } from "../services/date";
-import useDatePicker from "../services/hooks/useDatePicker";
+import useCalendar from "../services/hooks/useCalendar";
 import useTasks from "../services/hooks/useTasks";
 
 const Calendar = () => {
-	const { dates, monthYear, nextMonth, prevMonth } = useDatePicker(new Date());
+	const { dates, monthYear, nextMonth, prevMonth } = useCalendar(new Date());
 	const { find } = useTasks();
 	const { data: tasks } = find();
 

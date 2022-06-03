@@ -1,6 +1,8 @@
-module billyhawkes.com/golangdemo/goserver
+module revivios.com/server
 
 go 1.18
+
+require gorm.io/driver/postgres v1.3.7
 
 require (
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
@@ -13,8 +15,8 @@ require (
 	github.com/jackc/pgx/v4 v4.16.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
+	github.com/joho/godotenv v1.4.0 // indirect
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	gorm.io/gorm v1.23.5 // indirect
-	gorm.io/driver/postgres v1.3.7
 )

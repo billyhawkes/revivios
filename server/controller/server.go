@@ -1,11 +1,25 @@
 package controller
 
 import (
-	"log"
 	"net/http"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
+type Error struct {
+	msg string
+}
+
 func Start() {
-	server := &http.Server{Addr: ":8000", Handler: nil}
-	log.Fatal(server.ListenAndServe())
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+
+	// Tasks
+	r.Get("/tasks", Tasks)
+	r.Post("/tasks", TasksCreate)
+	r.Put("/tasks", TaskUpdate)
+	r.Delete("/tasks/{id}", TaskDelete)
+
+	http.ListenAndServe(":8000", r)
 }

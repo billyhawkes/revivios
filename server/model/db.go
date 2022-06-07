@@ -33,6 +33,7 @@ func Init() {
 	if err != nil {
 		fmt.Println("Database connection error.")
 	}
+	db.AutoMigrate(&Task{})
 }
 
 func connectionString(config *PostgresConfig) string {

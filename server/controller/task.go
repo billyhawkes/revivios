@@ -72,3 +72,24 @@ func TaskDelete(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(task)
 }
+
+func TaskOne(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	id := chi.URLParam(r, "id")
+	id_num, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		w.WriteHeader(400)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	task, err := model.FindOneTask(&id_num)
+	if err != nil {
+		w.WriteHeader(500)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	json.NewEncoder(w).Encode(task)
+}

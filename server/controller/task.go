@@ -28,6 +28,10 @@ func TasksCreate(w http.ResponseWriter, r *http.Request) {
 	var newTask model.Task
 
 	err := json.NewDecoder(r.Body).Decode(&newTask)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+	}
 	err = model.CreateTask(&newTask)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -43,6 +47,10 @@ func TaskUpdate(w http.ResponseWriter, r *http.Request) {
 	var updateTask model.Task
 
 	err := json.NewDecoder(r.Body).Decode(&updateTask)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+	}
 	err = model.UpdateTask(&updateTask)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -67,7 +75,6 @@ func TaskDelete(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(500)
 		w.Write([]byte(err.Error()))
-		return
 	}
 
 	json.NewEncoder(w).Encode(task)

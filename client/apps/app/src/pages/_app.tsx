@@ -5,6 +5,7 @@ import Layout from "../components/common/Layout";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import React, { useEffect, useState } from "react";
 import { ProvideAuth } from "../services/hooks/useAuth";
+import axios from "axios";
 
 function MyApp({ Component, pageProps: { session, ...pageProps }, ...appProps }: AppProps) {
 	const [queryClient] = useState(() => new QueryClient());

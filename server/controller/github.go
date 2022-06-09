@@ -48,5 +48,5 @@ func GithubCallback(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(err.Error()))
 	}
 
-	http.Redirect(w, r, os.Getenv("OAUTH_REDIRECT_URL")+"/"+access_token, http.StatusFound)
+	http.Redirect(w, r, os.Getenv("OAUTH_REDIRECT_URL")+"?token="+access_token, http.StatusFound)
 }

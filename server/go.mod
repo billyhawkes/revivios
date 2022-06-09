@@ -9,6 +9,8 @@ require (
 	gorm.io/gorm v1.23.5
 )
 
+require github.com/go-chi/cors v1.2.1 // indirect
+
 require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/golang/protobuf v1.4.2 // indirect

@@ -1,9 +1,8 @@
-import { gql } from "graphql-request";
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { User } from "../../types/user";
-import { client } from "../api/graphqlClient";
+import api from "../api/axios";
 
 const authContext = createContext<any>(null);
 
@@ -17,36 +16,16 @@ export const useAuth = () => {
 };
 
 /* FIND ONE */
-const findUserGQL = gql`
-	{
-		user {
-			id
-			name
-			email
-			xp
-		}
-	}
-`;
-const findUserQuery = async (): Promise<User> => {
-	const data = await client.request(findUserGQL);
-	const user: User = await data.user;
+const findUserRequest = async (): Promise<User> => {
+	const res = await api.get("/user");
+	const user: User = await res.data;
 	return user;
 };
 
 /* UPDATE */
-const updateUserGQL = gql`
-	mutation User($name: String!) {
-		updateUser(updateUserInput: { name: $name }) {
-			id
-			name
-			email
-			xp
-		}
-	}
-`;
-const updateUserMutation = async (newUser: User["name"]): Promise<User> => {
-	const data = await client.request(updateUserGQL, newUser);
-	const user: User = await data.updateUser;
+const updateUserRequest = async (newUser: User["name"]): Promise<User> => {
+	const res = await api.put("/user", newUser);
+	const user: User = await res.data;
 	return user;
 };
 
@@ -55,7 +34,7 @@ export const useProvideAuth = () => {
 	const router = useRouter();
 	const [user, setUser] = useState<User | null>(null);
 
-	const findUser = useQuery("user", findUserQuery, {
+	const findUser = useQuery("user", findUserRequest, {
 		refetchOnWindowFocus: false,
 		onSuccess: (data) => {
 			setUser(data);
@@ -63,7 +42,7 @@ export const useProvideAuth = () => {
 	});
 
 	const login = (token: string) => {
-		client.setHeader("authorization", `Bearer ${token}`);
+		// TODO: Have axios token
 		localStorage.setItem("access_token", `${token}`);
 		queryClient.invalidateQueries("user");
 	};
@@ -74,7 +53,7 @@ export const useProvideAuth = () => {
 		localStorage.removeItem("access_token");
 	};
 
-	const update = useMutation(updateUserMutation, {
+	const update = useMutation(updateUserRequest, {
 		onSuccess: (updatedUser) => {
 			queryClient.setQueryData("user", updatedUser);
 		},

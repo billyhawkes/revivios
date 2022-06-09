@@ -1,5 +1,4 @@
 import dayjs from "dayjs";
-import { MouseEventHandler } from "react";
 import { DndProvider } from "react-dnd";
 import CalendarItem from "../components/calendar/CalendarDate";
 import Title from "../components/common/Layout/Title";

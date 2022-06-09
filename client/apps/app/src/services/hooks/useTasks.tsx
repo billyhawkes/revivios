@@ -1,39 +1,18 @@
-import { gql } from "graphql-request";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Task } from "../../types/task";
-import { client } from "../api/graphqlClient";
+import api from "../api/axios";
 
 /* FIND TASKS */
-const findTasksQuery = gql`
-	{
-		tasks {
-			id
-			name
-			completed
-			date
-		}
-	}
-`;
 const findTasks = async (): Promise<Task[]> => {
-	const data = await client.request(findTasksQuery);
-	const tasks = await data.tasks;
+	const res = await api.get("/tasks");
+	const tasks: Task[] = await res.data;
 	return tasks;
 };
 
 /* DELETE TASK */
-const deleteTaskMutation = gql`
-	mutation Task($id: Int!) {
-		deleteTask(id: $id) {
-			id
-			name
-			completed
-			date
-		}
-	}
-`;
 const deleteTask = async (id: number): Promise<Task> => {
-	const data = await client.request(deleteTaskMutation, { id });
-	const task: Task = await data.deleteTask;
+	const res = await api.delete(`/tasks/${id}`);
+	const task: Task = await res.data;
 	return task;
 };
 
@@ -42,53 +21,23 @@ type CreateTask = {
 	name: string;
 	date: Date | null;
 };
-const createTaskMutation = gql`
-	mutation Task($name: String!, $date: DateTime) {
-		createTask(createTaskInput: { name: $name, date: $date }) {
-			id
-			name
-			completed
-			date
-		}
-	}
-`;
 const createTask = async ({ name, date }: CreateTask): Promise<Task> => {
-	const data = await client.request(createTaskMutation, { name, date });
-	const task: Task = await data.createTask;
+	const res = await api.post("/tasks", { name, date });
+	const task: Task = await res.data;
 	return task;
 };
 
 /* UPDATE TASK */
-const updateTaskMutation = gql`
-	mutation Task($id: Float!, $name: String!, $completed: Boolean!, $date: DateTime) {
-		updateTask(updateTaskInput: { id: $id, name: $name, completed: $completed, date: $date }) {
-			id
-			name
-			completed
-			date
-		}
-	}
-`;
 const updateTask = async (newTask: Task): Promise<Task> => {
-	const data = await client.request(updateTaskMutation, newTask);
-	const task: Task = await data.updateTask;
+	const res = await api.put("/tasks", newTask);
+	const task: Task = await res.data;
 	return task;
 };
 
 /* FIND ONE */
-const findOneQuery = gql`
-	query Task($id: Float!) {
-		task(id: $id) {
-			id
-			name
-			completed
-			date
-		}
-	}
-`;
 const findOneTask = async (id: number): Promise<Task> => {
-	const data = await client.request(findOneQuery, id);
-	const task: Task = await data.task;
+	const res = await api.get(`/tasks/${id}`);
+	const task: Task = await res.data;
 	return task;
 };
 

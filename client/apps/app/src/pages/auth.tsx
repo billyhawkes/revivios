@@ -8,7 +8,7 @@ const Auth = () => {
 	const { user, login } = useAuth();
 
 	const getAuth = async () => {
-		await router.push(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/github/callback`);
+		await router.push(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/github`);
 	};
 	const { token } = router.query;
 

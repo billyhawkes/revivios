@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useAuth } from "../../../services/hooks/useAuth";
-import XPBar from "../xp/XPBar";
+import XPBar from "../XP/XPBar";
 import Sidebar from "./Sidebar";
 
 interface Props {

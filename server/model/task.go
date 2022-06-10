@@ -14,7 +14,7 @@ type Task struct {
 	Date        *time.Time `json:"date"`
 }
 
-func FindAllTasks() ([]Task, error) {
+func FindAllTasks(userId uint64) ([]Task, error) {
 	tasks := []Task{}
 
 	if err := db.Find(&tasks).Error; err != nil {
@@ -24,21 +24,21 @@ func FindAllTasks() ([]Task, error) {
 	return tasks, nil
 }
 
-func CreateTask(task *Task) error {
+func CreateTask(task *Task, userId uint64) error {
 	if err := db.Create(&task).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func UpdateTask(task *Task) error {
+func UpdateTask(task *Task, userId uint64) error {
 	if err := db.Save(&task).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func FindOneTask(id *uint64) (Task, error) {
+func FindOneTask(id *uint64, userId uint64) (Task, error) {
 	var task Task
 
 	if err := db.First(&task, id).Error; err != nil {
@@ -47,7 +47,7 @@ func FindOneTask(id *uint64) (Task, error) {
 	return task, nil
 }
 
-func DeleteTask(id *uint64) (Task, error) {
+func DeleteTask(id *uint64, userId uint64) (Task, error) {
 	var task Task
 
 	if err := db.Clauses(clause.Returning{}).Delete(&task, id).Error; err != nil {

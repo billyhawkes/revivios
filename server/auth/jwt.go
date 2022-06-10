@@ -39,7 +39,7 @@ func JWTGuard(next func(w http.ResponseWriter, r *http.Request)) func(w http.Res
 			}
 
 			if claims, ok := token.Claims.(*JWTClaims); ok && token.Valid {
-				ctx := context.WithValue(r.Context(), "user_id", claims.ID)
+				ctx := context.WithValue(r.Context(), "userId", claims.ID)
 				next(w, r.WithContext(ctx))
 			} else {
 				log.Println(err.Error())

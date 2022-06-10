@@ -13,9 +13,7 @@ const Auth = () => {
 	const { token } = router.query;
 
 	useEffect(() => {
-		if (token) {
-			login(token);
-		}
+		login(token);
 	}, [router.isReady]);
 
 	useEffect(() => {

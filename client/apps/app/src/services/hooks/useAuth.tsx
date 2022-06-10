@@ -41,9 +41,10 @@ export const useProvideAuth = () => {
 		},
 	});
 
-	const login = (token: string) => {
-		// TODO: Have axios token
-		localStorage.setItem("access_token", `${token}`);
+	const login = (token?: string) => {
+		if (token) {
+			localStorage.setItem("access_token", `${token}`);
+		}
 		queryClient.invalidateQueries("user");
 	};
 

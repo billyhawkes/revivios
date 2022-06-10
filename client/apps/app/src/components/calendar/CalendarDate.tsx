@@ -24,10 +24,11 @@ const CalendarItem = ({ date, tasks }: Props) => {
 
 	return (
 		<div
+			ref={drop}
+			role={"Dustbin"}
 			className={`flex flex-col border-[1px] p-2 min-h-[120px] ${
 				isOver && canDrop && "bg-lightbackground"
 			}`}
-			ref={drop}
 		>
 			{dateNum}
 			{tasks.map((task) => (

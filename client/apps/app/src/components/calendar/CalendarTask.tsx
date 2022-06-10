@@ -28,7 +28,7 @@ const CalendarTask = ({ task }: Props) => {
 	}));
 
 	return (
-		<div className="my-1" ref={drag}>
+		<div className={`my-1 ${isDragging && "opacity-50"}`} ref={drag}>
 			<TaskItem key={task.id} task={task} />
 		</div>
 	);

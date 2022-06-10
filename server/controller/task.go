@@ -13,7 +13,10 @@ import (
 func Tasks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	tasks, err := model.FindAllTasks()
+	ctx := r.Context()
+	userId := ctx.Value("userId").(uint64)
+
+	tasks, err := model.FindAllTasks(userId)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
@@ -27,12 +30,15 @@ func TasksCreate(w http.ResponseWriter, r *http.Request) {
 
 	var newTask model.Task
 
+	ctx := r.Context()
+	userId := ctx.Value("userId").(uint64)
+
 	err := json.NewDecoder(r.Body).Decode(&newTask)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 	}
-	err = model.CreateTask(&newTask)
+	err = model.CreateTask(&newTask, userId)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
@@ -46,12 +52,15 @@ func TaskUpdate(w http.ResponseWriter, r *http.Request) {
 
 	var updateTask model.Task
 
+	ctx := r.Context()
+	userId := ctx.Value("userId").(uint64)
+
 	err := json.NewDecoder(r.Body).Decode(&updateTask)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 	}
-	err = model.UpdateTask(&updateTask)
+	err = model.UpdateTask(&updateTask, userId)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
@@ -63,6 +72,9 @@ func TaskUpdate(w http.ResponseWriter, r *http.Request) {
 func TaskDelete(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
+	ctx := r.Context()
+	userId := ctx.Value("userId").(uint64)
+
 	id := chi.URLParam(r, "id")
 	id_num, err := strconv.ParseUint(id, 10, 64)
 	if err != nil {
@@ -71,7 +83,7 @@ func TaskDelete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	task, err := model.DeleteTask(&id_num)
+	task, err := model.DeleteTask(&id_num, userId)
 	if err != nil {
 		w.WriteHeader(500)
 		w.Write([]byte(err.Error()))
@@ -83,6 +95,9 @@ func TaskDelete(w http.ResponseWriter, r *http.Request) {
 func TaskOne(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
+	ctx := r.Context()
+	userId := ctx.Value("userId").(uint64)
+
 	id := chi.URLParam(r, "id")
 	id_num, err := strconv.ParseUint(id, 10, 64)
 	if err != nil {
@@ -91,7 +106,7 @@ func TaskOne(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	task, err := model.FindOneTask(&id_num)
+	task, err := model.FindOneTask(&id_num, userId)
 	if err != nil {
 		w.WriteHeader(500)
 		w.Write([]byte(err.Error()))

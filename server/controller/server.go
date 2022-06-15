@@ -29,13 +29,14 @@ func Start() {
 	r.Group(func(r chi.Router) {
 		// Tasks
 		r.Get("/tasks", auth.JWTGuard(Tasks))
-		r.Post("/tasks", auth.JWTGuard(TasksCreate))
-		r.Put("/tasks", auth.JWTGuard(TaskUpdate))
-		r.Delete("/tasks/{id}", auth.JWTGuard(TaskDelete))
-		r.Get("/tasks/{id}", auth.JWTGuard(TaskOne))
+		r.Post("/tasks", auth.JWTGuard(CreateTask))
+		r.Put("/tasks", auth.JWTGuard(UpdateTask))
+		r.Delete("/tasks/{id}", auth.JWTGuard(DeleteTask))
+		r.Get("/tasks/{id}", auth.JWTGuard(FindOneTask))
 
 		// User
-		r.Get("/user", auth.JWTGuard(UserOne))
+		r.Get("/user", auth.JWTGuard(FindOneUser))
+		r.Put("/user", auth.JWTGuard(UpdateUser))
 	})
 
 	// Github

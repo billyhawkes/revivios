@@ -16,12 +16,23 @@ func FindOneUser(id *uint64) (User, error) {
 	return user, nil
 }
 
-func CreateUser(name string, email string) (User, error) {
-	user := User{Name: name, Email: email}
-
-	if err := db.Create(&user).Error; err != nil {
+func UpdateUser(user User) (User, error) {
+	if err := db.Model(&user).Omit("ID", "XP").Updates(&user).Error; err != nil {
 		return user, err
 	}
+	return user, nil
+}
 
+func FindOrCreateUser(name string, email string) (User, error) {
+	var user User
+
+	// Find
+	if err := db.Where("email = ?", email).First(&user).Error; err != nil {
+		// Create
+		if err := db.Create(&user).Error; err != nil {
+			return user, err
+		}
+		return user, err
+	}
 	return user, nil
 }

@@ -34,7 +34,7 @@ func GithubCallback(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(err.Error()))
 	}
 
-	createdUser, err := model.CreateUser(user.Name, user.Email)
+	createdUser, err := model.FindOrCreateUser(user.Name, user.Email)
 	if err != nil {
 		log.Println(err.Error())
 		w.WriteHeader(http.StatusInternalServerError)

@@ -25,7 +25,7 @@ func Tasks(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(tasks)
 }
 
-func TasksCreate(w http.ResponseWriter, r *http.Request) {
+func CreateTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	var newTask model.Task
@@ -47,7 +47,7 @@ func TasksCreate(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(newTask)
 }
 
-func TaskUpdate(w http.ResponseWriter, r *http.Request) {
+func UpdateTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	var updateTask model.Task
@@ -69,7 +69,7 @@ func TaskUpdate(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(updateTask)
 }
 
-func TaskDelete(w http.ResponseWriter, r *http.Request) {
+func DeleteTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	ctx := r.Context()
@@ -92,7 +92,7 @@ func TaskDelete(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(task)
 }
 
-func TaskOne(w http.ResponseWriter, r *http.Request) {
+func FindOneTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	ctx := r.Context()

@@ -38,7 +38,8 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 	}
-	err = model.CreateTask(&newTask, userId)
+	newTask.UserID = userId
+	err = model.CreateTask(&newTask)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
@@ -60,7 +61,8 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 	}
-	err = model.UpdateTask(&updateTask, userId)
+	updateTask.UserID = userId
+	err = model.UpdateTask(&updateTask)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))

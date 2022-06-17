@@ -23,7 +23,7 @@ const findUserRequest = async (): Promise<User> => {
 };
 
 /* UPDATE */
-const updateUserRequest = async (newUser: User["name"]): Promise<User> => {
+const updateUserRequest = async (newUser: User): Promise<User> => {
 	const res = await api.put("/user", newUser);
 	const user: User = await res.data;
 	return user;
@@ -49,9 +49,9 @@ export const useProvideAuth = () => {
 	};
 
 	const logout = () => {
-		router.push("/auth");
 		setUser(null);
 		localStorage.removeItem("access_token");
+		router.push("/auth");
 	};
 
 	const update = useMutation(updateUserRequest, {

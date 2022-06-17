@@ -60,11 +60,12 @@ services:
             - data
         build:
             context: .
-            dockerfile: ./apps/server/Dockerfile
+            dockerfile: ./server/Dockerfile
         depends_on:
             - db
         labels:
             - "traefik.enable=true"
+            - "traefik.http.services.revivios-server.loadbalancer.server.port=8000"
             - "traefik.http.routers.server.entrypoints=server"
             - "traefik.http.routers.server.rule=Host(`server.revivios.com`)"
             - "traefik.http.routers.server.middlewares=redirect@file"

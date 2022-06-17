@@ -18,7 +18,8 @@ const Settings: NextPage = () => {
 	} = useForm({ defaultValues: { name: user ? user.name : "" } });
 
 	const handleChanges: SubmitHandler<FormInput> = async (data) => {
-		await update.mutate(data);
+		const updateUser = { ...user, ...data };
+		await update.mutate(updateUser);
 	};
 
 	const cancelChanges = () => {

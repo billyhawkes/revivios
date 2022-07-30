@@ -1,16 +1,57 @@
 import type { NextPage } from "next";
-import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
-import { useForm } from "react-hook-form";
-import { trpc } from "../utils/trpc";
+import Link from "next/link";
+import Image from "next/image";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { Menu, Transition } from "@headlessui/react";
+import { Fragment } from "react";
+
+const ProfileButton = ({ image }: { image?: string }) => {
+	return (
+		<Menu as="div" className="relative">
+			<Menu.Button>
+				{image ? (
+					<Image
+						width="30"
+						height="30"
+						src={image}
+						className="rounded-full"
+						alt="Profile image."
+					/>
+				) : (
+					<div className="w-[30px] h-[30px] rounded-full bg-primary"></div>
+				)}
+			</Menu.Button>
+			<Transition
+				as={Fragment}
+				enter="transition ease-out duration-100"
+				enterFrom="transform opacity-0 scale-95"
+				enterTo="transform opacity-100 scale-100"
+				leave="transition ease-in duration-75"
+				leaveFrom="transform opacity-100 scale-100"
+				leaveTo="transform opacity-0 scale-95"
+			>
+				<Menu.Items className="absolute right-0 origin-top-right bg-white w-48 rounded text-textdark text-start p-1">
+					<Menu.Item>
+						{({ active }) => (
+							<button
+								className={`${
+									active && "bg-primary text-white"
+								} w-full py-2 px-4 text-start rounded`}
+								onClick={() => signOut()}
+							>
+								Sign out
+							</button>
+						)}
+					</Menu.Item>
+				</Menu.Items>
+			</Transition>
+		</Menu>
+	);
+};
 
 const Home: NextPage = () => {
 	const { data: session } = useSession();
-	const { register, handleSubmit } = useForm<{ name: string }>();
-	const { data: tasks } = trpc.useQuery(["tasks.findAll"]);
-	const createTask = trpc.useMutation("tasks.create");
-
-	const onSubmit = (data: { name: string }) => createTask.mutate(data);
 
 	return (
 		<>
@@ -20,17 +61,52 @@ const Home: NextPage = () => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<main className="container">
-				<button onClick={() => signIn()}>Sign in</button>
-				{session?.user?.email}
-			</main>
+			<header className="h-[80px] flex justify-between items-center max-w-screen-lg m-auto px-4">
+				<div className="flex items-center">
+					<Image src={"/logo.svg"} alt="Revivios logo" width="30" height="30" />
+					<h3 className="ml-4 mt-1">REVIVIOS</h3>
+				</div>
+				{session?.user ? (
+					<div className="flex items-center">
+						<Link href="/app">
+							<a className="mr-4 hover:underline ">Dashboard</a>
+						</Link>
+						{session.user.image && <ProfileButton image={session.user.image} />}
+					</div>
+				) : (
+					<button className="btn" onClick={() => signIn()}>
+						Get Started
+					</button>
+				)}
+			</header>
 
-			<form onSubmit={handleSubmit(onSubmit)}>
-				<input placeholder="Task name!" {...register("name")} />
-				<input type="submit" />
-			</form>
-
-			{tasks ? tasks.map((task) => <div key={task.id}>{task.name}</div>) : null}
+			<section className="max-w-screen-lg m-auto mt-24 p-4 text-center">
+				<h1 className="text-7xl font-bold leading-normal">
+					Your Life <span className="text-primary">Gamified.</span>
+				</h1>
+				<p className="opacity-80 leading-loose mb-12">
+					Revivios is a new and upcoming productivity and life management tool that brings
+					common video game tropes to life!
+				</p>
+				<div className="flex justify-center">
+					{session?.user ? (
+						<Link href="/app">
+							<a target="_blank" className="btn">
+								Dashboard
+							</a>
+						</Link>
+					) : (
+						<button className="btn" onClick={() => signIn()}>
+							Get Started
+						</button>
+					)}
+					<Link href="https://github.com/billyhawkes/revivios">
+						<a target="_blank" className="gbtn ml-4">
+							View on Github
+						</a>
+					</Link>
+				</div>
+			</section>
 		</>
 	);
 };

@@ -13,13 +13,13 @@ datasource db {
 }
 
 model Task {
-    id          String   @id @default(cuid())
+    id          String    @id @default(cuid())
     userId      String
     name        String
     description String
     completed   Boolean
-    date        DateTime
-    user        User     @relation(fields: [userId], references: [id])
+    date        DateTime?
+    user        User      @relation(fields: [userId], references: [id])
 }
 
 // Necessary for Next auth

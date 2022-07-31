@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+	html,
+	body {
+		@apply bg-background text-white font-body p-0 m-0;
+	}
+}
+
+@layer components {
+	.btn {
+		@apply flex justify-center items-center w-fit bg-primary px-4 pt-1 rounded hover:bg-opacity-90 h-10 align-middle cursor-pointer;
+	}
+	.gbtn {
+		@apply flex justify-center items-center w-fit h-10 px-4 pt-1 border-primary border-2 rounded hover:bg-primary hover:bg-opacity-5 cursor-pointer;
+	}
+}
+
+@layer utilities {
+}

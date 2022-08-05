@@ -80,7 +80,7 @@ const Home: NextPage = () => {
 				)}
 			</header>
 
-			<section className="max-w-screen-lg m-auto mt-24 p-4 text-center">
+			<section className="max-w-screen-lg m-auto mt-24 p-4 text-center m-8">
 				<h1 className="text-7xl font-bold leading-normal">
 					Your Life <span className="text-primary">Gamified.</span>
 				</h1>

@@ -9,7 +9,7 @@ export const TaskSchema = z.object({
 		.max(25, { message: "Name must be 25 or less characters." }),
 	description: z.string(),
 	completed: z.boolean().default(false),
-	date: z.date().nullish(),
+	date: z.date().nullable(),
 });
 
 export const CreateTaskSchema = z.object({

@@ -1,12 +1,8 @@
 import type { NextPage } from "next";
+import { signIn } from "next-auth/react";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
-	const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
-	const router = useRouter();
-
 	return (
 		<>
 			<Head>
@@ -16,8 +12,7 @@ const Home: NextPage = () => {
 			</Head>
 
 			<main>
-				<p>{hello.data?.greeting}</p>
-				<button onClick={() => router.push("/auth/signin")}>Sign in</button>
+				<button onClick={() => signIn()}>Sign in</button>
 			</main>
 		</>
 	);

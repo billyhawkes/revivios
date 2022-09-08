@@ -12,11 +12,17 @@ datasource db {
     referentialIntegrity = "prisma"
 }
 
-model Example {
-    id String @id @default(cuid())
+model Task {
+    id          String    @id @default(cuid())
+    userId      String
+    name        String
+    description String
+    date        DateTime?
+    completed   Boolean
+    User        User      @relation(fields: [userId], references: [id])
 }
 
-// Necessary for Next auth
+// AUTHENTICATION
 model Account {
     id                String  @id @default(cuid())
     userId            String
@@ -51,6 +57,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    tasks         Task[]
 }
 
 model VerificationToken {

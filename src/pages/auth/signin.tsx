@@ -16,7 +16,7 @@ const SignIn = ({ providers }: InferGetServerSidePropsType<typeof getServerSideP
 				{providers &&
 					Object.values(providers).map((provider) => (
 						<button
-							onClick={() => signIn(provider.id, { callbackUrl: "/app/inbox" })}
+							onClick={() => signIn(provider.id, { callbackUrl: "/app/tasks/inbox" })}
 							key={provider.name}
 							className="border rounded bg-background mr-4 h-12 w-20 text-center flex justify-center items-center"
 						>

@@ -16,9 +16,6 @@ if (!_serverEnv.success) {
   throw new Error("Invalid environment variables");
 }
 
-/**
- * Validate that server-side environment variables are not exposed to the client.
- */
 for (let key of Object.keys(_serverEnv.data)) {
   if (key.startsWith("NEXT_PUBLIC_")) {
     console.warn("❌ You are exposing a server-side env-variable:", key);

@@ -1,3 +1,4 @@
+// @ts-check
 import { env } from "./src/env/server.mjs";
 
 /**
@@ -9,13 +10,10 @@ import { env } from "./src/env/server.mjs";
  * @constraint {{import('next').NextConfig}}
  */
 function defineNextConfig(config) {
-	return config;
+  return config;
 }
 
 export default defineNextConfig({
-	reactStrictMode: true,
-	swcMinify: true,
-	images: {
-		domains: ["avatars.githubusercontent.com"],
-	},
+  reactStrictMode: true,
+  swcMinify: true,
 });

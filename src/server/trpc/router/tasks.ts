@@ -14,9 +14,15 @@ const tasksRouter = t.router({
 			})
 	),
 	create: authedProcedure.input(CreateTaskSchema).mutation(
-		async ({ ctx, input: { name, description, date } }) =>
+		async ({ ctx, input: { name, date } }) =>
 			await ctx.prisma.task.create({
-				data: { userId: ctx.session.user.id, name, description, date, completed: false },
+				data: {
+					userId: ctx.session.user.id,
+					name,
+					description: "",
+					date,
+					completed: false,
+				},
 			})
 	),
 	update: authedProcedure.input(UpdateTaskSchema).mutation(

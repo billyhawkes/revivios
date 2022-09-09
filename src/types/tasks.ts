@@ -3,16 +3,15 @@ import { z } from "zod";
 export const TaskSchema = z.object({
 	id: z.string().cuid(),
 	userId: z.string().cuid(),
-	name: z.string().max(256),
+	name: z.string().max(256).min(1),
 	description: z.string().max(1000),
-	date: z.date().optional(),
+	date: z.date().nullable(),
 	completed: z.boolean().default(false),
 });
 export type Task = z.input<typeof TaskSchema>;
 
 export const CreateTaskSchema = z.object({
 	name: TaskSchema.shape.name,
-	description: TaskSchema.shape.description,
 	date: TaskSchema.shape.date,
 });
 export type CreateTask = z.input<typeof CreateTaskSchema>;

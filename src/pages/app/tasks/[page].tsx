@@ -14,6 +14,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import DatePicker from "../../../components/DatePicker";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import Sidebar from "../../../components/Sidebar";
+import dayjs from "dayjs";
 
 const TaskItem = ({ task }: { task: Task }) => {
 	const utils = trpc.useContext();
@@ -128,7 +130,7 @@ type Props = {
 	session: Session;
 };
 
-const Tasks = ({}: /*page, session*/ InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Tasks = ({ page }: /*session*/ InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const utils = trpc.useContext();
 	const { data: tasks } = trpc.tasks.findAll.useQuery();
 	const createTask = trpc.tasks.create.useMutation({
@@ -148,31 +150,48 @@ const Tasks = ({}: /*page, session*/ InferGetServerSidePropsType<typeof getServe
 		reset();
 	};
 
+	if (page !== "inbox" && page !== "today") return <Sidebar />;
+
+	const inbox = tasks.filter((task) => task.date === null && !task.completed);
+
 	return (
-		<main className="px-24 py-12">
-			<form
-				onSubmit={handleSubmit(onSubmit)}
-				className="bg-lightbackground flex rounded border border-lightbackground"
-				autoComplete="off"
-			>
-				<input
-					type="text"
-					id="name"
-					{...register("name")}
-					placeholder="Task name"
-					className="bg-lightbackground w-full py-2 px-4 outline-none mt-1"
-				/>
-				<Controller
-					name="date"
-					control={control}
-					render={({ field: { onChange, value } }) => (
-						<DatePicker onChange={onChange} value={value} />
-					)}
-				/>
-				<button type="submit" />
-			</form>
-			{tasks && tasks.map((task) => <TaskItem key={task.id} task={task} />)}
-		</main>
+		<>
+			<Sidebar />
+			<main className="pr-16 pl-[104px] py-12">
+				<h1 className="text-3xl mb-8">{page.charAt(0).toUpperCase() + page.slice(1)}</h1>
+				<form
+					onSubmit={handleSubmit(onSubmit)}
+					className="bg-lightbackground flex rounded border border-lightbackground"
+					autoComplete="off"
+				>
+					<input
+						type="text"
+						id="name"
+						{...register("name")}
+						placeholder="Task name"
+						className="bg-lightbackground w-full py-2 px-4 outline-none mt-1"
+					/>
+					<Controller
+						name="date"
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<DatePicker onChange={onChange} value={value} />
+						)}
+					/>
+					<button type="submit" />
+				</form>
+				{tasks &&
+					page === "inbox" &&
+					tasks
+						.filter((task) => task.date === null && !task.completed)
+						.map((task) => <TaskItem key={task.id} task={task} />)}
+				{tasks &&
+					page === "today" &&
+					tasks
+						.filter((task) => dayjs(task.date).isToday() && !task.completed)
+						.map((task) => <TaskItem key={task.id} task={task} />)}
+			</main>
+		</>
 	);
 };
 

@@ -2,7 +2,7 @@ import { autoPlacement, useFloating } from "@floating-ui/react-dom";
 import dayjs from "dayjs";
 import isToday from "dayjs/plugin/isToday";
 import React from "react";
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { FaCalendarAlt } from "react-icons/fa";
 import useOnClickOutside from "../hooks/useOnClickOutside";
 

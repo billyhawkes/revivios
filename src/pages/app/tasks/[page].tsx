@@ -6,34 +6,33 @@ import { trpc } from "../../../utils/trpc";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { zodResolver } from "@hookform/resolvers/zod";
 import DatePicker from "../../../components/DatePicker";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { useState } from "react";
+import { FaTrashAlt } from "react-icons/fa";
 
-const useTasks = () => {
-	const utils = trpc.useContext();
+// const useTasks = () => {
+// 	const utils = trpc.useContext();
 
-	const createTask = trpc.tasks.create.useMutation({
-		onSuccess: (task) => utils.tasks.findAll.setData((old) => (old ? [...old, task] : [])),
-	});
+// 	const createTask = trpc.tasks.create.useMutation({
+// 		onSuccess: (task) => utils.tasks.findAll.setData((old) => (old ? [...old, task] : [])),
+// 	});
 
-	const updateTask = trpc.tasks.update.useMutation({
-		onSuccess: (task) =>
-			utils.tasks.findAll.setData((old) =>
-				old ? old.map((oldTask) => (oldTask.id === task.id ? task : oldTask)) : []
-			),
-	});
+// 	const updateTask = trpc.tasks.update.useMutation({
+// 		onSuccess: (task) =>
+// 			utils.tasks.findAll.setData((old) =>
+// 				old ? old.map((oldTask) => (oldTask.id === task.id ? task : oldTask)) : []
+// 			),
+// 	});
 
-	const deleteTask = trpc.tasks.delete.useMutation({
-		onSuccess: ({ id }) =>
-			utils.tasks.findAll.setData((old) => (old ? old.filter((task) => task.id !== id) : [])),
-	});
+// 	const deleteTask = trpc.tasks.delete.useMutation({
+// 		onSuccess: ({ id }) =>
+// 			utils.tasks.findAll.setData((old) => (old ? old.filter((task) => task.id !== id) : [])),
+// 	});
 
-	const tasks = trpc.tasks.findAll.useQuery();
+// 	const tasks = trpc.tasks.findAll.useQuery();
 
-	const task = (id: string) => trpc.tasks.findOne.useQuery({ id });
+// 	const task = (id: string) => trpc.tasks.findOne.useQuery({ id });
 
-	return { deleteTask, createTask, updateTask, tasks, task };
-};
+// 	return { deleteTask, createTask, updateTask, tasks, task };
+// };
 
 const TaskItem = ({ task }: { task: Task }) => {
 	const utils = trpc.useContext();
@@ -78,7 +77,7 @@ type Props = {
 	session: Session;
 };
 
-const Tasks = ({ page, session }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Tasks = ({}: /*page, session*/ InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const utils = trpc.useContext();
 	const { data: tasks } = trpc.tasks.findAll.useQuery();
 	const createTask = trpc.tasks.create.useMutation({

@@ -116,7 +116,11 @@ const ReadableDate = ({ date }: { date: Date }) => {
 	const overdue = dayjs(date).isBefore(dayjs().startOf("day"));
 
 	return (
-		<div className={`items-center pt-1 whitespace-nowrap ${overdue && "text-error"}`}>
+		<div
+			className={`items-center pt-1 whitespace-nowrap ${
+				overdue && "text-error"
+			} w-12 text-center`}
+		>
 			{SHORTMONTHS[dayjs(date).month()]} {dayjs(date).date()}
 		</div>
 	);
@@ -150,7 +154,7 @@ const DatePicker = ({ value, onChange }: Props) => {
 			{open && (
 				<div
 					ref={floating}
-					className="bg-lightbackground mt-2 p-6 rounded shadow-lg w-64"
+					className="bg-lightbackground mt-2 p-6 rounded shadow-lg w-64 z-20"
 					style={{
 						position: strategy,
 						top: y ?? 0,
@@ -178,6 +182,7 @@ const DatePicker = ({ value, onChange }: Props) => {
 						{dates &&
 							dates.map((date, index) => {
 								const day = dayjs(date).date();
+								const isToday = dayjs(date).isToday();
 								if (date)
 									return (
 										<div
@@ -186,10 +191,10 @@ const DatePicker = ({ value, onChange }: Props) => {
 											className={`flex justify-center items-center w-8 h-8 rounded cursor-pointer hover:opacity-80 ${
 												value && day === dayjs(value).date()
 													? "bg-primary"
-													: day === dayjs().date()
-													? "border border-[#ccc]"
 													: ""
-											}`}
+											}
+											${isToday ? "border border-[#ccc]" : ""}
+											`}
 										>
 											{dayjs(date).date()}
 										</div>

@@ -23,4 +23,4 @@ export const UpdateTaskSchema = z.object({
 	date: TaskSchema.shape.date,
 	completed: TaskSchema.shape.completed,
 });
-export type UpdateTask = z.input<typeof CreateTaskSchema>;
+export type UpdateTask = z.input<typeof UpdateTaskSchema>;

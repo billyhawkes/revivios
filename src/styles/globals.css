@@ -11,10 +11,10 @@
 
 @layer components {
 	.btn {
-		@apply flex justify-center items-center w-fit bg-primary px-4 pt-1 rounded hover:bg-opacity-90 h-10 align-middle cursor-pointer;
+		@apply flex justify-center items-center w-fit bg-primary px-3 pt-1 rounded hover:bg-opacity-90 h-8 align-middle cursor-pointer;
 	}
 	.gbtn {
-		@apply flex justify-center items-center w-fit h-10 px-4 pt-1 border-primary border-2 rounded hover:bg-primary hover:bg-opacity-5 cursor-pointer;
+		@apply flex justify-center items-center w-fit h-8 px-3 pt-1 border-primary border-2 rounded hover:bg-primary hover:bg-opacity-5 cursor-pointer;
 	}
 }
 

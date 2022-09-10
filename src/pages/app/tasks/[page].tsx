@@ -152,8 +152,6 @@ const Tasks = ({ page }: /*session*/ InferGetServerSidePropsType<typeof getServe
 
 	if (page !== "inbox" && page !== "today") return <Sidebar />;
 
-	const inbox = tasks.filter((task) => task.date === null && !task.completed);
-
 	return (
 		<>
 			<Sidebar />

@@ -18,6 +18,7 @@ export type CreateTask = z.input<typeof CreateTaskSchema>;
 
 export const UpdateTaskSchema = z.object({
 	id: TaskSchema.shape.id,
+	userId: TaskSchema.shape.userId,
 	name: TaskSchema.shape.name,
 	description: TaskSchema.shape.description,
 	date: TaskSchema.shape.date,

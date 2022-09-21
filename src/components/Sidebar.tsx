@@ -15,13 +15,13 @@ const Sidebar = () => {
 						icon={<FaBriefcase size="24" />}
 					/>
 				</div>
-				{/* <div className="flex flex-col">
+				<div className="flex flex-col">
 					<SidebarIcon
 						name="Calendar"
 						href="/app/tasks/calendar"
 						icon={<FaCalendarAlt size="24" />}
 					/>
-				</div> */}
+				</div>
 			</div>
 			<div className="flex flex-col">
 				<SidebarIcon name="Settings" href="/app/settings" icon={<FaCog size="24" />} />

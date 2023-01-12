@@ -87,6 +87,51 @@ const Home: NextPage = () => {
             </div>
           </div>
         </section>
+        {/* Features Section */}
+        <section className="mt-20 flex w-full max-w-screen-lg flex-col px-4 sm:mt-32 sm:flex-row sm:px-8">
+          <div className="flex h-80 items-center justify-center rounded-xl bg-background sm:mt-0 sm:w-[45%]">
+            <p>Image of Calendar</p>
+          </div>
+          <div className="items-left mt-8 flex w-full flex-col justify-center sm:ml-10 sm:mt-0 sm:w-[55%]">
+            <h4 className="mt-4 w-full text-center text-xl font-bold sm:mt-0 sm:text-left sm:text-2xl md:text-3xl">
+              Fully built in calendar for all your planning needs.
+            </h4>
+            <p className="mt-6 text-center opacity-80 sm:mt-8 sm:text-left">
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industrys
+            </p>
+          </div>
+        </section>
+        <section className="mt-10 flex w-full max-w-screen-lg flex-col-reverse px-4 sm:mt-20 sm:flex-row sm:px-8">
+          <div className="items-left mt-8 flex w-full flex-col justify-center sm:mr-10 sm:mt-0 sm:w-[55%]">
+            <h4 className="mt-4 w-full text-center text-xl font-bold sm:mt-0 sm:text-left sm:text-2xl md:text-3xl">
+              Fully built in calendar for all your planning needs.
+            </h4>
+            <p className="mt-6 text-center opacity-80 sm:mt-8 sm:text-left">
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industrys
+            </p>
+          </div>
+          <div className="flex h-80 items-center justify-center rounded-xl bg-background sm:mt-0 sm:w-[45%]">
+            <p>Image of Calendar</p>
+          </div>
+        </section>
+        <footer className="mt-20 flex h-16 w-full bg-background px-4 sm:px-8">
+          <div className="m-auto flex w-full max-w-screen-lg items-center justify-between">
+            <p className="mt-1">© Billy Hawkes</p>
+            <Link
+              href="https://github.com/billyhawkes/revivios"
+              target="_blank"
+              className="mt-1 text-lg"
+            >
+              <FaGithub size={35} className="transition hover:opacity-80" />
+            </Link>
+            {/* TODO add terms of service */}
+            <Link href="/" className="mt-1 hover:underline">
+              Terms of service
+            </Link>
+          </div>
+        </footer>
       </main>
     </>
   );

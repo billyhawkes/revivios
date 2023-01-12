@@ -1,12 +1,13 @@
 import { type NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaChartLine } from "react-icons/fa";
 
 const Home: NextPage = () => {
   return (
     <>
       <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-background to-lightbackground text-white">
+        {/* Header */}
         <header className="flex h-20 w-full max-w-screen-xl items-center justify-between px-4 sm:px-8">
           <Link href="/" className="flex items-center justify-center ">
             <Image
@@ -32,6 +33,7 @@ const Home: NextPage = () => {
             </Link>
           </nav>
         </header>
+        {/* Hero section */}
         <section className="mt-20 flex w-full max-w-screen-lg flex-col px-4 sm:mt-40 sm:flex-row sm:px-8">
           <div className="flex w-full flex-col items-start sm:mr-10 sm:w-[55%]">
             <h2 className="w-full text-center text-5xl font-bold sm:text-left sm:text-6xl md:text-7xl">
@@ -54,6 +56,35 @@ const Home: NextPage = () => {
           </div>
           <div className="mt-8 flex h-32 items-center justify-center rounded-xl bg-lightbackground sm:mt-0 sm:h-auto sm:w-[45%]">
             <p>Image of character leveling up</p>
+          </div>
+        </section>
+        {/* Benefits section */}
+        <section className="mt-20 flex max-w-screen-lg flex-col items-start px-4 sm:mt-32 sm:px-8">
+          <div className="flex flex-col items-center justify-center md:grid md:grid-cols-3 md:gap-6">
+            <div className="flex flex-col items-center md:items-start">
+              <FaChartLine size={30} />
+              <h3 className="mt-4 text-2xl">Increased Motivation</h3>
+              <p className="mt-4 text-center opacity-80 sm:mt-6 md:text-left">
+                All base UI elements are made using Nested Symbols and shared
+                styles that are logically with one another.
+              </p>
+            </div>
+            <div className="mt-12 flex flex-col items-center md:mt-0 md:items-start">
+              <FaChartLine size={30} />
+              <h3 className="mt-4 text-2xl">Open Source</h3>
+              <p className="mt-4 text-center opacity-80 sm:mt-6 md:text-left">
+                All base UI elements are made using Nested Symbols and shared
+                styles that are logically with one another.
+              </p>
+            </div>
+            <div className="mt-12 flex flex-col items-center md:mt-0 md:items-start">
+              <FaChartLine size={30} />
+              <h3 className="mt-4 text-2xl">Productivity</h3>
+              <p className="mt-4 text-center opacity-80 sm:mt-6 md:text-left">
+                All base UI elements are made using Nested Symbols and shared
+                styles that are logically with one another.
+              </p>
+            </div>
           </div>
         </section>
       </main>

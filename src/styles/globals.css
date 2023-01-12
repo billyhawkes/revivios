@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html,
+  body {
+    @apply m-0 p-0 text-white;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply flex rounded bg-primary px-4 pt-2 pb-1 text-lg transition hover:bg-opacity-80;
+  }
+}
+
+@layer utilities {
+}

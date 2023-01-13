@@ -28,7 +28,7 @@ const Home: NextPage = () => {
             >
               <FaGithub size={40} className="transition hover:opacity-80" />
             </Link>
-            <Link href="/" className="btn ml-4">
+            <Link href="/auth" className="btn ml-4">
               Get Started
             </Link>
           </nav>
@@ -48,7 +48,7 @@ const Home: NextPage = () => {
               like a video game.
             </h4>
             <Link
-              href="/"
+              href="/auth"
               className="md:btn invisible h-0 w-0 md:visible md:mt-10 md:h-auto md:w-auto"
             >
               Get Started
@@ -147,7 +147,7 @@ const Home: NextPage = () => {
           <h2 className="text-center text-3xl sm:text-4xl">
             Take your productivity to the next level now!
           </h2>
-          <Link href="/" className="btn mt-10">
+          <Link href="/auth" className="btn mt-10">
             Get Started
           </Link>
         </section>

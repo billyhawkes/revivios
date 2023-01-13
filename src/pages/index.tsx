@@ -116,6 +116,32 @@ const Home: NextPage = () => {
             <p>Image of Calendar</p>
           </div>
         </section>
+        {/* Future section */}
+        <section className="mt-20 flex max-w-screen-lg flex-col items-center px-4 sm:mt-32 sm:px-8">
+          <h2 className="mb-3 text-center text-4xl">Future</h2>
+          <div className="mb-6 h-1 w-20 rounded bg-white" />
+          <div className="flex flex-col items-center justify-center md:grid md:grid-cols-3 md:gap-6">
+            <div className="flex flex-col items-center">
+              <h3 className="mt-4 text-center text-2xl">Dailies</h3>
+              <p className="mt-4 text-center opacity-80 sm:mt-6">
+                Ability to track your habits and view them on a week and month
+                basis.
+              </p>
+            </div>
+            <div className="mt-12 flex flex-col items-center md:mt-0">
+              <h3 className="mt-4 text-center text-2xl">Multiplayer</h3>
+              <p className="mt-4 text-center opacity-80 sm:mt-6">
+                Grow together with friends and compete in challenges.
+              </p>
+            </div>
+            <div className="mt-12 flex flex-col items-center md:mt-0">
+              <h3 className="mt-4 text-center text-2xl">Quests</h3>
+              <p className="mt-4 text-center opacity-80 sm:mt-6">
+                Accept community quests on the quest board to improve yourself.
+              </p>
+            </div>
+          </div>
+        </section>
         <footer className="mt-20 flex h-16 w-full bg-background px-4 sm:px-8">
           <div className="m-auto flex w-full max-w-screen-lg items-center justify-between">
             <p className="mt-1">© Billy Hawkes</p>

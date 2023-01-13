@@ -142,6 +142,15 @@ const Home: NextPage = () => {
             </div>
           </div>
         </section>
+        {/* Final call to action */}
+        <section className="mt-20 flex max-w-screen-lg flex-col items-center justify-center px-4 sm:mt-32 sm:px-8">
+          <h2 className="text-center text-3xl sm:text-4xl">
+            Take your productivity to the next level now!
+          </h2>
+          <Link href="/" className="btn mt-10">
+            Get Started
+          </Link>
+        </section>
         <footer className="mt-20 flex h-16 w-full bg-background px-4 sm:px-8">
           <div className="m-auto flex w-full max-w-screen-lg items-center justify-between">
             <p className="mt-1">© Billy Hawkes</p>

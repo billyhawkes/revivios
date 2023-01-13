@@ -94,26 +94,26 @@ const Home: NextPage = () => {
           </div>
           <div className="items-left mt-8 flex w-full flex-col justify-center sm:ml-10 sm:mt-0 sm:w-[55%]">
             <h4 className="mt-4 w-full text-center text-xl font-bold sm:mt-0 sm:text-left sm:text-2xl md:text-3xl">
-              Fully built in calendar for all your planning needs.
+              Fully built in calendar
             </h4>
             <p className="mt-6 text-center opacity-80 sm:mt-8 sm:text-left">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industrys
+              Tasks integrate into the calendar and allow you to plan ahead and
+              achieve all your goals!
             </p>
           </div>
         </section>
         <section className="mt-10 flex w-full max-w-screen-lg flex-col-reverse px-4 sm:mt-20 sm:flex-row sm:px-8">
           <div className="items-left mt-8 flex w-full flex-col justify-center sm:mr-10 sm:mt-0 sm:w-[55%]">
             <h4 className="mt-4 w-full text-center text-xl font-bold sm:mt-0 sm:text-left sm:text-2xl md:text-3xl">
-              Fully built in calendar for all your planning needs.
+              Gamified Productivity
             </h4>
             <p className="mt-6 text-center opacity-80 sm:mt-8 sm:text-left">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industrys
+              Every time you complete tasks you gain xp and level up in the app
+              and real life!
             </p>
           </div>
           <div className="flex h-80 items-center justify-center rounded-xl bg-background sm:mt-0 sm:w-[45%]">
-            <p>Image of Calendar</p>
+            <p>Image of Task and Level up</p>
           </div>
         </section>
         {/* Future section */}

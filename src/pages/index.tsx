@@ -54,7 +54,7 @@ const Home: NextPage = () => {
               Get Started
             </Link>
           </div>
-          <div className="mt-8 flex h-32 items-center justify-center rounded-xl bg-lightbackground sm:mt-0 sm:h-auto sm:w-[45%]">
+          <div className="mt-8 flex h-40 items-center justify-center rounded-xl bg-lightbackground sm:mt-0 sm:h-auto sm:w-[45%]">
             <p>Image of character leveling up</p>
           </div>
         </section>
@@ -65,24 +65,24 @@ const Home: NextPage = () => {
               <FaChartLine size={30} />
               <h3 className="mt-4 text-2xl">Increased Motivation</h3>
               <p className="mt-4 text-center opacity-80 sm:mt-6 md:text-left">
-                All base UI elements are made using Nested Symbols and shared
-                styles that are logically with one another.
+                By using game mechanics in your task manager you can be more
+                driven to reach your goals.
               </p>
             </div>
             <div className="mt-12 flex flex-col items-center md:mt-0 md:items-start">
               <FaChartLine size={30} />
               <h3 className="mt-4 text-2xl">Open Source</h3>
               <p className="mt-4 text-center opacity-80 sm:mt-6 md:text-left">
-                All base UI elements are made using Nested Symbols and shared
-                styles that are logically with one another.
+                Revivios is open source allowing the community to share and grow
+                the app together.
               </p>
             </div>
             <div className="mt-12 flex flex-col items-center md:mt-0 md:items-start">
               <FaChartLine size={30} />
               <h3 className="mt-4 text-2xl">Productivity</h3>
               <p className="mt-4 text-center opacity-80 sm:mt-6 md:text-left">
-                All base UI elements are made using Nested Symbols and shared
-                styles that are logically with one another.
+                Built with productivity in mind, Revivios aims to provide the
+                necessary tools with a gaming experience.
               </p>
             </div>
           </div>

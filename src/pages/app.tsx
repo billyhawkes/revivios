@@ -1,14 +1,15 @@
 import type { GetServerSideProps } from "next";
 import { unstable_getServerSession } from "next-auth";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
+import { api } from "../utils/api";
 import { authOptions } from "./api/auth/[...nextauth]";
 
 const App = () => {
-  const { data: session } = useSession();
+  const { data } = api.tasks.hello.useQuery({ text: "Billy" });
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-background to-lightbackground text-white">
-      {session?.user?.email}
-      {session?.user?.name}
+      {data?.greeting}
       <button
         onClick={() => {
           signOut({ callbackUrl: "/" }).catch(() => console.error("ERROR"));

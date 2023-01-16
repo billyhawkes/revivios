@@ -3,13 +3,66 @@ import { unstable_getServerSession } from "next-auth";
 import { signOut } from "next-auth/react";
 import { api } from "../utils/api";
 import { authOptions } from "./api/auth/[...nextauth]";
+import { useForm } from "react-hook-form";
+import type { CreateTask } from "../types/tasks";
+import { CreateTaskSchema } from "../types/tasks";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FaCalendar } from "react-icons/fa";
 
-const App = () => {
-  const { data } = api.tasks.hello.useQuery({ text: "Billy" });
+const AddTask = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<CreateTask>({
+    defaultValues: { name: "", description: "", date: undefined },
+    resolver: zodResolver(CreateTaskSchema),
+  });
+  const utils = api.useContext();
+  const createTaskMutation = api.tasks.create.useMutation({
+    onSuccess: async () => {
+      await utils.tasks.getTasks.invalidate();
+    },
+  });
+
+  const onSubmit = (data: CreateTask) => {
+    createTaskMutation.mutate(data, {
+      onSuccess: () => reset(),
+    });
+  };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-background to-lightbackground text-white">
-      {data?.greeting}
+    <form
+      className="flex h-12 w-full max-w-screen-lg rounded bg-lightbackground"
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <input
+        type="text"
+        id="name"
+        autoComplete="off"
+        {...register("name")}
+        className="flex-1 rounded-l bg-lightbackground px-3 outline-none"
+      />
+      <input type="submit" value="" />
+      {/* Add Date Picker */}
+      <button className="flex items-center justify-center px-3">
+        <FaCalendar size={20} />
+      </button>
+    </form>
+  );
+};
+
+const App = () => {
+  const { data: tasks } = api.tasks.getTasks.useQuery();
+
+  return (
+    <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-background to-lightbackground p-8 text-white">
+      <AddTask />
+      {tasks?.map((task) => (
+        <div key={task.id}>{task.name}</div>
+      ))}
       <button
         onClick={() => {
           signOut({ callbackUrl: "/" }).catch(() => console.error("ERROR"));

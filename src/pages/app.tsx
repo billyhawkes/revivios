@@ -4,10 +4,18 @@ import { signOut } from "next-auth/react";
 import { api } from "../utils/api";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { useForm } from "react-hook-form";
-import type { CreateTask } from "../types/tasks";
+import type { CreateTask, Task } from "../types/tasks";
 import { CreateTaskSchema } from "../types/tasks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FaCalendar } from "react-icons/fa";
+
+const TaskItem = ({ task }: { task: Task }) => {
+  return (
+    <div className="mt-3 w-full max-w-screen-lg rounded border-[2px] border-lightbackground bg-background px-3 py-2">
+      {task.name}
+    </div>
+  );
+};
 
 const AddTask = () => {
   const {
@@ -34,7 +42,7 @@ const AddTask = () => {
 
   return (
     <form
-      className="flex h-12 w-full max-w-screen-lg rounded bg-lightbackground"
+      className="mb-2 flex h-12 w-full max-w-screen-lg rounded bg-lightbackground"
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       onSubmit={handleSubmit(onSubmit)}
     >
@@ -58,10 +66,10 @@ const App = () => {
   const { data: tasks } = api.tasks.getTasks.useQuery();
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-background to-lightbackground p-8 text-white">
+    <main className="flex min-h-screen flex-col items-center bg-background p-8 text-white">
       <AddTask />
       {tasks?.map((task) => (
-        <div key={task.id}>{task.name}</div>
+        <TaskItem key={task.id} task={task} />
       ))}
       <button
         onClick={() => {

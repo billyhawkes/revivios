@@ -3,11 +3,13 @@ import { unstable_getServerSession } from "next-auth";
 import { signOut } from "next-auth/react";
 import { api } from "../utils/api";
 import { authOptions } from "./api/auth/[...nextauth]";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import type { CreateTask, Task } from "../types/tasks";
 import { CreateTaskSchema } from "../types/tasks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FaCalendar } from "react-icons/fa";
+import { useState } from "react";
+import DatePicker from "../components/DatePicker";
 
 const TaskItem = ({ task }: { task: Task }) => {
   return (
@@ -22,6 +24,7 @@ const AddTask = () => {
     register,
     handleSubmit,
     formState: { errors },
+    control,
     reset,
   } = useForm<CreateTask>({
     defaultValues: { name: "", description: "", date: undefined },
@@ -55,9 +58,14 @@ const AddTask = () => {
       />
       <input type="submit" value="" />
       {/* Add Date Picker */}
-      <button className="flex items-center justify-center px-3">
-        <FaCalendar size={20} />
-      </button>
+      <Controller
+        name="date"
+        control={control}
+        rules={{ required: true }}
+        render={({ field: { onChange, value } }) => (
+          <DatePicker onChange={onChange} value={value} />
+        )}
+      />
     </form>
   );
 };

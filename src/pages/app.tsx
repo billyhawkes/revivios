@@ -7,15 +7,68 @@ import { Controller, useForm } from "react-hook-form";
 import type { CreateTask, Task } from "../types/tasks";
 import { CreateTaskSchema } from "../types/tasks";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FaCalendar } from "react-icons/fa";
-import { useState } from "react";
 import DatePicker from "../components/DatePicker";
+import { useState } from "react";
+import { FaCheckSquare, FaRegSquare, FaTimes } from "react-icons/fa";
+import useOnClickOutside from "../hooks/useOnClickOutside";
+import React from "react";
+
+const TaskModal = ({ task, close }: { task: Task; close: () => void }) => {
+  const ref = React.createRef<HTMLDivElement>();
+  useOnClickOutside(ref, close);
+
+  return (
+    <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-30">
+      <div
+        className="w-full max-w-screen-md rounded-xl bg-lightbackground"
+        ref={ref}
+      >
+        <div className="flex justify-between border-b-[2px] border-background px-8 py-4">
+          <div className="flex items-center">
+            {task.completed ? (
+              <FaCheckSquare size={20} className="cursor-pointer" />
+            ) : (
+              <FaRegSquare size={20} className="cursor-pointer" />
+            )}
+            <DatePicker
+              value={new Date()}
+              onChange={(date) => console.log(date)}
+            />
+          </div>
+          <FaTimes onClick={close} className="cursor-pointer" size={20} />
+        </div>
+        <div className="p-8">
+          <h2 className="text-2xl">{task.name}</h2>
+          <h2 className="mt-2 text-lg opacity-80">{task.description}</h2>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const TaskItem = ({ task }: { task: Task }) => {
+  const [modal, setModal] = useState(false);
   return (
-    <div className="mt-3 w-full max-w-screen-lg rounded border-[2px] border-lightbackground bg-background px-3 py-2">
-      {task.name}
-    </div>
+    <>
+      <div className="mt-3 flex h-12 w-full max-w-screen-md justify-start rounded border-[2px] border-lightbackground bg-background">
+        {task.completed ? (
+          <span className="flex w-10 cursor-pointer items-center justify-center">
+            <FaCheckSquare size={20} />
+          </span>
+        ) : (
+          <span className="flex w-10 cursor-pointer items-center justify-center">
+            <FaRegSquare size={20} />
+          </span>
+        )}
+        <span
+          className="flex flex-1 cursor-pointer items-center"
+          onClick={() => setModal(true)}
+        >
+          <p className="mt-1">{task.name}</p>
+        </span>
+      </div>
+      {modal ? <TaskModal task={task} close={() => setModal(false)} /> : null}
+    </>
   );
 };
 
@@ -27,7 +80,7 @@ const AddTask = () => {
     control,
     reset,
   } = useForm<CreateTask>({
-    defaultValues: { name: "", description: "", date: undefined },
+    defaultValues: { name: "", date: null },
     resolver: zodResolver(CreateTaskSchema),
   });
   const utils = api.useContext();
@@ -40,15 +93,21 @@ const AddTask = () => {
   const onSubmit = (data: CreateTask) => {
     createTaskMutation.mutate(data, {
       onSuccess: () => reset(),
+      onError: (e) => console.error(e),
     });
   };
 
   return (
     <form
-      className="mb-2 flex h-12 w-full max-w-screen-lg rounded bg-lightbackground"
+      className="mb-2 flex h-12 w-full max-w-screen-md rounded bg-lightbackground"
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       onSubmit={handleSubmit(onSubmit)}
     >
+      {errors.name ? (
+        <p>Name {errors.name.message}</p>
+      ) : errors.date ? (
+        <p>Date {errors.date.message}</p>
+      ) : null}
       <input
         type="text"
         id="name"
@@ -57,7 +116,6 @@ const AddTask = () => {
         className="flex-1 rounded-l bg-lightbackground px-3 outline-none"
       />
       <input type="submit" value="" />
-      {/* Add Date Picker */}
       <Controller
         name="date"
         control={control}
@@ -83,7 +141,7 @@ const App = () => {
         onClick={() => {
           signOut({ callbackUrl: "/" }).catch(() => console.error("ERROR"));
         }}
-        className="btn"
+        className="btn mt-20"
       >
         Sign out
       </button>

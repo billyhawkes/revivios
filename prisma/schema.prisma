@@ -20,6 +20,7 @@ model Task {
     userId      String
     name        String
     description String
+    completed   Boolean
     date        DateTime?
     createdAt   DateTime  @default(now())
     updatedAt   DateTime  @updatedAt

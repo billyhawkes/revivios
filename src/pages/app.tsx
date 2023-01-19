@@ -9,7 +9,7 @@ import { CreateTaskSchema } from "../types/tasks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import DatePicker from "../components/DatePicker";
 import { useState } from "react";
-import { FaCheckSquare, FaRegSquare, FaTimes } from "react-icons/fa";
+import { FaCheckSquare, FaRegSquare, FaTimes, FaTrash } from "react-icons/fa";
 import useOnClickOutside from "../hooks/useOnClickOutside";
 import React from "react";
 
@@ -22,10 +22,20 @@ const useUpdateTask = () => {
   });
 };
 
+const useDeleteTask = () => {
+  const utils = api.useContext();
+  return api.tasks.delete.useMutation({
+    onSuccess: async () => {
+      await utils.tasks.getTasks.invalidate();
+    },
+  });
+};
+
 const TaskModal = ({ task, close }: { task: Task; close: () => void }) => {
   const ref = React.createRef<HTMLDivElement>();
   useOnClickOutside(ref, close);
   const updateTaskMutation = useUpdateTask();
+  const deleteTaskMutation = useDeleteTask();
 
   return (
     <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-30">
@@ -33,12 +43,26 @@ const TaskModal = ({ task, close }: { task: Task; close: () => void }) => {
         className="w-full max-w-screen-md rounded-xl bg-lightbackground"
         ref={ref}
       >
-        <div className="flex justify-between border-b-[2px] border-background px-8 py-4">
+        <div className="flex justify-between border-b-[2px] border-background py-2 px-4">
           <div className="flex items-center">
             {task.completed ? (
-              <FaCheckSquare size={20} className="cursor-pointer" />
+              <button
+                className="mr-2 flex items-center justify-center p-2"
+                onClick={() =>
+                  updateTaskMutation.mutate({ ...task, completed: false })
+                }
+              >
+                <FaCheckSquare size={20} />
+              </button>
             ) : (
-              <FaRegSquare size={20} className="cursor-pointer" />
+              <button
+                className="mr-2 flex items-center justify-center p-2"
+                onClick={() =>
+                  updateTaskMutation.mutate({ ...task, completed: true })
+                }
+              >
+                <FaRegSquare size={20} />
+              </button>
             )}
             <DatePicker
               value={task.date}
@@ -47,9 +71,19 @@ const TaskModal = ({ task, close }: { task: Task; close: () => void }) => {
               }
             />
           </div>
-          <FaTimes onClick={close} className="cursor-pointer" size={20} />
+          <div className="flex items-center">
+            <button
+              onClick={() => deleteTaskMutation.mutate({ id: task.id })}
+              className="mr-2 flex items-center justify-center p-2"
+            >
+              <FaTrash size={18} className="cursor-pointer" />
+            </button>
+            <button onClick={close} className="p-2">
+              <FaTimes className="cursor-pointer" size={20} />
+            </button>
+          </div>
         </div>
-        <div className="p-8">
+        <div className="p-6">
           <h2 className="text-2xl">{task.name}</h2>
           <h2 className="mt-2 text-lg opacity-80">{task.description}</h2>
         </div>
@@ -66,23 +100,23 @@ const TaskItem = ({ task }: { task: Task }) => {
     <>
       <div className="mt-3 flex h-12 w-full max-w-screen-md justify-start rounded border-[2px] border-lightbackground bg-background">
         {task.completed ? (
-          <span
+          <button
             className="flex w-10 cursor-pointer items-center justify-center"
             onClick={() =>
               updateTaskMutation.mutate({ ...task, completed: false })
             }
           >
             <FaCheckSquare size={20} />
-          </span>
+          </button>
         ) : (
-          <span
+          <button
             className="flex w-10 cursor-pointer items-center justify-center"
             onClick={() =>
               updateTaskMutation.mutate({ ...task, completed: true })
             }
           >
             <FaRegSquare size={20} />
-          </span>
+          </button>
         )}
         <span
           className="flex flex-1 cursor-pointer items-center"

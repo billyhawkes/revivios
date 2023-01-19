@@ -28,3 +28,8 @@ export const UpdateTaskSchema = z.object({
   completed: TaskSchema.shape.completed,
 });
 export type UpdateTask = z.infer<typeof UpdateTaskSchema>;
+
+export const DeleteTaskSchema = z.object({
+  id: TaskSchema.shape.id,
+});
+export type DeleteTask = z.infer<typeof DeleteTaskSchema>;

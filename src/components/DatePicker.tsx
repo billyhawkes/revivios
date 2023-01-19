@@ -1,4 +1,12 @@
-import { autoPlacement, useFloating } from "@floating-ui/react-dom";
+import {
+  autoPlacement,
+  autoUpdate,
+  detectOverflow,
+  flip,
+  Placement,
+  shift,
+  useFloating,
+} from "@floating-ui/react-dom";
 import dayjs from "dayjs";
 import React from "react";
 import { useState } from "react";
@@ -23,17 +31,17 @@ const ReadableDate = ({ date }: { date: Date }) => {
 type Props = {
   value: Date | null;
   onChange: (date: Date) => void;
+  allowedPlacements?: Placement[];
 };
 
 const DatePicker = ({ value, onChange }: Props) => {
   const { dates, monthYear, nextMonth, prevMonth } = useCalendar(value);
   const [open, setOpen] = useState<boolean>(false);
   const ref = React.createRef<HTMLDivElement>();
-  const { x, y, reference, floating, strategy } = useFloating({
-    placement: "bottom-end",
-    middleware: [
-      autoPlacement({ allowedPlacements: ["top-end", "bottom-end"] }),
-    ],
+  const { x, y, refs, strategy } = useFloating({
+    whileElementsMounted: autoUpdate,
+    placement: "bottom",
+    middleware: [flip(), shift({ padding: 32 })],
   });
 
   useOnClickOutside(ref, () => setOpen(false));
@@ -41,16 +49,16 @@ const DatePicker = ({ value, onChange }: Props) => {
   return (
     <div className="relative flex" ref={ref}>
       <div
-        className="z-10 flex flex-1 cursor-pointer items-center justify-center px-4"
+        className="z-10 flex flex-1 cursor-pointer items-center justify-center p-2"
         onClick={() => setOpen(!open)}
-        ref={reference}
+        ref={refs.setReference}
       >
-        {value ? <ReadableDate date={value} /> : <FaCalendarAlt />}
+        {value ? <ReadableDate date={value} /> : <FaCalendarAlt size={18} />}
       </div>
       {open && (
         <div
-          ref={floating}
-          className="z-20 mt-2 w-64 rounded bg-lightbackground p-6 shadow-lg"
+          ref={refs.setFloating}
+          className="z-20 mt-2 w-64 rounded border-[2px] border-background bg-lightbackground p-6 shadow-xl"
           style={{
             position: strategy,
             top: y ?? 0,

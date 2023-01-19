@@ -1,37 +1,20 @@
-import type { GetServerSideProps } from "next";
-import { unstable_getServerSession } from "next-auth";
-import { signOut } from "next-auth/react";
-import { api } from "../utils/api";
-import { authOptions } from "./api/auth/[...nextauth]";
-import { Controller, useForm } from "react-hook-form";
-import type { CreateTask, Task } from "../types/tasks";
-import { CreateTaskSchema } from "../types/tasks";
 import { zodResolver } from "@hookform/resolvers/zod";
-import DatePicker from "../components/DatePicker";
-import { useState } from "react";
+import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { FaCheckSquare, FaRegSquare, FaTimes, FaTrash } from "react-icons/fa";
+import { useDeleteTask, useUpdateTask } from "../hooks/tasks";
 import useOnClickOutside from "../hooks/useOnClickOutside";
-import React from "react";
+import { CreateTask, CreateTaskSchema, Task } from "../types/tasks";
+import { api } from "../utils/api";
+import DatePicker from "./DatePicker";
 
-const useUpdateTask = () => {
-  const utils = api.useContext();
-  return api.tasks.update.useMutation({
-    onSuccess: async () => {
-      await utils.tasks.getTasks.invalidate();
-    },
-  });
-};
-
-const useDeleteTask = () => {
-  const utils = api.useContext();
-  return api.tasks.delete.useMutation({
-    onSuccess: async () => {
-      await utils.tasks.getTasks.invalidate();
-    },
-  });
-};
-
-const TaskModal = ({ task, close }: { task: Task; close: () => void }) => {
+export const TaskModal = ({
+  task,
+  close,
+}: {
+  task: Task;
+  close: () => void;
+}) => {
   const ref = React.createRef<HTMLDivElement>();
   useOnClickOutside(ref, close);
   const updateTaskMutation = useUpdateTask();
@@ -92,13 +75,13 @@ const TaskModal = ({ task, close }: { task: Task; close: () => void }) => {
   );
 };
 
-const TaskItem = ({ task }: { task: Task }) => {
+export const TaskItem = ({ task }: { task: Task }) => {
   const [modal, setModal] = useState(false);
   const updateTaskMutation = useUpdateTask();
 
   return (
     <>
-      <div className="mt-3 flex h-12 w-full max-w-screen-md justify-start rounded border-[2px] border-lightbackground bg-background">
+      <div className="mt-3 flex h-12 w-full justify-start rounded border-[2px] border-lightbackground bg-background">
         {task.completed ? (
           <button
             className="flex w-10 cursor-pointer items-center justify-center"
@@ -130,7 +113,7 @@ const TaskItem = ({ task }: { task: Task }) => {
   );
 };
 
-const AddTask = () => {
+export const AddTask = () => {
   const {
     register,
     handleSubmit,
@@ -157,7 +140,7 @@ const AddTask = () => {
 
   return (
     <form
-      className="mb-2 flex h-12 w-full max-w-screen-md rounded bg-lightbackground"
+      className="mb-2 flex h-12 w-full rounded bg-lightbackground"
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       onSubmit={handleSubmit(onSubmit)}
     >
@@ -185,49 +168,3 @@ const AddTask = () => {
     </form>
   );
 };
-
-const App = () => {
-  const { data: tasks } = api.tasks.getTasks.useQuery();
-
-  return (
-    <main className="flex min-h-screen flex-col items-center bg-background p-8 text-white">
-      <AddTask />
-      {tasks?.map((task) => (
-        <TaskItem key={task.id} task={task} />
-      ))}
-      <button
-        onClick={() => {
-          signOut({ callbackUrl: "/" }).catch(() => console.error("ERROR"));
-        }}
-        className="btn mt-20"
-      >
-        Sign out
-      </button>
-    </main>
-  );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {
-      session,
-    },
-  };
-};
-
-export default App;

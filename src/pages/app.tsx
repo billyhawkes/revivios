@@ -13,6 +13,15 @@ import { FaCheckSquare, FaRegSquare, FaTimes } from "react-icons/fa";
 import useOnClickOutside from "../hooks/useOnClickOutside";
 import React from "react";
 
+const useUpdateTask = () => {
+  const utils = api.useContext();
+  return api.tasks.update.useMutation({
+    onSuccess: async () => {
+      await utils.tasks.getTasks.invalidate();
+    },
+  });
+};
+
 const TaskModal = ({ task, close }: { task: Task; close: () => void }) => {
   const ref = React.createRef<HTMLDivElement>();
   useOnClickOutside(ref, close);
@@ -48,15 +57,27 @@ const TaskModal = ({ task, close }: { task: Task; close: () => void }) => {
 
 const TaskItem = ({ task }: { task: Task }) => {
   const [modal, setModal] = useState(false);
+  const updateTaskMutation = useUpdateTask();
+
   return (
     <>
       <div className="mt-3 flex h-12 w-full max-w-screen-md justify-start rounded border-[2px] border-lightbackground bg-background">
         {task.completed ? (
-          <span className="flex w-10 cursor-pointer items-center justify-center">
+          <span
+            className="flex w-10 cursor-pointer items-center justify-center"
+            onClick={() =>
+              updateTaskMutation.mutate({ ...task, completed: false })
+            }
+          >
             <FaCheckSquare size={20} />
           </span>
         ) : (
-          <span className="flex w-10 cursor-pointer items-center justify-center">
+          <span
+            className="flex w-10 cursor-pointer items-center justify-center"
+            onClick={() =>
+              updateTaskMutation.mutate({ ...task, completed: true })
+            }
+          >
             <FaRegSquare size={20} />
           </span>
         )}

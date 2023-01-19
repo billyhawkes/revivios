@@ -19,3 +19,12 @@ export const CreateTaskSchema = z.object({
   date: TaskSchema.shape.date,
 });
 export type CreateTask = z.infer<typeof CreateTaskSchema>;
+
+export const UpdateTaskSchema = z.object({
+  id: TaskSchema.shape.id,
+  name: TaskSchema.shape.name,
+  description: TaskSchema.shape.description,
+  date: TaskSchema.shape.date,
+  completed: TaskSchema.shape.completed,
+});
+export type UpdateTask = z.infer<typeof UpdateTaskSchema>;

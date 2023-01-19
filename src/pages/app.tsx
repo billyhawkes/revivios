@@ -25,6 +25,7 @@ const useUpdateTask = () => {
 const TaskModal = ({ task, close }: { task: Task; close: () => void }) => {
   const ref = React.createRef<HTMLDivElement>();
   useOnClickOutside(ref, close);
+  const updateTaskMutation = useUpdateTask();
 
   return (
     <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-30">
@@ -40,8 +41,10 @@ const TaskModal = ({ task, close }: { task: Task; close: () => void }) => {
               <FaRegSquare size={20} className="cursor-pointer" />
             )}
             <DatePicker
-              value={new Date()}
-              onChange={(date) => console.log(date)}
+              value={task.date}
+              onChange={(date) =>
+                updateTaskMutation.mutate({ ...task, date: date })
+              }
             />
           </div>
           <FaTimes onClick={close} className="cursor-pointer" size={20} />

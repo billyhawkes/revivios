@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
+    previewFeatures = ["extendedWhereUnique"]
 }
 
 datasource db {
@@ -20,6 +21,7 @@ model Task {
     userId      String
     name        String
     description String
+    completed   Boolean
     date        DateTime?
     createdAt   DateTime  @default(now())
     updatedAt   DateTime  @updatedAt

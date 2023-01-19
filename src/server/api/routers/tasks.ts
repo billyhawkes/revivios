@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { CreateTaskSchema } from "../../../types/tasks";
+import {
+  CreateTaskSchema,
+  DeleteTaskSchema,
+  UpdateTaskSchema,
+} from "../../../types/tasks";
 
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 
@@ -20,8 +24,28 @@ export const tasksRouter = createTRPCRouter({
   create: protectedProcedure
     .input(CreateTaskSchema)
     .mutation(async ({ ctx, input }) => {
-      await ctx.prisma.task.create({
-        data: { ...input, userId: ctx.session.user.id },
+      return await ctx.prisma.task.create({
+        data: {
+          ...input,
+          description: "",
+          completed: false,
+          userId: ctx.session.user.id,
+        },
+      });
+    }),
+  update: protectedProcedure
+    .input(UpdateTaskSchema)
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.task.update({
+        where: { id: input.id, userId: ctx.session.user.id },
+        data: { ...input },
+      });
+    }),
+  delete: protectedProcedure
+    .input(DeleteTaskSchema)
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.task.delete({
+        where: { id: input.id, userId: ctx.session.user.id },
       });
     }),
 });

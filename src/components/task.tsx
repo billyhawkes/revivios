@@ -38,7 +38,10 @@ export const TaskModal = ({
   });
 
   const onSubmit = (data: UpdateTask) => {
-    updateTaskMutation.mutate(data, { onSuccess: () => reset(data) });
+    reset(data);
+    updateTaskMutation.mutate(data, {
+      onError: () => reset(task),
+    });
   };
 
   return (
@@ -126,7 +129,11 @@ export const TaskItem = ({ task }: { task: Task }) => {
 
   return (
     <>
-      <div className="mt-3 flex h-12 w-full justify-start rounded border-[2px] border-lightbackground bg-background">
+      <div
+        className={`mt-3 flex h-12 w-full justify-start rounded border-[2px] border-lightbackground bg-background ${
+          task.completed ? "opacity-50" : ""
+        }`}
+      >
         {task.completed ? (
           <button
             className="flex w-10 cursor-pointer items-center justify-center"
@@ -178,9 +185,9 @@ export const AddTask = ({ defaultDate }: { defaultDate: Date | null }) => {
   const createTaskMutation = useCreateTask();
 
   const onSubmit = (data: CreateTask) => {
+    reset();
     createTaskMutation.mutate(data, {
-      onSuccess: () => reset(),
-      onError: (e) => console.error(e),
+      onError: () => reset(data, { keepDefaultValues: true }),
     });
   };
 

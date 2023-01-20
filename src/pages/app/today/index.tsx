@@ -27,6 +27,9 @@ const App = () => {
         <AddTask defaultDate={new Date()} />
         {tasks
           ?.filter((task) => isToday(task.date))
+          .sort(
+            (task1, task2) => Number(task1.completed) - Number(task2.completed)
+          )
           .map((task) => (
             <TaskItem key={task.id} task={task} />
           ))}

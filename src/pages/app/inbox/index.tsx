@@ -14,12 +14,10 @@ const App = () => {
       <Sidebar />
       <div className="w-full max-w-screen-md">
         <h2 className="mb-6 text-2xl">Inbox</h2>
-        <AddTask />
-        {tasks
-          ?.filter((task) => task.date === null)
-          .map((task) => (
-            <TaskItem key={task.id} task={task} />
-          ))}
+        <AddTask defaultDate={null} />
+        {tasks?.map((task) => (
+          <TaskItem key={task.id} task={task} />
+        ))}
       </div>
     </main>
   );

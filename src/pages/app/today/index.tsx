@@ -24,7 +24,7 @@ const App = () => {
       <Sidebar />
       <div className="w-full max-w-screen-md">
         <h2 className="mb-6 text-2xl">Today</h2>
-        <AddTask />
+        <AddTask defaultDate={new Date()} />
         {tasks
           ?.filter((task) => isToday(task.date))
           .map((task) => (

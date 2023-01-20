@@ -2,12 +2,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FaCheckSquare, FaRegSquare, FaTimes, FaTrash } from "react-icons/fa";
-import { useDeleteTask, useUpdateTask } from "../hooks/tasks";
+import { useCreateTask, useDeleteTask, useUpdateTask } from "../hooks/tasks";
 import useOnClickOutside from "../hooks/useOnClickOutside";
 import type { CreateTask, Task, UpdateTask } from "../types/tasks";
 import { UpdateTaskSchema } from "../types/tasks";
 import { CreateTaskSchema } from "../types/tasks";
-import { api } from "../utils/api";
 import DatePicker from "./DatePicker";
 
 export const TaskModal = ({
@@ -153,13 +152,19 @@ export const TaskItem = ({ task }: { task: Task }) => {
         >
           <p className="mt-1">{task.name}</p>
         </span>
+        <DatePicker
+          value={task.date}
+          onChange={(date) =>
+            updateTaskMutation.mutate({ ...task, date: date })
+          }
+        />
       </div>
       {modal ? <TaskModal task={task} close={() => setModal(false)} /> : null}
     </>
   );
 };
 
-export const AddTask = () => {
+export const AddTask = ({ defaultDate }: { defaultDate: Date | null }) => {
   const {
     register,
     handleSubmit,
@@ -167,15 +172,10 @@ export const AddTask = () => {
     control,
     reset,
   } = useForm<CreateTask>({
-    defaultValues: { name: "", date: null },
+    defaultValues: { name: "", date: defaultDate },
     resolver: zodResolver(CreateTaskSchema),
   });
-  const utils = api.useContext();
-  const createTaskMutation = api.tasks.create.useMutation({
-    onSuccess: async () => {
-      await utils.tasks.getTasks.invalidate();
-    },
-  });
+  const createTaskMutation = useCreateTask();
 
   const onSubmit = (data: CreateTask) => {
     createTaskMutation.mutate(data, {

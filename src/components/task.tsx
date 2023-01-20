@@ -1,46 +1,53 @@
-import type { GetServerSideProps } from "next";
-import { unstable_getServerSession } from "next-auth";
-import { signOut } from "next-auth/react";
-import { api } from "../utils/api";
-import { authOptions } from "./api/auth/[...nextauth]";
-import { Controller, useForm } from "react-hook-form";
-import type { CreateTask, Task } from "../types/tasks";
-import { CreateTaskSchema } from "../types/tasks";
 import { zodResolver } from "@hookform/resolvers/zod";
-import DatePicker from "../components/DatePicker";
-import { useState } from "react";
+import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { FaCheckSquare, FaRegSquare, FaTimes, FaTrash } from "react-icons/fa";
+import { useCreateTask, useDeleteTask, useUpdateTask } from "../hooks/tasks";
 import useOnClickOutside from "../hooks/useOnClickOutside";
-import React from "react";
+import type { CreateTask, Task, UpdateTask } from "../types/tasks";
+import { UpdateTaskSchema } from "../types/tasks";
+import { CreateTaskSchema } from "../types/tasks";
+import DatePicker from "./DatePicker";
 
-const useUpdateTask = () => {
-  const utils = api.useContext();
-  return api.tasks.update.useMutation({
-    onSuccess: async () => {
-      await utils.tasks.getTasks.invalidate();
-    },
-  });
-};
-
-const useDeleteTask = () => {
-  const utils = api.useContext();
-  return api.tasks.delete.useMutation({
-    onSuccess: async () => {
-      await utils.tasks.getTasks.invalidate();
-    },
-  });
-};
-
-const TaskModal = ({ task, close }: { task: Task; close: () => void }) => {
+export const TaskModal = ({
+  task,
+  close,
+}: {
+  task: Task;
+  close: () => void;
+}) => {
   const ref = React.createRef<HTMLDivElement>();
   useOnClickOutside(ref, close);
   const updateTaskMutation = useUpdateTask();
   const deleteTaskMutation = useDeleteTask();
 
+  const {
+    register,
+    handleSubmit,
+    formState: { isDirty },
+    reset,
+  } = useForm<UpdateTask>({
+    defaultValues: {
+      id: task.id,
+      name: task.name,
+      description: task.description,
+      date: task.date,
+      completed: task.completed,
+    },
+    resolver: zodResolver(UpdateTaskSchema),
+  });
+
+  const onSubmit = (data: UpdateTask) => {
+    reset(data);
+    updateTaskMutation.mutate(data, {
+      onError: () => reset(task),
+    });
+  };
+
   return (
-    <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-30">
+    <div className="fixed left-0 top-0 z-20 flex h-full w-full items-center justify-center bg-black bg-opacity-30 py-8 pl-10">
       <div
-        className="w-full max-w-screen-md rounded-xl bg-lightbackground"
+        className="flex h-full w-full max-w-screen-md flex-col rounded-xl bg-lightbackground"
         ref={ref}
       >
         <div className="flex justify-between border-b-[2px] border-background py-2 px-4">
@@ -83,22 +90,50 @@ const TaskModal = ({ task, close }: { task: Task; close: () => void }) => {
             </button>
           </div>
         </div>
-        <div className="p-6">
-          <h2 className="text-2xl">{task.name}</h2>
-          <h2 className="mt-2 text-lg opacity-80">{task.description}</h2>
-        </div>
+        <form
+          className="flex flex-1 flex-col p-6"
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <input
+            className="mt-2 rounded bg-lightbackground text-xl outline-none"
+            {...register("name")}
+            autoComplete="off"
+            placeholder="Name"
+          />
+          <textarea
+            className="my-4 flex-1 rounded bg-lightbackground text-lg opacity-80 outline-none"
+            {...register("description")}
+            placeholder="Description"
+            autoComplete="off"
+          />
+          {isDirty ? (
+            <div className="flex justify-end">
+              <button className="gbtn mr-4" onClick={() => reset()}>
+                Cancel
+              </button>
+              <button type="submit" className="btn">
+                Save
+              </button>
+            </div>
+          ) : null}
+        </form>
       </div>
     </div>
   );
 };
 
-const TaskItem = ({ task }: { task: Task }) => {
+export const TaskItem = ({ task }: { task: Task }) => {
   const [modal, setModal] = useState(false);
   const updateTaskMutation = useUpdateTask();
 
   return (
     <>
-      <div className="mt-3 flex h-12 w-full max-w-screen-md justify-start rounded border-[2px] border-lightbackground bg-background">
+      <div
+        className={`mt-3 flex h-12 w-full justify-start rounded border-[2px] border-lightbackground bg-background ${
+          task.completed ? "opacity-50" : ""
+        }`}
+      >
         {task.completed ? (
           <button
             className="flex w-10 cursor-pointer items-center justify-center"
@@ -124,13 +159,19 @@ const TaskItem = ({ task }: { task: Task }) => {
         >
           <p className="mt-1">{task.name}</p>
         </span>
+        <DatePicker
+          value={task.date}
+          onChange={(date) =>
+            updateTaskMutation.mutate({ ...task, date: date })
+          }
+        />
       </div>
       {modal ? <TaskModal task={task} close={() => setModal(false)} /> : null}
     </>
   );
 };
 
-const AddTask = () => {
+export const AddTask = ({ defaultDate }: { defaultDate: Date | null }) => {
   const {
     register,
     handleSubmit,
@@ -138,26 +179,21 @@ const AddTask = () => {
     control,
     reset,
   } = useForm<CreateTask>({
-    defaultValues: { name: "", date: null },
+    defaultValues: { name: "", date: defaultDate },
     resolver: zodResolver(CreateTaskSchema),
   });
-  const utils = api.useContext();
-  const createTaskMutation = api.tasks.create.useMutation({
-    onSuccess: async () => {
-      await utils.tasks.getTasks.invalidate();
-    },
-  });
+  const createTaskMutation = useCreateTask();
 
   const onSubmit = (data: CreateTask) => {
+    reset();
     createTaskMutation.mutate(data, {
-      onSuccess: () => reset(),
-      onError: (e) => console.error(e),
+      onError: () => reset(data, { keepDefaultValues: true }),
     });
   };
 
   return (
     <form
-      className="mb-2 flex h-12 w-full max-w-screen-md rounded bg-lightbackground"
+      className="mb-2 flex h-12 w-full rounded bg-lightbackground"
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       onSubmit={handleSubmit(onSubmit)}
     >
@@ -185,49 +221,3 @@ const AddTask = () => {
     </form>
   );
 };
-
-const App = () => {
-  const { data: tasks } = api.tasks.getTasks.useQuery();
-
-  return (
-    <main className="flex min-h-screen flex-col items-center bg-background p-8 text-white">
-      <AddTask />
-      {tasks?.map((task) => (
-        <TaskItem key={task.id} task={task} />
-      ))}
-      <button
-        onClick={() => {
-          signOut({ callbackUrl: "/" }).catch(() => console.error("ERROR"));
-        }}
-        className="btn mt-20"
-      >
-        Sign out
-      </button>
-    </main>
-  );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {
-      session,
-    },
-  };
-};
-
-export default App;

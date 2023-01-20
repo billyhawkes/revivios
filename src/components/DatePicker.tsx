@@ -1,12 +1,5 @@
-import {
-  autoPlacement,
-  autoUpdate,
-  detectOverflow,
-  flip,
-  Placement,
-  shift,
-  useFloating,
-} from "@floating-ui/react-dom";
+import type { Placement } from "@floating-ui/react-dom";
+import { autoUpdate, flip, shift, useFloating } from "@floating-ui/react-dom";
 import dayjs from "dayjs";
 import React from "react";
 import { useState } from "react";
@@ -49,7 +42,7 @@ const DatePicker = ({ value, onChange }: Props) => {
   return (
     <div className="relative flex" ref={ref}>
       <div
-        className="z-10 flex flex-1 cursor-pointer items-center justify-center p-2"
+        className="z-10 flex min-w-[40px] flex-1 cursor-pointer items-center justify-center p-2"
         onClick={() => setOpen(!open)}
         ref={refs.setReference}
       >

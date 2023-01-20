@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { FaCog, FaSun, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
+import { FaSun, FaBriefcase } from "react-icons/fa";
 
 const Sidebar = () => {
   return (
-    <nav className="fixed left-0 top-0 z-50 flex h-screen w-10 flex-col items-center justify-between bg-lightbackground py-6">
+    <nav className="fixed left-0 top-0 z-10 flex h-screen w-10 flex-col items-center justify-between bg-lightbackground py-6">
       <div>
         <div className="flex flex-col">
           <SidebarIcon

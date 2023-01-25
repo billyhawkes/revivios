@@ -1,4 +1,5 @@
 import { api } from "../utils/api";
+import { getNewXPLevel } from "../utils/xp";
 
 export const useUpdateTask = () => {
   const utils = api.useContext();
@@ -13,6 +14,16 @@ export const useUpdateTask = () => {
             )
           : []
       );
+      //   !oldTask.completed && input.completed
+      //     ? XPAmounts.task
+      //     : oldTask.completed && input.completed
+      //     ? -XPAmounts.task
+      //     : 0,
+
+      //   await utils.tasks.getTasks.cancel();
+      //   const previousUser = utils.users.getUser.getData();
+      //   utils.users.getUser.setData(undefined, (old) => old ? old.xp)
+
       return { previousTasks };
     },
     onError: (e, newTask, context) => {
@@ -20,6 +31,7 @@ export const useUpdateTask = () => {
     },
     onSettled: async () => {
       await utils.tasks.getTasks.invalidate();
+      await utils.users.getUser.invalidate();
     },
   });
 };

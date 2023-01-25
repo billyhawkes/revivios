@@ -10,17 +10,18 @@ import { prisma } from "../../../server/db";
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
   callbacks: {
-    session: ({ session, user }) => {
+    session: async ({ session, user }) => {
       if (session.user) {
         session.user.id = user.id;
 
-        // const userData = await prisma.user.findFirst({
-        //   where: { id: session.user.id },
-        // });
+        const userData = await prisma.user.findFirst({
+          where: { id: session.user.id },
+        });
 
-        // if (userData) {
-        // TODO: Add xp and level to user
-        // }
+        if (userData) {
+          session.user.xp = userData.xp;
+          session.user.level = userData.level;
+        }
       }
       return session;
     },

@@ -1,9 +1,9 @@
-import { z } from "zod";
 import {
   CreateTaskSchema,
   DeleteTaskSchema,
   UpdateTaskSchema,
 } from "../../../types/tasks";
+import { getNewXPLevel, XPAmounts } from "../../../utils/xp";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
@@ -28,9 +28,27 @@ export const tasksRouter = createTRPCRouter({
   update: protectedProcedure
     .input(UpdateTaskSchema)
     .mutation(async ({ ctx, input }) => {
+      const oldTask = await ctx.prisma.task.findFirst({
+        where: { id: input.id, userId: ctx.session.user.id },
+        include: { user: true },
+      });
+
+      if (!oldTask) return;
+
+      const newXP = getNewXPLevel({
+        xp: oldTask.user.xp,
+        level: oldTask.user.level,
+        change:
+          !oldTask.completed && input.completed
+            ? XPAmounts.task
+            : oldTask.completed && input.completed
+            ? -XPAmounts.task
+            : 0,
+      });
+
       return await ctx.prisma.task.update({
         where: { id: input.id, userId: ctx.session.user.id },
-        data: { ...input },
+        data: { ...input, user: { update: { data: { ...newXP } } } },
       });
     }),
   delete: protectedProcedure

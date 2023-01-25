@@ -67,6 +67,8 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
+    xp            Int       @default(0)
+    level         Int       @default(1)
     accounts      Account[]
     sessions      Session[]
     tasks         Task[]

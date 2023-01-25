@@ -6,33 +6,36 @@ import { TaskItem } from "../../../components/task";
 import { api } from "../../../utils/api";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import Image from "next/image";
+import XPBar from "../../../components/XPBar";
 
 const Profile = () => {
-  const { data: session } = useSession();
   const { data: tasks } = api.tasks.getTasks.useQuery();
+  const { data: user } = api.users.getUser.useQuery();
 
   return (
-    <main className="flex min-h-screen flex-col bg-background p-8 pl-[72px] text-white">
+    <main className="flex min-h-screen flex-col items-center bg-background p-8 pl-[72px] text-white">
       <Sidebar />
-      {session?.user?.image ? (
-        <Image
-          src={session.user.image}
-          width={80}
-          height={80}
-          alt="Users profile photo"
-          className="rounded-xl"
-        />
-      ) : null}
-
-      <h2 className="mt-4 text-xl">{session?.user?.name}</h2>
-      <h2 className="mt-2 text-lg opacity-80">{session?.user?.email}</h2>
-      <div className="my-8 h-[1px] w-full bg-white"></div>
-      <h2 className=" text-xl">History</h2>
-      {tasks
-        ?.filter((task) => task.completed)
-        .map((task) => (
-          <TaskItem task={task} key={task.id} />
-        ))}
+      <div className="w-full max-w-screen-md">
+        {user?.image ? (
+          <Image
+            src={user.image}
+            width={80}
+            height={80}
+            alt="Users profile photo"
+            className="rounded-xl"
+          />
+        ) : null}
+        <h2 className="mt-4 text-xl">{user?.name}</h2>
+        <h2 className="mt-2 text-lg opacity-80">{user?.email}</h2>
+        <div className="my-8 h-[1px] w-full bg-white"></div>
+        <h2 className=" text-xl">History</h2>
+        {tasks
+          ?.filter((task) => task.completed)
+          .map((task) => (
+            <TaskItem task={task} key={task.id} />
+          ))}
+      </div>
+      <XPBar />
     </main>
   );
 };

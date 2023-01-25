@@ -3,6 +3,7 @@ import { unstable_getServerSession } from "next-auth";
 import React from "react";
 import Sidebar from "../../../components/SideBar";
 import { TaskForm, TaskItem } from "../../../components/task";
+import XPBar from "../../../components/XPBar";
 import { api } from "../../../utils/api";
 import { authOptions } from "../../api/auth/[...nextauth]";
 
@@ -21,6 +22,7 @@ const App = () => {
             <TaskItem key={task.id} task={task} />
           ))}
       </div>
+      <XPBar />
     </main>
   );
 };

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FaSun, FaBriefcase } from "react-icons/fa";
+import { FaSun, FaBriefcase, FaUser } from "react-icons/fa";
 
 const Sidebar = () => {
   return (
@@ -27,13 +27,13 @@ const Sidebar = () => {
           />
         </div> */}
       </div>
-      {/* <div className="flex flex-col">
+      <div className="flex flex-col">
         <SidebarIcon
-          name="Settings"
-          href="/app/settings"
-          icon={<FaCog size="24" />}
+          name="Profile"
+          href="/app/profile"
+          icon={<FaUser size="24" />}
         />
-      </div> */}
+      </div>
     </nav>
   );
 };

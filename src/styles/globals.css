@@ -11,10 +11,13 @@
 
 @layer components {
   .btn {
-    @apply flex rounded border-[1px] border-primary bg-primary px-4 pt-2 pb-1 text-lg transition hover:bg-opacity-80;
+    @apply cursor-pointer rounded border-[1px] border-primary bg-primary px-4 pt-2 pb-1 text-center text-lg transition hover:bg-opacity-80;
   }
   .gbtn {
-    @apply flex rounded border-[1px] border-white px-4 pt-2 pb-1 text-lg transition hover:bg-black hover:bg-opacity-10;
+    @apply cursor-pointer rounded border-[1px] border-white px-4 pt-2 pb-1 text-center text-lg transition hover:bg-black hover:bg-opacity-10;
+  }
+  .gbtn-sm {
+    @apply cursor-pointer rounded border-[1px] border-white px-2 pt-1 pb-[1px] text-center transition hover:bg-black hover:bg-opacity-10;
   }
 }
 

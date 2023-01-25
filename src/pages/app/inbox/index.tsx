@@ -2,7 +2,7 @@ import type { GetServerSideProps } from "next";
 import { unstable_getServerSession } from "next-auth";
 import React from "react";
 import Sidebar from "../../../components/SideBar";
-import { AddTask, TaskItem } from "../../../components/task";
+import { TaskForm, TaskItem } from "../../../components/task";
 import { api } from "../../../utils/api";
 import { authOptions } from "../../api/auth/[...nextauth]";
 
@@ -14,7 +14,7 @@ const App = () => {
       <Sidebar />
       <div className="w-full max-w-screen-md">
         <h2 className="mb-6 text-2xl">Inbox</h2>
-        <AddTask defaultDate={null} />
+        <TaskForm defaultDate={null} />
         {tasks
           ?.filter((task) => !task.completed)
           .map((task) => (

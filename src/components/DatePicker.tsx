@@ -23,7 +23,7 @@ const ReadableDate = ({ date }: { date: Date }) => {
 
 type Props = {
   value: Date | null;
-  onChange: (date: Date) => void;
+  onChange: (date: Date | null) => void;
   allowedPlacements?: Placement[];
 };
 
@@ -87,7 +87,13 @@ const DatePicker = ({ value, onChange }: Props) => {
                   return (
                     <div
                       key={index}
-                      onClick={() => onChange(date)}
+                      onClick={() => {
+                        if (value && day === dayjs(value).date()) {
+                          onChange(null);
+                        } else {
+                          onChange(date);
+                        }
+                      }}
                       className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded hover:opacity-80 ${
                         value && day === dayjs(value).date() ? "bg-primary" : ""
                       }
@@ -99,6 +105,14 @@ const DatePicker = ({ value, onChange }: Props) => {
                   );
                 else return <div key={index} className="h-8 w-8"></div>;
               })}
+          </div>
+          <div
+            onClick={() => {
+              onChange(null);
+            }}
+            className="gbtn-sm mt-2 w-full"
+          >
+            Clear
           </div>
         </div>
       )}

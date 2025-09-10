@@ -23,5 +23,6 @@ export const tasks = sqliteTable("tasks", {
   status: text({ enum: ["pending", "in-progress", "complete"] })
     .notNull()
     .$defaultFn(() => "pending"),
+  date: integer("date", { mode: "timestamp" }),
   ...dates,
 });

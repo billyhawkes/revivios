@@ -1,9 +1,11 @@
 import z from "zod";
-import { tasks } from "./db/schema";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { tasks } from "./db/schema";
 
 export const TaskSchema = createSelectSchema(tasks);
-export type Task = z.infer<typeof TaskSchema>;
+export type TaskType = z.infer<typeof TaskSchema>;
 
-export const CreateTaskSchema = createInsertSchema(tasks);
-export type CreateTask = z.infer<typeof CreateTaskSchema>;
+export const TaskFormSchema = createInsertSchema(tasks, {
+  title: (schema) => schema.min(1),
+});
+export type TaskFormType = z.infer<typeof TaskFormSchema>;

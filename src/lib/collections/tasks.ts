@@ -3,7 +3,7 @@ import { queryCollectionOptions } from "@tanstack/query-db-collection";
 import { createServerFn } from "@tanstack/react-start";
 import z from "zod";
 import { queryClient } from "@/lib/query";
-import { CreateTaskSchema, TaskSchema } from "@/lib/tasks";
+import { TaskFormSchema } from "@/lib/tasks";
 import { db } from "../db";
 import { tasks } from "../db/schema";
 import { eq } from "drizzle-orm";
@@ -13,7 +13,7 @@ const getTasks = createServerFn().handler(async () => {
 });
 
 const createTask = createServerFn()
-  .validator(CreateTaskSchema)
+  .validator(TaskFormSchema)
   .handler(async ({ data }) => {
     await db.insert(tasks).values({
       ...data,
@@ -24,7 +24,7 @@ const createTask = createServerFn()
   });
 
 const updateTask = createServerFn()
-  .validator(TaskSchema)
+  .validator(TaskFormSchema.extend({ id: z.string() }))
   .handler(async ({ data }) => {
     await db.update(tasks).set(data).where(eq(tasks.id, data.id));
   });

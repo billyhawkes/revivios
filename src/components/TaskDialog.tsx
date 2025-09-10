@@ -1,28 +1,21 @@
 import { useNavigate, useSearch } from "@tanstack/react-router";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { CreateTaskSchema, type CreateTask } from "@/lib/tasks";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { TaskFormSchema, type TaskFormType } from "@/lib/tasks";
 import { useForm } from "@tanstack/react-form";
-import { Input } from "./ui/input";
 import { taskCollection } from "@/lib/collections/tasks";
 
 export const TaskForm = ({
   onSubmit,
 }: {
-  onSubmit: (value: CreateTask) => Promise<any>;
+  onSubmit: (value: TaskFormType) => Promise<any>;
 }) => {
   const form = useForm({
     validators: {
-      onSubmit: CreateTaskSchema,
+      onSubmit: TaskFormSchema,
     },
     defaultValues: {
       title: "",
-    } as CreateTask,
+    } as TaskFormType,
     onSubmit: ({ value }) => onSubmit(value),
   });
 
@@ -32,12 +25,31 @@ export const TaskForm = ({
         e.preventDefault();
         form.handleSubmit();
       }}
-      className="flex flex-col gap-6"
+      className="flex flex-col gap-4 p-2"
     >
       <form.Field name="title">
         {(field) => (
-          <Input
+          <input
+            className="outline-none font-medium text-lg"
+            placeholder="Task title"
             value={field.state.value}
+            onBlur={field.handleBlur}
+            onChange={(e) => field.handleChange(e.target.value)}
+          />
+        )}
+      </form.Field>
+      <form.Field name="description">
+        {(field) => (
+          <textarea
+            className="outline-none flex min-h-16 field-sizing-content max-h-[50svh]"
+            placeholder="Task description"
+            value={field.state.value ?? ""}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                form.handleSubmit();
+              }
+            }}
             onBlur={field.handleBlur}
             onChange={(e) => field.handleChange(e.target.value)}
           />
@@ -62,24 +74,22 @@ export const TaskDialog = () => {
 
   return (
     <Dialog onOpenChange={onOpenChange} open={dialog === "task"}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Create Task</DialogTitle>
-          <DialogDescription>
-            Create a new task to keep track of
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="p-4">
         <TaskForm
           onSubmit={async (task) => {
-            taskCollection.insert({
+            const insert = taskCollection.insert({
               id: "tmp",
               title: task.title,
               description: task.description ?? null,
               status: "pending",
+              date: null,
               createdAt: new Date(),
               updatedAt: new Date(),
             });
-            onOpenChange(false);
+            console.log(insert);
+            if (insert.state !== "failed") {
+              onOpenChange(false);
+            }
           }}
         />
       </DialogContent>

@@ -1,26 +1,9 @@
 import z from "zod";
+import { tasks } from "./db/schema";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-export const tempTasks: Task[] = [
-  {
-    id: "1",
-    title: "Buy milk",
-    completed: false,
-  },
-  {
-    id: "2",
-    title: "Buy bread",
-    completed: false,
-  },
-  {
-    id: "3",
-    title: "Buy eggs",
-    completed: false,
-  },
-];
-
-export const TaskSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  completed: z.boolean(),
-});
+export const TaskSchema = createSelectSchema(tasks);
 export type Task = z.infer<typeof TaskSchema>;
+
+export const CreateTaskSchema = createInsertSchema(tasks);
+export type CreateTask = z.infer<typeof CreateTaskSchema>;

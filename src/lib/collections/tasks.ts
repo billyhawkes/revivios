@@ -3,28 +3,36 @@ import { queryCollectionOptions } from "@tanstack/query-db-collection";
 import { createServerFn } from "@tanstack/react-start";
 import z from "zod";
 import { queryClient } from "@/lib/query";
-import { tempTasks, TaskSchema } from "@/lib/tasks";
+import { CreateTaskSchema, TaskSchema } from "@/lib/tasks";
+import { db } from "../db";
+import { tasks } from "../db/schema";
+import { eq } from "drizzle-orm";
 
-const getTasks = createServerFn().handler(async () => tempTasks);
+const getTasks = createServerFn().handler(async () => {
+  return await db.select().from(tasks);
+});
 
 const createTask = createServerFn()
-  .validator(TaskSchema)
+  .validator(CreateTaskSchema)
   .handler(async ({ data }) => {
-    tempTasks.push(data);
+    await db.insert(tasks).values({
+      ...data,
+      id: Bun.randomUUIDv7(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
   });
 
 const updateTask = createServerFn()
   .validator(TaskSchema)
   .handler(async ({ data }) => {
-    const index = tempTasks.findIndex((task) => task.id === data.id);
-    tempTasks[index] = data;
+    await db.update(tasks).set(data).where(eq(tasks.id, data.id));
   });
 
 const deleteTask = createServerFn()
   .validator(z.object({ id: z.string() }))
   .handler(async ({ data: { id } }) => {
-    const index = tempTasks.findIndex((task) => task.id === id);
-    tempTasks.splice(index, 1);
+    await db.delete(tasks).where(eq(tasks.id, id));
   });
 
 export const taskCollection = createCollection(

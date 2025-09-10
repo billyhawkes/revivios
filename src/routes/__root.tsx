@@ -7,12 +7,18 @@ import {
 import appCss from "../styles.css?url";
 
 import type { QueryClient } from "@tanstack/react-query";
+import { CommandPalette } from "@/components/CommandPallete";
+import z from "zod";
+import { TaskDialog } from "@/components/TaskDialog";
 
 interface MyRouterContext {
   queryClient: QueryClient;
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
+  validateSearch: z.object({
+    dialog: z.enum(["command", "task"]).optional(),
+  }),
   head: () => ({
     meta: [
       {
@@ -23,7 +29,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "TanStack Start Starter",
+        title: "Revivios",
       },
     ],
     links: [
@@ -45,6 +51,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
+        <TaskDialog />
+        <CommandPalette />
         <Scripts />
       </body>
     </html>

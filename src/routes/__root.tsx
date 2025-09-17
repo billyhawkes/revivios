@@ -19,10 +19,11 @@ import {
   CalendarCheck,
   HomeIcon,
   Inbox,
+  List,
   SquareCheckBig,
 } from "lucide-react";
 import { taskCollection } from "@/lib/collections/tasks";
-import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface MyRouterContext {
   queryClient: QueryClient;
@@ -70,14 +71,13 @@ const NavigationItem = ({
   isActive: boolean;
 }) => {
   return (
-    <div
-      className={cn(
-        "py-2 px-4 rounded-full flex items-center gap-2",
-        isActive && "bg-muted text-muted-foreground",
-      )}
+    <Button
+      className="rounded-full"
+      variant={isActive ? "default" : "ghost"}
+      size="lg"
     >
       {children}
-    </div>
+    </Button>
   );
 };
 
@@ -94,7 +94,20 @@ const Navigation = () => {
           <Link
             to="/tasks"
             search={{
-              date: "inbox",
+              filter: "all",
+            }}
+          >
+            {({ isActive }) => (
+              <NavigationItem isActive={isActive}>
+                <List />
+                All
+              </NavigationItem>
+            )}
+          </Link>
+          <Link
+            to="/tasks"
+            search={{
+              filter: "inbox",
             }}
           >
             {({ isActive }) => (
@@ -104,11 +117,19 @@ const Navigation = () => {
               </NavigationItem>
             )}
           </Link>
-          <Link to="/tasks" search={{ date: "today" }}>
+          <Link to="/tasks" search={{ filter: "today" }}>
             {({ isActive }) => (
               <NavigationItem isActive={isActive}>
                 <Calendar />
                 Today
+              </NavigationItem>
+            )}
+          </Link>
+          <Link to="/tasks" search={{ filter: "tomorrow" }}>
+            {({ isActive }) => (
+              <NavigationItem isActive={isActive}>
+                <Calendar />
+                Tomorrow
               </NavigationItem>
             )}
           </Link>

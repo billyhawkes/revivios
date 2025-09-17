@@ -1,8 +1,10 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { taskCollection } from "@/lib/collections/tasks";
 import { formatDate } from "@/lib/date";
-import { TaskSearchSchema, type TaskType } from "@/lib/tasks";
+import { TaskSearchSchema, taskStatuses, type TaskType } from "@/lib/tasks";
+import { cn } from "@/lib/utils";
 import { useLiveQuery } from "@tanstack/react-db";
 import { createFileRoute } from "@tanstack/react-router";
 import { isToday, isTomorrow } from "date-fns";
@@ -20,13 +22,30 @@ const Task = ({ task }: { task: TaskType }) => {
 
   return (
     <Button
-      className="w-full p-4 h-auto justify-between text-lg"
+      className={cn(
+        "w-full p-4 h-auto justify-between text-lg",
+        task.status === "complete" && "opacity-60",
+      )}
       variant="outline"
       onClick={() =>
         navigate({ to: ".", search: { dialog: "task", id: task.id } })
       }
     >
-      {task.title}
+      <div className="flex items-center gap-3">
+        <Checkbox
+          checked={task.status === "complete"}
+          className="size-5"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          onCheckedChange={(checked) => {
+            taskCollection.update(task.id, (draft) => {
+              draft.status = checked ? "complete" : "pending";
+            });
+          }}
+        />
+        {task.title}
+      </div>
       <div className="flex items-center gap-1">
         <Badge variant="secondary">
           {task.date ? formatDate(task.date) : "No date"}
@@ -56,18 +75,23 @@ function RouteComponent() {
   );
 
   const tasks = useMemo(() => {
-    return rootTasks.filter((task) => {
-      switch (filter) {
-        case "all":
-          return true;
-        case "inbox":
-          return task.date === null;
-        case "today":
-          return task.date && isToday(task.date);
-        case "tomorrow":
-          return task.date && isTomorrow(task.date);
-      }
-    });
+    return rootTasks
+      .filter((task) => {
+        switch (filter) {
+          case "all":
+            return true;
+          case "inbox":
+            return task.date === null;
+          case "today":
+            return task.date && isToday(task.date);
+          case "tomorrow":
+            return task.date && isTomorrow(task.date);
+        }
+      })
+      .sort(
+        (a, b) =>
+          taskStatuses.indexOf(a.status) - taskStatuses.indexOf(b.status),
+      );
   }, [rootTasks, filter]);
 
   return (

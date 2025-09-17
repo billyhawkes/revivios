@@ -17,6 +17,8 @@ export const TaskSearchSchema = z.object({
 });
 export type TaskSearchType = z.infer<typeof TaskSearchSchema>;
 
+export const taskStatuses = ["pending", "in-progress", "complete"] as const;
+
 export const taskFilters: {
   name: string;
   value: TaskSearchType["filter"];

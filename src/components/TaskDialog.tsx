@@ -20,6 +20,7 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { startOfToday, startOfTomorrow } from "date-fns";
+import { formatDate } from "@/lib/date";
 
 export const TaskDatePicker = ({
   date,
@@ -37,7 +38,7 @@ export const TaskDatePicker = ({
           className="data-[empty=true]:text-muted-foreground w-40 justify-start text-left font-normal"
         >
           <CalendarIcon />
-          {date ? date.toLocaleDateString() : "No date"}
+          {date ? formatDate(date) : "No date"}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
@@ -84,12 +85,23 @@ export const TaskForm = ({
   mode: "create" | "edit";
   onSubmit: (value: TaskFormType) => Promise<any>;
 }) => {
+  const search = useSearch({
+    from: "/tasks",
+    shouldThrow: false,
+  });
+
   const form = useForm({
     validators: {
       onSubmit: TaskFormSchema,
     },
     defaultValues: {
       title: "",
+      date:
+        search?.filter === "today"
+          ? startOfToday()
+          : search?.filter === "tomorrow"
+            ? startOfTomorrow()
+            : undefined,
       ...defaultValues,
     } as TaskFormType,
     onSubmit: ({ value }) => onSubmit(value),

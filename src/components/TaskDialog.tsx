@@ -210,7 +210,7 @@ export const TaskDialog = () => {
                 title: task.title,
                 description: task.description ?? null,
                 status: "pending",
-                date: null,
+                date: task.date ?? null,
                 createdAt: new Date(),
                 updatedAt: new Date(),
               });

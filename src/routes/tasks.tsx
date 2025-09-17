@@ -1,19 +1,17 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { taskCollection } from "@/lib/collections/tasks";
-import { formatDate, isTodayWhere, isTomorrowWhere } from "@/lib/date";
-import type { TaskType } from "@/lib/tasks";
-import { eq, useLiveQuery } from "@tanstack/react-db";
+import { formatDate } from "@/lib/date";
+import { TaskSearchSchema, type TaskType } from "@/lib/tasks";
+import { useLiveQuery } from "@tanstack/react-db";
 import { createFileRoute } from "@tanstack/react-router";
+import { isToday, isTomorrow } from "date-fns";
 import { Trash2Icon } from "lucide-react";
-import z from "zod";
+import { useMemo } from "react";
 
 export const Route = createFileRoute("/tasks")({
   component: RouteComponent,
-  validateSearch: z.object({
-    view: z.enum(["list"]).optional(),
-    filter: z.enum(["all", "inbox", "today", "tomorrow", "week"]).optional(),
-  }),
+  validateSearch: TaskSearchSchema,
   loader: async () => Promise.all([taskCollection.preload()]),
 });
 
@@ -53,22 +51,24 @@ const Task = ({ task }: { task: TaskType }) => {
 
 function RouteComponent() {
   const { view = "list", filter = "today" } = Route.useSearch();
-  const { data: tasks } = useLiveQuery(
-    (q) =>
-      q.from({ task: taskCollection }).where(({ task }) => {
-        switch (filter) {
-          case "all":
-            return eq(true, true);
-          case "inbox":
-            return eq(task.date, null);
-          case "today":
-            return isTodayWhere(task.date);
-          case "tomorrow":
-            return isTomorrowWhere(task.date);
-        }
-      }),
-    [filter],
+  const { data: rootTasks } = useLiveQuery((q) =>
+    q.from({ task: taskCollection }),
   );
+
+  const tasks = useMemo(() => {
+    return rootTasks.filter((task) => {
+      switch (filter) {
+        case "all":
+          return true;
+        case "inbox":
+          return task.date === null;
+        case "today":
+          return task.date && isToday(task.date);
+        case "tomorrow":
+          return task.date && isTomorrow(task.date);
+      }
+    });
+  }, [rootTasks, filter]);
 
   return (
     <div className="w-screen h-screen flex justify-center items-center">
@@ -78,13 +78,8 @@ function RouteComponent() {
             <h1 className="text-xl">No tasks found</h1>
           </div>
         )}
-        {tasks.map((task, index) => (
-          <div className="w-full" key={task.id}>
-            <Task key={task.id} task={task} />
-            {tasks.length - 1 !== index && (
-              <div className="h-px w-full bg-border" />
-            )}
-          </div>
+        {tasks.map((task) => (
+          <Task key={task.id} task={task} />
         ))}
       </div>
     </div>

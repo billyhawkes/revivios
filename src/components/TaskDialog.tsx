@@ -77,9 +77,11 @@ export const TaskDatePicker = ({
 
 export const TaskForm = ({
   defaultValues,
+  mode,
   onSubmit,
 }: {
   defaultValues?: TaskFormType;
+  mode: "create" | "edit";
   onSubmit: (value: TaskFormType) => Promise<any>;
 }) => {
   const form = useForm({
@@ -94,7 +96,9 @@ export const TaskForm = ({
     listeners: {
       onChangeDebounceMs: 500,
       onChange: ({ formApi }) =>
-        formApi.state.isValid && onSubmit(formApi.state.values),
+        mode === "edit" &&
+        formApi.state.isValid &&
+        onSubmit(formApi.state.values),
     },
   });
 
@@ -178,6 +182,7 @@ export const TaskDialog = () => {
       <DialogContent className="p-4">
         <TaskForm
           key={id}
+          mode={id ? "edit" : "create"}
           defaultValues={task.length > 0 ? task[0] : undefined}
           onSubmit={async (task) => {
             if (id) {

@@ -14,16 +14,10 @@ import type { QueryClient } from "@tanstack/react-query";
 import { CommandPalette } from "@/components/CommandPallete";
 import z from "zod";
 import { TaskDialog } from "@/components/TaskDialog";
-import {
-  Calendar,
-  CalendarCheck,
-  HomeIcon,
-  Inbox,
-  List,
-  SquareCheckBig,
-} from "lucide-react";
+import { CalendarCheck, HomeIcon, SquareCheckBig } from "lucide-react";
 import { taskCollection } from "@/lib/collections/tasks";
 import { Button } from "@/components/ui/button";
+import { taskFilters } from "@/lib/tasks";
 
 interface MyRouterContext {
   queryClient: QueryClient;
@@ -91,48 +85,22 @@ const Navigation = () => {
     <div className="flex items-center justify-center w-screen absolute bottom-8 flex-col gap-4">
       {taskPage && (
         <nav className="flex items-center gap-4 px-4 py-2 backdrop-blur-lg drop-shadow-lg backdrop-opacity-50 rounded-full bg-popover">
-          <Link
-            to="/tasks"
-            search={{
-              filter: "all",
-            }}
-          >
-            {({ isActive }) => (
-              <NavigationItem isActive={isActive}>
-                <List />
-                All
-              </NavigationItem>
-            )}
-          </Link>
-          <Link
-            to="/tasks"
-            search={{
-              filter: "inbox",
-            }}
-          >
-            {({ isActive }) => (
-              <NavigationItem isActive={isActive}>
-                <Inbox />
-                Inbox
-              </NavigationItem>
-            )}
-          </Link>
-          <Link to="/tasks" search={{ filter: "today" }}>
-            {({ isActive }) => (
-              <NavigationItem isActive={isActive}>
-                <Calendar />
-                Today
-              </NavigationItem>
-            )}
-          </Link>
-          <Link to="/tasks" search={{ filter: "tomorrow" }}>
-            {({ isActive }) => (
-              <NavigationItem isActive={isActive}>
-                <Calendar />
-                Tomorrow
-              </NavigationItem>
-            )}
-          </Link>
+          {taskFilters.map((filter) => (
+            <Link
+              key={filter.value}
+              to="/tasks"
+              search={{
+                filter: filter.value,
+              }}
+            >
+              {({ isActive }) => (
+                <NavigationItem isActive={isActive}>
+                  {filter.icon}
+                  {filter.name}
+                </NavigationItem>
+              )}
+            </Link>
+          ))}
         </nav>
       )}
       <nav className="flex items-center gap-4 px-4 py-2 backdrop-blur-lg drop-shadow-lg backdrop-opacity-50 rounded-full bg-popover">

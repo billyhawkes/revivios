@@ -6,8 +6,9 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { taskFilters } from "@/lib/tasks";
 import { useMatch, useNavigate, useSearch } from "@tanstack/react-router";
-import { Calendar, Inbox, SquarePlus } from "lucide-react";
+import { SquarePlus } from "lucide-react";
 import { useEffect } from "react";
 
 export const CommandPalette = () => {
@@ -62,33 +63,23 @@ export const CommandPalette = () => {
           </CommandItem>
         </CommandGroup>
         {taskPage && (
-          <CommandGroup heading="View">
-            <CommandItem
-              onSelect={() =>
-                navigate({
-                  to: ".",
-                  search: {
-                    date: "inbox",
-                  },
-                })
-              }
-            >
-              <Inbox />
-              Inbox
-            </CommandItem>
-            <CommandItem
-              onSelect={() =>
-                navigate({
-                  to: ".",
-                  search: {
-                    date: "today",
-                  },
-                })
-              }
-            >
-              <Calendar />
-              Today
-            </CommandItem>
+          <CommandGroup heading="Filters">
+            {taskFilters.map((filter) => (
+              <CommandItem
+                key={filter.value}
+                onSelect={() =>
+                  navigate({
+                    to: ".",
+                    search: {
+                      filter: filter.value,
+                    },
+                  })
+                }
+              >
+                {filter.icon}
+                {filter.name}
+              </CommandItem>
+            ))}
           </CommandGroup>
         )}
       </CommandList>

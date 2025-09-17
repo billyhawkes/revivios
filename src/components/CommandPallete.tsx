@@ -6,12 +6,18 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { useNavigate, useSearch } from "@tanstack/react-router";
-import { SquarePlus } from "lucide-react";
+import { useMatch, useNavigate, useSearch } from "@tanstack/react-router";
+import { Calendar, Inbox, SquarePlus } from "lucide-react";
 import { useEffect } from "react";
 
 export const CommandPalette = () => {
   const navigate = useNavigate();
+
+  const taskPage = useMatch({
+    from: "/tasks",
+    shouldThrow: false,
+  });
+
   const { dialog } = useSearch({
     from: "__root__",
   });
@@ -55,6 +61,36 @@ export const CommandPalette = () => {
             Add task
           </CommandItem>
         </CommandGroup>
+        {taskPage && (
+          <CommandGroup heading="View">
+            <CommandItem
+              onSelect={() =>
+                navigate({
+                  to: ".",
+                  search: {
+                    date: "inbox",
+                  },
+                })
+              }
+            >
+              <Inbox />
+              Inbox
+            </CommandItem>
+            <CommandItem
+              onSelect={() =>
+                navigate({
+                  to: ".",
+                  search: {
+                    date: "today",
+                  },
+                })
+              }
+            >
+              <Calendar />
+              Today
+            </CommandItem>
+          </CommandGroup>
+        )}
       </CommandList>
     </CommandDialog>
   );

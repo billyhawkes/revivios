@@ -3,10 +3,13 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { TaskFormSchema, type TaskFormType } from "@/lib/tasks";
 import { useForm } from "@tanstack/react-form";
 import { taskCollection } from "@/lib/collections/tasks";
+import { eq, useLiveQuery } from "@tanstack/react-db";
 
 export const TaskForm = ({
+  defaultValues,
   onSubmit,
 }: {
+  defaultValues?: TaskFormType;
   onSubmit: (value: TaskFormType) => Promise<any>;
 }) => {
   const form = useForm({
@@ -15,6 +18,7 @@ export const TaskForm = ({
     },
     defaultValues: {
       title: "",
+      ...defaultValues,
     } as TaskFormType,
     onSubmit: ({ value }) => onSubmit(value),
   });
@@ -61,9 +65,15 @@ export const TaskForm = ({
 
 export const TaskDialog = () => {
   const navigate = useNavigate();
-  const { dialog } = useSearch({
+  const { dialog, id } = useSearch({
     from: "__root__",
   });
+
+  const { data: task } = useLiveQuery(
+    (q) =>
+      q.from({ task: taskCollection }).where(({ task }) => eq(task.id, id)),
+    [id],
+  );
 
   const onOpenChange = (open: boolean) => {
     navigate({
@@ -76,6 +86,7 @@ export const TaskDialog = () => {
     <Dialog onOpenChange={onOpenChange} open={dialog === "task"}>
       <DialogContent className="p-4">
         <TaskForm
+          defaultValues={task.length > 0 ? task[0] : undefined}
           onSubmit={async (task) => {
             const insert = taskCollection.insert({
               id: "tmp",

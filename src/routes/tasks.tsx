@@ -7,7 +7,13 @@ import { TaskSearchSchema, taskStatuses, type TaskType } from "@/lib/tasks";
 import { cn } from "@/lib/utils";
 import { useLiveQuery } from "@tanstack/react-db";
 import { createFileRoute } from "@tanstack/react-router";
-import { isToday, isTomorrow } from "date-fns";
+import {
+  isBefore,
+  isToday,
+  isTomorrow,
+  startOfToday,
+  startOfTomorrow,
+} from "date-fns";
 import { Trash2Icon } from "lucide-react";
 import { useMemo } from "react";
 
@@ -69,7 +75,7 @@ const Task = ({ task }: { task: TaskType }) => {
 };
 
 function RouteComponent() {
-  const { view = "list", filter = "today" } = Route.useSearch();
+  const { filter = "today" } = Route.useSearch();
   const { data: rootTasks } = useLiveQuery((q) =>
     q.from({ task: taskCollection }),
   );
@@ -83,9 +89,15 @@ function RouteComponent() {
           case "inbox":
             return task.date === null;
           case "today":
-            return task.date && isToday(task.date);
+            return (
+              task.date &&
+              // Date is today or before and incomplete
+              (isToday(task.date) ||
+                (isBefore(task.date, startOfToday()) &&
+                  task.status !== "complete"))
+            );
           case "tomorrow":
-            return task.date && isTomorrow(task.date);
+            return task.date;
         }
       })
       .sort(

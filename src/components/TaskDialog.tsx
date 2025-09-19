@@ -11,70 +11,8 @@ import { useForm } from "@tanstack/react-form";
 import { taskCollection } from "@/lib/collections/tasks";
 import { eq, useLiveQuery } from "@tanstack/react-db";
 import { VisuallyHidden } from "radix-ui";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
-import { Button } from "./ui/button";
 import { startOfToday, startOfTomorrow } from "date-fns";
-import { formatDate } from "@/lib/date";
-
-export const TaskDatePicker = ({
-  date,
-  onDateChange,
-}: {
-  date: Date | undefined;
-  onDateChange: (date: Date | undefined) => void;
-}) => {
-  return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          data-empty={!date}
-          className="data-[empty=true]:text-muted-foreground w-40 justify-start text-left font-normal"
-        >
-          <CalendarIcon />
-          {date ? formatDate(date) : "No date"}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
-        <Calendar
-          mode="single"
-          selected={date}
-          required={false}
-          onSelect={onDateChange}
-        />
-        <div className="flex gap-2 px-2 pb-2">
-          <Button
-            size="sm"
-            variant="link"
-            onClick={() => onDateChange(startOfToday())}
-          >
-            Today
-          </Button>
-          <Button
-            size="sm"
-            variant="link"
-            onClick={() => onDateChange(startOfTomorrow())}
-          >
-            Tomorrow
-          </Button>
-          <Button
-            size="sm"
-            variant="link"
-            onClick={() => onDateChange(undefined)}
-          >
-            Clear
-          </Button>
-        </div>
-      </PopoverContent>
-    </Popover>
-  );
-};
+import { DatePicker } from "./DatePicker";
 
 export const TaskForm = ({
   defaultValues,
@@ -120,7 +58,7 @@ export const TaskForm = ({
         e.preventDefault();
         form.handleSubmit();
       }}
-      className="flex flex-col gap-4 p-2"
+      className="flex flex-col gap-4"
     >
       <form.Field name="title">
         {(field) => (
@@ -152,7 +90,7 @@ export const TaskForm = ({
       </form.Field>
       <form.Field name="date">
         {(field) => (
-          <TaskDatePicker
+          <DatePicker
             date={field.state.value ?? undefined}
             onDateChange={(date) => field.handleChange(date)}
           />

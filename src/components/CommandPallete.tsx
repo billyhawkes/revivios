@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/command";
 import { taskFilters } from "@/lib/tasks";
 import { useMatch, useNavigate, useSearch } from "@tanstack/react-router";
-import { SquarePlus } from "lucide-react";
+import { CalendarPlus, SquarePlus } from "lucide-react";
 import { useEffect } from "react";
 
 export const CommandPalette = () => {
@@ -60,6 +60,19 @@ export const CommandPalette = () => {
           >
             <SquarePlus />
             Add task
+          </CommandItem>
+          <CommandItem
+            onSelect={() =>
+              navigate({
+                to: ".",
+                search: {
+                  dialog: "habit",
+                },
+              })
+            }
+          >
+            <CalendarPlus />
+            Add habit
           </CommandItem>
         </CommandGroup>
         {taskPage && (

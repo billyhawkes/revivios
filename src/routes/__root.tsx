@@ -14,10 +14,11 @@ import type { QueryClient } from "@tanstack/react-query";
 import { CommandPalette } from "@/components/CommandPallete";
 import z from "zod";
 import { TaskDialog } from "@/components/TaskDialog";
-import { CalendarCheck, HomeIcon, SquareCheckBig } from "lucide-react";
+import { CalendarCheck, SquareCheckBig } from "lucide-react";
 import { taskCollection } from "@/lib/collections/tasks";
 import { Button } from "@/components/ui/button";
 import { taskFilters } from "@/lib/tasks";
+import { HabitDialog } from "@/components/HabitDialog";
 
 interface MyRouterContext {
   queryClient: QueryClient;
@@ -25,7 +26,7 @@ interface MyRouterContext {
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   validateSearch: z.object({
-    dialog: z.enum(["command", "task"]).optional(),
+    dialog: z.enum(["command", "task", "habit"]).optional(),
     id: z.string().optional(),
   }),
   head: () => ({
@@ -104,14 +105,6 @@ const Navigation = () => {
         </nav>
       )}
       <nav className="flex items-center gap-4 px-4 py-2 backdrop-blur-lg drop-shadow-lg backdrop-opacity-50 rounded-full bg-popover">
-        <Link to="/">
-          {({ isActive }) => (
-            <NavigationItem isActive={isActive}>
-              <HomeIcon />
-              Home
-            </NavigationItem>
-          )}
-        </Link>
         <Link to="/tasks">
           {({ isActive }) => (
             <NavigationItem isActive={isActive}>
@@ -143,6 +136,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         {children}
         <ClientOnly>
           <TaskDialog />
+          <HabitDialog />
           <Navigation />
           <CommandPalette />
         </ClientOnly>

@@ -26,3 +26,26 @@ export const tasks = sqliteTable("tasks", {
   date: integer("date", { mode: "timestamp" }),
   ...dates,
 });
+
+export const habits = sqliteTable("habits", {
+  id: text()
+    .primaryKey()
+    .notNull()
+    .$defaultFn(() => Bun.randomUUIDv7()),
+  title: text().notNull(),
+  description: text(),
+  type: text({ enum: ["avoid", "do"] }).notNull(),
+  frequency: integer(),
+  startDate: integer("start_date", { mode: "timestamp" }),
+  ...dates,
+});
+
+export const habitLogs = sqliteTable("habit_logs", {
+  id: text()
+    .primaryKey()
+    .notNull()
+    .$defaultFn(() => Bun.randomUUIDv7()),
+  habitId: text().notNull(),
+  date: integer("date", { mode: "timestamp" }).notNull(),
+  ...dates,
+});

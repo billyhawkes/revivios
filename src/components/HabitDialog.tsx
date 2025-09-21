@@ -20,17 +20,19 @@ import {
   SelectValue,
 } from "./ui/select";
 import { Button } from "./ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Trash } from "lucide-react";
 import { DatePicker } from "./DatePicker";
 
 export const HabitForm = ({
   defaultValues,
   mode,
   onSubmit,
+  onDelete,
 }: {
   defaultValues?: HabitFormType;
   mode: "create" | "edit";
   onSubmit: (value: HabitFormType) => Promise<any>;
+  onDelete?: (id: string) => Promise<any>;
 }) => {
   const form = useForm({
     validators: {
@@ -65,7 +67,7 @@ export const HabitForm = ({
         {(type) => (
           <>
             {!type && (
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 my-6">
                 <Card onClick={() => form.setFieldValue("type", "do")}>
                   <CardHeader>
                     <CardTitle>Completion Habit</CardTitle>
@@ -87,7 +89,7 @@ export const HabitForm = ({
                 <Button
                   variant="link"
                   className="-ml-3 absolute top-4 left-4 p-0 h-auto text-muted-foreground"
-                  onClick={() => form.setFieldValue("type", undefined)}
+                  onClick={() => form.resetField("type")}
                 >
                   <ArrowLeft />
                   Back
@@ -100,6 +102,12 @@ export const HabitForm = ({
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && !e.shiftKey) {
+                          e.preventDefault();
+                          form.handleSubmit();
+                        }
+                      }}
                     />
                   )}
                 </form.Field>
@@ -122,40 +130,53 @@ export const HabitForm = ({
                 </form.Field>
               </>
             )}
-            {type === "do" && (
-              <>
-                <form.Field name="frequency">
-                  {(field) => (
-                    <Select
-                      onBlur={field.handleBlur}
-                      onValueChange={(value) =>
-                        field.handleChange(Number(value))
-                      }
-                    >
-                      <SelectTrigger className="w-40">
-                        <SelectValue placeholder="Times a week" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Array.from({ length: 10 }).map((_, i) => (
-                          <SelectItem key={i} value={String(i + 1)}>
-                            {i + 1}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
-                </form.Field>
-              </>
-            )}
-            {type === "avoid" && (
-              <form.Field name="startDate">
-                {(field) => (
-                  <DatePicker
-                    date={field.state.value ?? undefined}
-                    onDateChange={(date) => field.handleChange(date)}
-                  />
+            {form.state.values.type && (
+              <div className="flex gap-2 items-center justify-between">
+                {type === "do" && (
+                  <>
+                    <form.Field name="frequency">
+                      {(field) => (
+                        <Select
+                          value={String(field.state.value)}
+                          onValueChange={(value) =>
+                            field.handleChange(Number(value))
+                          }
+                        >
+                          <SelectTrigger className="w-40">
+                            <SelectValue placeholder="Times a week" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {Array.from({ length: 10 }).map((_, i) => (
+                              <SelectItem key={i} value={String(i + 1)}>
+                                {i + 1}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    </form.Field>
+                  </>
                 )}
-              </form.Field>
+                {type === "avoid" && (
+                  <form.Field name="startDate">
+                    {(field) => (
+                      <DatePicker
+                        date={field.state.value ?? undefined}
+                        onDateChange={(date) => field.handleChange(date)}
+                      />
+                    )}
+                  </form.Field>
+                )}
+                {mode === "edit" && form.state.values.type && (
+                  <Button
+                    variant="outline"
+                    onClick={() => onDelete?.(defaultValues?.id!)}
+                  >
+                    <Trash />
+                    Delete
+                  </Button>
+                )}
+              </div>
             )}
           </>
         )}
@@ -198,12 +219,18 @@ export const HabitDialog = () => {
           key={id}
           mode={id ? "edit" : "create"}
           defaultValues={habit.length > 0 ? habit[0] : undefined}
+          onDelete={async (id) => {
+            habitCollection.delete(id);
+            onOpenChange(false);
+          }}
           onSubmit={async (habit) => {
             if (id) {
               habitCollection.update(id, (draft) => {
                 draft.title = habit.title;
                 draft.description = habit.description ?? null;
                 draft.updatedAt = new Date();
+                draft.type = habit.type ?? null;
+                draft.frequency = habit.frequency ?? 3;
                 draft.startDate = habit.startDate ?? null;
               });
             } else {
@@ -211,8 +238,8 @@ export const HabitDialog = () => {
                 id: "tmp",
                 title: habit.title,
                 description: habit.description ?? null,
-                type: "do",
-                frequency: 3,
+                type: habit.type,
+                frequency: habit.frequency ?? 3,
                 startDate: habit.startDate ?? null,
                 createdAt: new Date(),
                 updatedAt: new Date(),

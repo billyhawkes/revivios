@@ -7,13 +7,7 @@ import { TaskSearchSchema, taskStatuses, type TaskType } from "@/lib/tasks";
 import { cn } from "@/lib/utils";
 import { useLiveQuery } from "@tanstack/react-db";
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  isBefore,
-  isToday,
-  isTomorrow,
-  startOfToday,
-  startOfTomorrow,
-} from "date-fns";
+import { isBefore, isToday, isTomorrow, startOfToday } from "date-fns";
 import { Trash2Icon } from "lucide-react";
 import { useMemo } from "react";
 
@@ -53,7 +47,13 @@ const Task = ({ task }: { task: TaskType }) => {
         {task.title}
       </div>
       <div className="flex items-center gap-1">
-        <Badge variant="secondary">
+        <Badge
+          variant={
+            task.date && isBefore(task.date, startOfToday())
+              ? "destructive"
+              : "secondary"
+          }
+        >
           {task.date ? formatDate(task.date) : "No date"}
         </Badge>
         <Button
@@ -97,7 +97,7 @@ function RouteComponent() {
                   task.status !== "complete"))
             );
           case "tomorrow":
-            return task.date;
+            return task.date && isTomorrow(task.date);
         }
       })
       .sort(

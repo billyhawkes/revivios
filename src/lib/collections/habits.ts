@@ -3,16 +3,20 @@ import { queryCollectionOptions } from "@tanstack/query-db-collection";
 import { createServerFn } from "@tanstack/react-start";
 import z from "zod";
 import { queryClient } from "@/lib/query";
-import { HabitFormSchema } from "@/lib/habits";
+import {
+  HabitFormSchema,
+  HabitLogFormSchema,
+  HabitLogSchema,
+} from "@/lib/habits";
 import { db } from "../db";
-import { habits } from "../db/schema";
+import { habitLogs, habits } from "../db/schema";
 import { eq } from "drizzle-orm";
 
-const getHabits = createServerFn().handler(async () => {
+const getHabitsFn = createServerFn().handler(async () => {
   return await db.select().from(habits);
 });
 
-const createHabit = createServerFn()
+const createHabitFn = createServerFn()
   .validator(HabitFormSchema)
   .handler(async ({ data }) => {
     await db.insert(habits).values({
@@ -23,26 +27,26 @@ const createHabit = createServerFn()
     });
   });
 
-const updateHabit = createServerFn()
+const updateHabitFn = createServerFn()
   .validator(HabitFormSchema.extend({ id: z.string() }))
   .handler(async ({ data }) => {
     await db.update(habits).set(data).where(eq(habits.id, data.id));
   });
 
-const deleteHabit = createServerFn()
+const deleteHabitFn = createServerFn()
   .validator(z.object({ id: z.string() }))
   .handler(async ({ data: { id } }) => {
     await db.delete(habits).where(eq(habits.id, id));
   });
 
-const getHabitLogs = createServerFn().handler(async () => {
-  return await db.select().from(habits);
+const getHabitLogsFn = createServerFn().handler(async () => {
+  return await db.select().from(habitLogs);
 });
 
-const createHabitLog = createServerFn()
-  .validator(HabitFormSchema)
+const createHabitLogFn = createServerFn()
+  .validator(HabitLogFormSchema)
   .handler(async ({ data }) => {
-    await db.insert(habits).values({
+    await db.insert(habitLogs).values({
       ...data,
       id: Bun.randomUUIDv7(),
       createdAt: new Date(),
@@ -50,16 +54,14 @@ const createHabitLog = createServerFn()
     });
   });
 
-const updateHabitLog = createServerFn()
-  .validator(HabitFormSchema.extend({ id: z.string() }))
+const deleteHabitLogFn = createServerFn()
+  .validator(HabitLogSchema)
   .handler(async ({ data }) => {
-    await db.update(habits).set(data).where(eq(habits.id, data.id));
-  });
-
-const deleteHabitLog = createServerFn()
-  .validator(z.object({ id: z.string() }))
-  .handler(async ({ data: { id } }) => {
-    await db.delete(habits).where(eq(habits.id, id));
+    await db
+      .delete(habitLogs)
+      .where(
+        eq(habitLogs.habitId, data.habitId) && eq(habitLogs.date, data.date),
+      );
   });
 
 export const habitCollection = createCollection(
@@ -68,19 +70,19 @@ export const habitCollection = createCollection(
     queryClient,
     getKey: (item) => item.id,
     queryFn: async () => {
-      return await getHabits();
+      return await getHabitsFn();
     },
     onUpdate: async ({ transaction }) => {
       const { modified } = transaction.mutations[0];
-      await updateHabit({ data: modified });
+      await updateHabitFn({ data: modified });
     },
     onDelete: async ({ transaction }) => {
       const { modified } = transaction.mutations[0];
-      await deleteHabit({ data: modified });
+      await deleteHabitFn({ data: modified });
     },
     onInsert: async ({ transaction }) => {
       const { modified } = transaction.mutations[0];
-      await createHabit({ data: modified });
+      await createHabitFn({ data: modified });
     },
   }),
 );
@@ -91,19 +93,15 @@ export const habitLogCollection = createCollection(
     queryClient,
     getKey: (item) => item.id,
     queryFn: async () => {
-      return await getHabitLogs();
-    },
-    onUpdate: async ({ transaction }) => {
-      const { modified } = transaction.mutations[0];
-      await updateHabitLog({ data: modified });
+      return await getHabitLogsFn();
     },
     onDelete: async ({ transaction }) => {
       const { modified } = transaction.mutations[0];
-      await deleteHabitLog({ data: modified });
+      await deleteHabitLogFn({ data: modified });
     },
     onInsert: async ({ transaction }) => {
       const { modified } = transaction.mutations[0];
-      await createHabitLog({ data: modified });
+      await createHabitLogFn({ data: modified });
     },
   }),
 );

@@ -15,6 +15,7 @@ const getTasks = createServerFn().handler(async () => {
 const createTask = createServerFn()
   .validator(TaskFormSchema)
   .handler(async ({ data }) => {
+    console.log(data);
     await db.insert(tasks).values({
       ...data,
       id: Bun.randomUUIDv7(),

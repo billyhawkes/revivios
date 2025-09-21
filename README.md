@@ -19,10 +19,11 @@ Warning: This is alpha software, use at your own risk
         - [ ] Calendar
         - [ ] Tree?
 - [ ] Habits
-    - [ ] CRUD
+    - [x] CRUD
     - [ ] Views
+        - [x] Weekdays
+        - [x] Days in total
         - [ ] Calendar
-        - [ ] Days in total
 - [ ] PWA
 - [ ] Shortcuts
     - [ ] Common actions

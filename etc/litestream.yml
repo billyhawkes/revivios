@@ -1,0 +1,10 @@
+access-key-id: ${AWS_ACCESS_KEY_ID}
+secret-access-key: ${AWS_SECRET_ACCESS_KEY}
+
+dbs:
+  - path: /usr/src/app/persist/sqlite.db
+    replicas:
+      - type: s3
+        bucket: ${S3_BUCKET}
+        path:   db
+        region: ca-central-1

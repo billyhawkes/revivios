@@ -83,7 +83,7 @@ const Navigation = () => {
   });
 
   return (
-    <div className="flex items-center justify-center w-screen absolute bottom-8 flex-col gap-4">
+    <div className="flex items-center justify-center flex-wrap w-screen absolute bottom-8 flex-row-reverse gap-4">
       {taskPage && (
         <nav className="flex items-center gap-4 px-4 py-2 backdrop-blur-lg drop-shadow-lg backdrop-opacity-50 rounded-full bg-popover">
           {taskFilters.map((filter) => (

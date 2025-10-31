@@ -18,6 +18,7 @@ Warning: This is alpha software, use at your own risk
         - [ ] Kanban
         - [ ] Calendar
         - [ ] Tree?
+    - [ ] Reordering
 - [ ] Habits
     - [x] CRUD
     - [ ] Views
@@ -29,10 +30,13 @@ Warning: This is alpha software, use at your own risk
     - [ ] Common actions
     - [ ] Customizable
 - [ ] Hosting
-    - [ ] Docker setup
-    - [ ] Pass your own s3 bucket
+    - [x] Infra setup (Docker, GHCR)
     - [ ] Documentation (specifically Coolify)
+    - [ ] Coolify one click install?
 - [ ] Authentication
+    - [ ] Root user
+    - [ ] Invite users
+    - [ ] Allow/disallow sign ups
 - [ ] Onboarding
     - [ ] Features
     - [ ] Initial user
